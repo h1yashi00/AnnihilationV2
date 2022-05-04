@@ -15,7 +15,8 @@ class Nexus (location: Location) : Placeable(location, Material.ENDER_STONE) {
         val damage = if (Game.phase.currentPhase == 5) {1} else {2}
         _hp -= damage
         val team = Game.getTeam(this)!!
-        val msg = "${Util.getColoredPlayersName(player, team)}is now attacking ${Util.getColoredTeamName(team)} Nexus!!! $hp"
+        val playerTeam = Game.getTeam(player.uniqueId)!!
+        val msg = "${Util.getColoredPlayersName(player, playerTeam)} is now attacking ${Util.getColoredTeamName(team)} Nexus!!! $hp"
         Bukkit.broadcastMessage(msg)
         attackedSound();
         attackedEffect();
