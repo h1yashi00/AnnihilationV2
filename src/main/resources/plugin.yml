@@ -1,0 +1,21 @@
+name: Annihilation
+version: 0.0.1
+main: net.recraft.annihilatoin.Main
+api-version: 1.8.9
+commands:
+  vote:
+    description: マップの投票を行う
+    usage: /<command> [gameMap]
+    permission: yourplugin.yourcommandpermission
+  teleport:
+    description: 指定したチームの色の場所の特殊な地点に飛ぶ
+    usage: /<command> [team] [nexus | enderchest | enderfurnace| spawn1,2,3]
+    permission: yourplugin.yourcommandpermission
+  team:
+    description:
+    usage: /<command> team [red | blue | yello| green]
+    permission: yourplugin.yourcommandpermission
+  anniconfig:
+    description: your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
