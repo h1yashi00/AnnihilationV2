@@ -85,6 +85,12 @@ object Game : KoinComponent {
         }
         return kit ?: Kit.CIVILIAN
     }
+    fun isEnderChest(location: Location):Boolean {
+        for (team in teams) {
+            if (team.enderChest.location == location) return true
+        }
+        return false
+    }
     fun isFinishStatus():Boolean {
         var i = 0
         for (team in teams.iterator()) {

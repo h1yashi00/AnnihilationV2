@@ -29,7 +29,8 @@ class InventoryIntercept(private val configMap: ConfigMap): Listener {
         val world = event.player.world
         val location = event.block.location
         val objectName = when (holdingItem) {
-            AnniConfigMenu.shop  ->  "shop"
+            AnniConfigMenu.shopWeapon->  "shopweapon"
+            AnniConfigMenu.shopArmor ->  "shoparmor"
             AnniConfigMenu.nexus -> "nexus"
             AnniConfigMenu.spawn1 ->  "spawn1"
             AnniConfigMenu.spawn2 ->  "spawn2"

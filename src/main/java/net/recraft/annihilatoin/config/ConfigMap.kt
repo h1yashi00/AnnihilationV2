@@ -12,6 +12,16 @@ import kotlin.collections.ArrayList
 
 
 class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
+    companion object {
+        val shopWeapon = "shopweapon"
+        val shopArmor  = "shoparmor"
+        val nexus      = "nexus"
+        val spawn1      = "spawn1"
+        val spawn2      = "spawn2"
+        val spawn3      = "spawn3"
+        val enderFurnace = "enderfurnace"
+        val enderChest   = "enderchest"
+    }
     fun update() {
         fileConfig = YamlConfiguration.loadConfiguration(file)
     }
@@ -41,28 +51,31 @@ class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
         return Bukkit.getWorld(nameWorld)
     }
     private fun addDefaultConfigValues(mapName: String): ConfigurationSection? {
-        fileConfig.createSection("$mapName.shop")
-        fileConfig.createSection("$mapName.nexus")
-        fileConfig.createSection("$mapName.spawn1")
-        fileConfig.createSection("$mapName.spawn2")
-        fileConfig.createSection("$mapName.spawn3")
-        fileConfig.createSection("$mapName.enderfurnace")
-        fileConfig.createSection("$mapName.enderchest")
+        fileConfig.createSection("$mapName.$shopWeapon")
+        fileConfig.createSection("$mapName.$shopArmor")
+        fileConfig.createSection("$mapName.$nexus")
+        fileConfig.createSection("$mapName.$spawn1")
+        fileConfig.createSection("$mapName.$spawn2")
+        fileConfig.createSection("$mapName.$spawn3")
+        fileConfig.createSection("$mapName.$enderChest")
+        fileConfig.createSection("$mapName.$enderFurnace")
         val teams = ArrayList<String>() .apply { add("red"); add("blue"); add("yellow"); add("green") }
         teams.forEach {
-            var section = fileConfig.getConfigurationSection("$mapName.shop")
+            var section = fileConfig.getConfigurationSection("$mapName.$shopWeapon")
             section.addDefault(it, "0,0,0")
-            section = fileConfig.getConfigurationSection("$mapName.nexus")
+            section = fileConfig.getConfigurationSection("$mapName.$shopArmor")
             section.addDefault(it, "0,0,0")
-            section = fileConfig.getConfigurationSection("$mapName.spawn1")
+            section = fileConfig.getConfigurationSection("$mapName.$nexus")
             section.addDefault(it, "0,0,0")
-            section = fileConfig.getConfigurationSection("$mapName.spawn2")
+            section = fileConfig.getConfigurationSection("$mapName.$spawn1")
             section.addDefault(it, "0,0,0")
-            section = fileConfig.getConfigurationSection("$mapName.spawn3")
+            section = fileConfig.getConfigurationSection("$mapName.$spawn2")
             section.addDefault(it, "0,0,0")
-            section = fileConfig.getConfigurationSection("$mapName.enderfurnace")
+            section = fileConfig.getConfigurationSection("$mapName.$spawn3")
             section.addDefault(it, "0,0,0")
-            section = fileConfig.getConfigurationSection("$mapName.enderchest")
+            section = fileConfig.getConfigurationSection("$mapName.$enderChest")
+            section.addDefault(it, "0,0,0")
+            section = fileConfig.getConfigurationSection("$mapName.$enderFurnace")
             section.addDefault(it, "0,0,0")
         }
         return fileConfig.getConfigurationSection(mapName)

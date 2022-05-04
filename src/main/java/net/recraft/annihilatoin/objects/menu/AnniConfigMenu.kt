@@ -15,9 +15,8 @@ class AnniConfigMenu {
         val blueWool  = ItemStack(Material.WOOL,1, 11.toShort()) .apply { val meta = itemMeta; meta.lore = specialLore; setItemMeta(meta)}
         val yellowWool= ItemStack(Material.WOOL,1,  4.toShort()) .apply { val meta = itemMeta; meta.lore = specialLore; setItemMeta(meta)}
         val greenWool = ItemStack(Material.WOOL,1, 13.toShort()) .apply { val meta = itemMeta; meta.lore = specialLore; setItemMeta(meta)}
-        val shop        = ItemStack(Material.SIGN)       .apply { val meta = itemMeta; meta.lore = ArrayList<String>().apply { add(
-            title
-        ) }; setItemMeta(meta)}
+        val shopArmor = ItemStack(Material.SIGN)       .apply { val meta = itemMeta; meta.lore = ArrayList<String>().apply { add(title); add("shoparmor") }; setItemMeta(meta)}
+        val shopWeapon= ItemStack(Material.SIGN)       .apply { val meta = itemMeta; meta.lore = ArrayList<String>().apply { add(title); add("shopweapon") }; setItemMeta(meta)}
         val nexus       = ItemStack(Material.ENDER_STONE).apply { val meta = itemMeta; meta.lore = ArrayList<String>().apply { add(
             title
         ) }; setItemMeta(meta)}
@@ -46,7 +45,8 @@ class AnniConfigMenu {
                 blueWool    -> true
                 yellowWool  -> true
                 greenWool   -> true
-                shop        -> true
+                shopArmor   -> true
+                shopWeapon  -> true
                 nexus       -> true
                 spawn1      -> true
                 spawn2      -> true
@@ -67,13 +67,14 @@ class AnniConfigMenu {
         fun giveSpecificItems(colorWool: ItemStack, player: Player) {
             player.inventory.clear()
             player.inventory.setItem(0,colorWool)
-            player.inventory.setItem(1, shop)
-            player.inventory.setItem(2, nexus)
-            player.inventory.setItem(3, spawn1)
-            player.inventory.setItem(4, spawn2)
-            player.inventory.setItem(5, spawn3)
-            player.inventory.setItem(6, enderchest)
-            player.inventory.setItem(7, enderfurnace)
+            player.inventory.setItem(1, shopWeapon)
+            player.inventory.setItem(2, shopArmor)
+            player.inventory.setItem(3, nexus)
+            player.inventory.setItem(4, spawn1)
+            player.inventory.setItem(5, spawn2)
+            player.inventory.setItem(6, spawn3)
+            player.inventory.setItem(7, enderchest)
+            player.inventory.setItem(8, enderfurnace)
         }
     }
 }

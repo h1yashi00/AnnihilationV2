@@ -1,5 +1,6 @@
 package net.recraft.annihilatoin.command
 
+import net.recraft.annihilatoin.config.ConfigMap
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.GameTeam
 import org.bukkit.Location
@@ -22,13 +23,14 @@ class CommandTeleportSpecificLocation : CommandExecutor {
 
     private fun getTeleportLocation(team: GameTeam, location: String?): Location? {
         return when (location) {
-            "shop" -> team.shop.location
-            "nexus" -> team.nexus.location
-            "spawn1" -> team.spawn1.location
-            "spawn2" -> team.spawn2.location
-            "spawn3" -> team.spawn3.location
-            "enderchest" -> team.enderChest.location
-            "enderfurnace" -> team.enderFurnace.location
+            ConfigMap.shopWeapon    -> team.shopWeapon.location
+            ConfigMap.shopArmor     -> team.shopArmor.location
+            ConfigMap.nexus         -> team.nexus.location
+            ConfigMap.spawn1        -> team.spawn1.location
+            ConfigMap.spawn2        -> team.spawn2.location
+            ConfigMap.spawn3        -> team.spawn3.location
+            ConfigMap.enderChest    -> team.enderChest.location
+            ConfigMap.enderFurnace  -> team.enderFurnace.location
             else -> null
         }
     }

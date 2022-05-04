@@ -1,4 +1,5 @@
 package net.recraft.annihilatoin.listener
+import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.map.EnderChest
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -16,14 +17,14 @@ class ListenerEnderChest : Listener {
     fun onPlayerOpenEnderChest(event: PlayerInteractEvent) {
         if (event.action != Action.RIGHT_CLICK_BLOCK) return
         val rightClickedBlock  = event.clickedBlock
-        if (!EnderChest.isIn(rightClickedBlock.location)) return
+        if (!Game.isEnderChest(rightClickedBlock.location)) return
         event.isCancelled = true
         openEnderChest(event.player)
     }
 
     @EventHandler
     fun onPlayerBreakEnderChest(event: BlockBreakEvent) {
-        if (!EnderChest.isIn(event.block.location)) return
+        if (!Game.isEnderChest(event.block.location)) return
         event.isCancelled = true
     }
     private val inventories: MutableMap<UUID, Inventory> = HashMap()

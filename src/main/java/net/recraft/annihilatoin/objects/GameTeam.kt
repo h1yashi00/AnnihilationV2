@@ -7,7 +7,8 @@ import java.util.*
 
 class GameTeam (val color: Color,
                 val chatColor: ChatColor,
-                val shop:   Shop,
+                val shopWeapon:ShopWeapon,
+                val shopArmor: ShopArmor,
                 val nexus:  Nexus,
                 val spawn1: Spawn,
                 val spawn2: Spawn,
@@ -25,12 +26,13 @@ class GameTeam (val color: Color,
         }
 
     fun place() {
-        shop    .place()
-        nexus   .place()
-        spawn1  .place()
-        spawn2  .place()
-        spawn3  .place()
-        enderChest.place()
+        shopWeapon  .place()
+        shopArmor   .place()
+        nexus       .place()
+        spawn1      .place()
+        spawn2      .place()
+        spawn3      .place()
+        enderChest  .place()
         enderFurnace.place()
     }
     fun join(uuid: UUID) {
