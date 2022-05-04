@@ -44,7 +44,6 @@ class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
                 return ByteArray(32768) //Empty byte array
             }
         })
-        val world: World = wc.createWorld()
         Bukkit.createWorld(wc)
         return Bukkit.getWorld(nameWorld)
     }

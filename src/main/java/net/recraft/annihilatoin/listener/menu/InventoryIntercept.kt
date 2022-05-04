@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.listener.menu
 
 import net.recraft.annihilatoin.config.ConfigMap
+import net.recraft.annihilatoin.listener.PlayerBreakResourceBlock
 import net.recraft.annihilatoin.objects.menu.AnniConfigMenu
 import net.recraft.annihilatoin.objects.Game
 import org.bukkit.Bukkit
@@ -8,13 +9,15 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
+import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.koin.core.component.getScopeId
 
 class InventoryIntercept(private val configMap: ConfigMap): Listener {
     @EventHandler
-    fun onPlaceBlock(event: PlayerInteractEvent) {
-        if (event.action != Action.RIGHT_CLICK_BLOCK) return
+    fun onPlaceBlock(event: BlockBreakEvent) {
+        val player = if (event.player.isOp) { event.player } else { return }
         val slotItem = event.player.inventory.getItem(0) ?: return
         val specialWool = if (AnniConfigMenu.isSpecialWool(slotItem)) { slotItem } else { return }
         val team = when (specialWool) {
@@ -24,10 +27,10 @@ class InventoryIntercept(private val configMap: ConfigMap): Listener {
             AnniConfigMenu.greenWool    ->Game.getTeam("green") ?: return
             else -> return
         }
-        val holdingItem = event.item
+        val holdingItem = player.itemInHand
         event.isCancelled = true
         val world = event.player.world
-        val location = event.clickedBlock.location
+        val location = event.block.location
         val objectName = when (holdingItem) {
             AnniConfigMenu.shop  ->  "shop"
             AnniConfigMenu.nexus -> "nexus"
@@ -47,11 +50,13 @@ class InventoryIntercept(private val configMap: ConfigMap): Listener {
     }
     @EventHandler
     fun onInventoryClickEvent(event: InventoryClickEvent) {
+        if (!event.whoClicked.isOp) return
         if (!AnniConfigMenu.isSpecialWool(event.currentItem)) return
         event.isCancelled = true
     }
     @EventHandler
     fun onInventoryListener(event: InventoryClickEvent) {
+        if (!event.whoClicked.isOp) return
         if (event.clickedInventory.title != AnniConfigMenu.title) return
         val player = if (event.whoClicked is Player) {Bukkit.getPlayer(event.whoClicked.name)} else { return }
          val colorWool = when(event.currentItem) {
