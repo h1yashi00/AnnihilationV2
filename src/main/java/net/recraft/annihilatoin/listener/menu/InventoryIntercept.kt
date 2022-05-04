@@ -1,18 +1,15 @@
 package net.recraft.annihilatoin.listener.menu
 
 import net.recraft.annihilatoin.config.ConfigMap
-import net.recraft.annihilatoin.listener.PlayerBreakResourceBlock
-import net.recraft.annihilatoin.objects.menu.AnniConfigMenu
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.menu.AnniConfigMenu
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.event.player.PlayerInteractEvent
-import org.koin.core.component.getScopeId
+
 
 class InventoryIntercept(private val configMap: ConfigMap): Listener {
     @EventHandler
@@ -62,7 +59,7 @@ class InventoryIntercept(private val configMap: ConfigMap): Listener {
          val colorWool = when(event.currentItem) {
             AnniConfigMenu.redWool -> AnniConfigMenu.redWool
             AnniConfigMenu.blueWool -> AnniConfigMenu.blueWool
-            AnniConfigMenu.yellowWool -> AnniConfigMenu.greenWool
+            AnniConfigMenu.yellowWool -> AnniConfigMenu.yellowWool
             AnniConfigMenu.greenWool -> AnniConfigMenu.greenWool
             else -> return
         }

@@ -39,36 +39,36 @@ class GameGenerator(private val lobby: World, private val map: World, private va
     }
 
     private fun spawn1(team: String) : Spawn {
-        val loc = load(team, "spawn1")
+        val loc = loadLoc(team, "spawn1")
         return Spawn(loc)
     }
     private fun spawn2(team: String) : Spawn {
-        val loc = load(team, "spawn2")
+        val loc = loadLoc(team, "spawn2")
         return Spawn(loc)
     }
     private fun spawn3(team: String) : Spawn {
-        val loc = load(team, "spawn3")
+        val loc = loadLoc(team, "spawn3")
         return Spawn(loc)
     }
     private fun nexus(team: String) : Nexus {
-        val loc = load(team, "nexus")
+        val loc = loadLoc(team, "nexus")
         return Nexus(loc)
     }
     private fun enderChest(team: String) : EnderChest {
-        val loc = load(team, "enderchest")
+        val loc = loadLoc(team, "enderchest")
         return EnderChest(loc)
     }
     private fun enderFurnace(team: String) : EnderFurnace {
-        val loc = load(team, "enderfurnace")
+        val loc = loadLoc(team, "enderfurnace")
         return EnderFurnace(loc)
     }
     private fun shop(team: String) : Shop {
-        val loc = load(team, "shop")
+        val loc = loadLoc(team, "shop")
         return Shop(loc)
     }
 
 
-    private fun load(team: String, key: String): Location {
+    private fun loadLoc(team: String, key: String): Location {
         if (!section.contains("$key.$team")) Util.fatal("$team in maps.yaml can not find $key")
         return Util.parseLocation(map, section.getString("$key.$team"))
     }

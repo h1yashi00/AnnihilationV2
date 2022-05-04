@@ -16,6 +16,6 @@ commands:
     usage: /<command> team [red | blue | yello| green]
     permission: yourplugin.yourcommandpermission
   anniconfig:
-    description: your description
+    description: maps.yamlにチームごとのブロックを設定する
     usage: /<command>
     permission: yourplugin.yourcommandpermission

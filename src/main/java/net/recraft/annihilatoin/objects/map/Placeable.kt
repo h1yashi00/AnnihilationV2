@@ -5,6 +5,7 @@ import org.bukkit.Material
 
 abstract class Placeable(val location: Location, private val material: Material) {
     open fun place() {
-        location.block.type = material
+        val block = location.world.getBlockAt(location)
+        if (block.type != material) location.block.type = material
     }
 }

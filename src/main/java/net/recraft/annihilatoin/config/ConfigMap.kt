@@ -12,13 +12,6 @@ import kotlin.collections.ArrayList
 
 
 class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
-    init {
-        if (fileConfig.getKeys(true).isEmpty()) {
-            addDefaultConfigValues("world")
-        }
-        fileConfig.options().copyDefaults(true)
-        fileConfig.save(file)
-    }
     fun update() {
         fileConfig = YamlConfiguration.loadConfiguration(file)
     }

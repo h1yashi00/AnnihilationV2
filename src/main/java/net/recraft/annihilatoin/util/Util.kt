@@ -4,9 +4,6 @@ import net.recraft.annihilatoin.objects.*
 import org.bukkit.*
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
-import java.lang.Double
-
-
 object Util {
     fun fatal(msg: String) {
         Bukkit.broadcastMessage("${ChatColor.RED} fatal error in $msg")

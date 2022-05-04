@@ -1,6 +1,5 @@
 package net.recraft.annihilatoin.listener
 
-import net.recraft.annihilatoin.Main
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.kit.Kit
 import net.recraft.annihilatoin.objects.kit.Miner
@@ -11,7 +10,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.scheduler.BukkitRunnable
-import org.koin.core.component.get
 
 class PlayerBreakResourceBlock : Listener {
     @EventHandler
