@@ -14,6 +14,7 @@ class Nexus (location: Location) : Placeable(location, Material.ENDER_STONE) {
     fun damage(player: Player) {
         val damage = if (Game.phase.currentPhase == 5) {1} else {2}
         _hp -= damage
+        if (hp < 0) return
         val team = Game.getTeam(this)!!
         val playerTeam = Game.getTeam(player.uniqueId)!!
         val msg = "${Util.getColoredPlayersName(player, playerTeam)} is now attacking ${Util.getColoredTeamName(team)} Nexus!!! $hp"
@@ -28,6 +29,8 @@ class Nexus (location: Location) : Placeable(location, Material.ENDER_STONE) {
     }
     fun destroyedEvent() {
         location.block.type = Material.BEDROCK
+        val team = Game.getTeam(this)!!
+        Bukkit.broadcastMessage("${Util.getColoredTeamName(team)}'s Nexus was destroyed!!!")
         var n = 0
         val runnable = object : BukkitRunnable() {
             override fun run() {
