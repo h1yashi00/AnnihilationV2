@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack
 
 class AnniConfigMenu {
     companion object {
-        val title = "Anni Map Config"
+        const val title = "Anni Map Config"
         private val specialLore = ArrayList<String>().apply { add("${ChatColor.GOLD}${ChatColor.BOLD}SpecialWool") }
         val redWool   = ItemStack(Material.WOOL,1, 14.toShort()) .apply { val meta = itemMeta; meta.lore = specialLore; setItemMeta(meta)}
         val blueWool  = ItemStack(Material.WOOL,1, 11.toShort()) .apply { val meta = itemMeta; meta.lore = specialLore; setItemMeta(meta)}

@@ -91,6 +91,18 @@ object Game : KoinComponent {
         }
         return false
     }
+    fun isWeaponShop(location: Location):Boolean {
+        for (team in teams) {
+            if (team.shopWeapon.location == location) return true
+        }
+        return false
+    }
+    fun isArmorShop(location: Location):Boolean {
+        for (team in teams) {
+            if (team.shopArmor.location == location) return true
+        }
+        return false
+    }
     fun isFinishStatus():Boolean {
         var i = 0
         for (team in teams.iterator()) {

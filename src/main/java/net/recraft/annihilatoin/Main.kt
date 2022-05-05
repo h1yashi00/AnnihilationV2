@@ -9,6 +9,8 @@ import net.recraft.annihilatoin.config.ConfigMap
 import net.recraft.annihilatoin.listener.*
 import net.recraft.annihilatoin.listener.menu.InventoryIntercept
 import net.recraft.annihilatoin.objects.*
+import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
+import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
@@ -39,6 +41,7 @@ class Main : JavaPlugin() {
             add(PlayerBreakResourceBlock())
             add(ListenerEnderChest())
             add(ListenerEnderFurnace())
+            add(ListenerShop(ShopBrewingMenu(), ShopWeaponMenu()))
             add(InventoryIntercept(configMap))
             forEach {
                 server.pluginManager.registerEvents(it, this@Main)
@@ -46,7 +49,6 @@ class Main : JavaPlugin() {
         }
         val configManager = ConfigManager().apply {
             loadConfigFile("kits.yaml")
-            loadConfigFile("shops.yaml")
         }
         // VoteManagerにVoteする際に投票させるためのワールド名を追加する
         val worldNames : List<String> = ArrayList<String>().apply {
