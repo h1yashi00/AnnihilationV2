@@ -15,6 +15,9 @@ class CommandJoinTeam: CommandExecutor {
         val teamColor = if (args?.size == 1) { args[0] } else {null}
         if (teamColor == null) { showPlayerTeamColor(player); return false}
         val team = Game.getTeam(teamColor) ?: return false
+        // playerがTeamに所属していた場合入っていたチームを離脱してからJoinさせる
+        val playerTeam = Game.getTeam(player.uniqueId)
+        playerTeam ?: playerTeam?.remove(player.uniqueId)
         team.join(player.uniqueId)
         player.sendMessage("${ChatColor.GOLD} success!!!")
         return true

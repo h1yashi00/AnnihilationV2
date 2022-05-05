@@ -35,6 +35,9 @@ class GameTeam (val color: Color,
         enderChest  .place()
         enderFurnace.place()
     }
+    fun remove(uuid: UUID) {
+        mate.remove(uuid)
+    }
     fun join(uuid: UUID) {
         mate.add(uuid)
     }
