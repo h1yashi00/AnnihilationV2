@@ -1,6 +1,5 @@
 package net.recraft.annihilatoin.listener
 
-import net.recraft.annihilatoin.Main
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.scoreboard.ScoreboardInvisible
 import org.bukkit.Bukkit
@@ -18,7 +17,6 @@ import org.bukkit.event.player.PlayerItemConsumeEvent
 import org.bukkit.potion.Potion
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
-import org.koin.core.component.inject
 import java.util.*
 
 

@@ -49,13 +49,13 @@ class InventoryIntercept(private val configMap: ConfigMap): Listener {
     @EventHandler
     fun onInventoryClickEvent(event: InventoryClickEvent) {
         if (!event.whoClicked.isOp) return
-        if (!AnniConfigMenu.isSpecialWool(event.currentItem)) return
+        if (!AnniConfigMenu.isSpecialWool(event.currentItem ?: return)) return
         event.isCancelled = true
     }
     @EventHandler
     fun onInventoryListener(event: InventoryClickEvent) {
         if (!event.whoClicked.isOp) return
-        if (event.clickedInventory.title != AnniConfigMenu.title) return
+        if (event.clickedInventory?.title != AnniConfigMenu.title) return
         val player = if (event.whoClicked is Player) {Bukkit.getPlayer(event.whoClicked.name)} else { return }
          val colorWool = when(event.currentItem) {
             AnniConfigMenu.redWool -> AnniConfigMenu.redWool

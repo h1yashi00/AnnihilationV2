@@ -1,9 +1,14 @@
 package net.recraft.annihilatoin.util
 
+import net.minecraft.server.v1_8_R3.NBTTagCompound
 import net.recraft.annihilatoin.objects.*
 import org.bukkit.*
 import org.bukkit.block.Block
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
+
+
 object Util {
     fun fatal(msg: String) {
         Bukkit.broadcastMessage("${ChatColor.RED} fatal error in $msg")
@@ -68,5 +73,14 @@ object Util {
 
     fun isLog(material: Material):Boolean {
         return material == Material.LOG || material == Material.LOG_2;
+    }
+    // TODO 何故か動かない
+    fun removeAI(entity: Entity) {
+        val nmsEnt: net.minecraft.server.v1_8_R3.Entity   = (entity as CraftEntity).handle
+        val tag: NBTTagCompound = nmsEnt.nbtTag ?:NBTTagCompound()
+        tag.setInt("NoAI", 0)
+        nmsEnt.c(tag)
+        nmsEnt.f(tag)
+        println("aljfdlsajfasdlflkasdj")
     }
 }

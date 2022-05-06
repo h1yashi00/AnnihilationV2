@@ -12,6 +12,7 @@ import org.bukkit.entity.Player
 class CommandJoinTeam: CommandExecutor {
     override fun onCommand(sender: CommandSender?, command: Command?, label: String?, args: Array<String?>?): Boolean {
         val player = if (sender is Player) { sender.player ?: return false } else { return false }
+        if (!player.isOp) return false
         val teamColor = if (args?.size == 1) { args[0] } else {null}
         if (teamColor == null) { showPlayerTeamColor(player); return false}
         val team = Game.getTeam(teamColor) ?: return false
@@ -19,6 +20,10 @@ class CommandJoinTeam: CommandExecutor {
         val playerTeam = Game.getTeam(player.uniqueId)
         playerTeam ?: playerTeam?.remove(player.uniqueId)
         team.join(player.uniqueId)
+        if (Game.isStart) {
+            player.teleport(team.randomSpawn)
+            return true
+        }
         player.sendMessage("${ChatColor.GOLD} success!!!")
         return true
     }

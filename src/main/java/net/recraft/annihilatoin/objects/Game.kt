@@ -2,12 +2,12 @@ package net.recraft.annihilatoin.objects
 
 import net.recraft.annihilatoin.objects.kit.Kit
 import net.recraft.annihilatoin.objects.map.Nexus
-import net.recraft.annihilatoin.scleduler.PhaseController
 import net.recraft.annihilatoin.util.GameGenerator
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.block.Block
+import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
 import org.koin.core.component.KoinComponent
@@ -31,9 +31,13 @@ object Game : KoinComponent {
     val teams: MutableList<GameTeam>
         get() = listOf(RED, BLUE, GREEN, YELLOW).toMutableList()
     val phase : PhaseController = PhaseController()
+    val isStart get() = phase.time != 0
 
     fun start() {
         teams.forEach { it.place() }
+        Bukkit.getOnlinePlayers().forEach {
+            teleportGameStartLocation(it.player)
+        }
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, object: BukkitRunnable() {
             override fun run() {
                 phase.pass()
@@ -44,12 +48,22 @@ object Game : KoinComponent {
     }
     // Gameを初期化する｡これを呼び出すクラスは
     fun init(generator: GameGenerator) {
-        _lobby = generator.getLobby()
+        _lobby = generator.getLobby().apply { setSpawnLocation(0,2,0) }
         _map = generator.getMap()
         RED = generator.getRed()
         BLUE = generator.getBlue()
         YELLOW = generator.getYellow()
         GREEN = generator.getGreen()
+    }
+
+    private fun teleportGameStartLocation(player: Player) {
+        val team = getTeam(player.uniqueId)
+        if (team == null) {
+            player.teleport(lobby.spawnLocation)
+            println(lobby.spawnLocation)
+            return
+        }
+        player.teleport(team.randomSpawn)
     }
 
     fun getTeam(teamName: String): GameTeam? {

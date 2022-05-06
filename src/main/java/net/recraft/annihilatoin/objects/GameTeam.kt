@@ -16,6 +16,7 @@ class GameTeam (val color: Color,
                 val enderChest: EnderChest,
                 val enderFurnace: EnderFurnace)
 {
+    val randomSpawn get() = listOf(spawn1, spawn2, spawn3).shuffled().first().location.apply {y += 1}
     val name
         get() = chatColor.name.lowercase()
     private val mate: MutableSet<UUID> = HashSet()

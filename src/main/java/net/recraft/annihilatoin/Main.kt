@@ -8,6 +8,7 @@ import net.recraft.annihilatoin.config.ConfigManager
 import net.recraft.annihilatoin.config.ConfigMap
 import net.recraft.annihilatoin.listener.*
 import net.recraft.annihilatoin.listener.menu.InventoryIntercept
+import net.recraft.annihilatoin.listener.PlayerLeaveServer
 import net.recraft.annihilatoin.objects.*
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
@@ -35,6 +36,7 @@ class Main : JavaPlugin() {
     override fun onEnable() {
         setupKoin()
         val configMap = ConfigMap(dataFolder)
+        val playerLeaveUnfairAdvantage  = PlayerLeaveUnfairAdvantage()
         ArrayList<Listener>().apply {
             add(PlayerAttackEnemyTeam())
             add(PlayerAttackNexus())
@@ -42,6 +44,9 @@ class Main : JavaPlugin() {
             add(ListenerEnderChest())
             add(ListenerEnderFurnace())
             add(ListenerShop(ShopBrewingMenu(), ShopWeaponMenu()))
+            add(PlayerJoinServer    (playerLeaveUnfairAdvantage))
+            add(PlayerLeaveServer   (playerLeaveUnfairAdvantage))
+            add(ListenerUnfairZombie(playerLeaveUnfairAdvantage))
             add(InventoryIntercept(configMap))
             forEach {
                 server.pluginManager.registerEvents(it, this@Main)

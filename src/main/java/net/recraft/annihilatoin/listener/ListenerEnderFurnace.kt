@@ -2,7 +2,6 @@ package net.recraft.annihilatoin.listener
 
 import net.minecraft.server.v1_8_R3.EntityHuman
 import net.minecraft.server.v1_8_R3.TileEntityFurnace
-import net.recraft.annihilatoin.Main
 import net.recraft.annihilatoin.objects.map.EnderFurnace
 import org.bukkit.Bukkit
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer

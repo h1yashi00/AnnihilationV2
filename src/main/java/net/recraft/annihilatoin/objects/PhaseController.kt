@@ -1,4 +1,4 @@
-package net.recraft.annihilatoin.scleduler
+package net.recraft.annihilatoin.objects
 
 import org.bukkit.Bukkit
 import org.bukkit.Sound
