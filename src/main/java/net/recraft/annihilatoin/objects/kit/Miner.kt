@@ -4,7 +4,7 @@ import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 
-class Miner: KitBase(Kit.MINER, Material.STONE_PICKAXE) {
+class Miner: KitBase(KitType.MINER, Material.STONE_PICKAXE) {
     companion object {
         fun isAffectedOre(material: Material): Boolean
         {

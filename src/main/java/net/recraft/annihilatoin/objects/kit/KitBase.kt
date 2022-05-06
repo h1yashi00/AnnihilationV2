@@ -1,7 +1,7 @@
 package net.recraft.annihilatoin.objects.kit
 
 import net.recraft.annihilatoin.objects.Game
-import net.recraft.annihilatoin.util.Util
+import net.recraft.annihilatoin.objects.GameTeam
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -13,20 +13,19 @@ import org.bukkit.inventory.meta.LeatherArmorMeta
 
 
 abstract class
-KitBase(private val _type: Kit,
+KitBase(private val _type: KitType,
         private val _icon: Material)
 {
     open val icon    = ItemStack(_icon)
     open val sword   = ItemStack(Material.WOOD_SWORD)
     open val pickaxe = ItemStack(Material.WOOD_AXE)
-    open val axe     = ItemStack(Material.WOOD_AXE)
-    open val helmet  = ItemStack(Material.WOOD_PICKAXE)
+    open val axe     = ItemStack(Material.WOOD_PICKAXE)
+    open val helmet  = ItemStack(Material.LEATHER_HELMET)
     open val chestPlate = ItemStack(Material.LEATHER_CHESTPLATE)
     open val leggings   = ItemStack(Material.LEATHER_LEGGINGS)
     open val boots      = ItemStack(Material.LEATHER_BOOTS)
-    fun equip(player: Player) {
-        val team = Game.getTeam(player.uniqueId) ?: return
-        setEquipments(player.inventory, team.color)
+    fun equip(player: Player, color: Color) {
+        setEquipments(player.inventory, color)
         setItems(player.inventory)
     }
     open fun setItems(playerInventory: PlayerInventory) {
@@ -35,10 +34,10 @@ KitBase(private val _type: Kit,
         playerInventory.setItem(2, axe)
     }
     private fun setEquipments(playerInventory: PlayerInventory, color: Color) {
-        playerInventory.helmet = helmet
-        playerInventory.chestplate = chestPlate
-        playerInventory.leggings   = leggings
-        playerInventory.boots = boots
+        playerInventory.setHelmet    (helmet)
+        playerInventory.setChestplate(chestPlate)
+        playerInventory.setLeggings  (leggings)
+        playerInventory.setBoots     (boots)
         coloringLeatherEquipments(color, playerInventory)
     }
     private fun coloringLeatherEquipments(color: Color, playerInventory: PlayerInventory) {

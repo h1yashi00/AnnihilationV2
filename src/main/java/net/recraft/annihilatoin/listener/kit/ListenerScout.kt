@@ -1,9 +1,8 @@
 package net.recraft.annihilatoin.listener.kit
 
 import net.recraft.annihilatoin.objects.Game
-import net.recraft.annihilatoin.objects.kit.Kit
+import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Scout
-import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Location
@@ -23,7 +22,7 @@ class KitScout : Listener {
     @EventHandler
     fun onRightClickFishingRod(event: PlayerFishEvent) {
         val player = event.player
-        if (Game.getKit(player.uniqueId) != Kit.SCOUT) return
+        if (Game.getKit(player.uniqueId) != KitType.SCOUT) return
         if (event.state == PlayerFishEvent.State.FISHING) return
         val handItem = event.player.itemInHand
         if (!Scout.isScoutFishingRod(handItem)) return

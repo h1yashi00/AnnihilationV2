@@ -1,4 +1,4 @@
-package net.recraft.annihilatoin.listener
+package net.recraft.annihilatoin.listener.map
 
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.builder.Priceable

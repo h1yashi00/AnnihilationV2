@@ -1,14 +1,13 @@
 package net.recraft.annihilatoin
 
-import net.recraft.annihilatoin.command.CommandAnniConfig
-import net.recraft.annihilatoin.command.CommandJoinTeam
-import net.recraft.annihilatoin.command.CommandTeleportSpecificLocation
-import net.recraft.annihilatoin.command.CommandVote
+import net.recraft.annihilatoin.command.*
 import net.recraft.annihilatoin.config.ConfigManager
 import net.recraft.annihilatoin.config.ConfigMap
 import net.recraft.annihilatoin.listener.*
 import net.recraft.annihilatoin.listener.menu.InventoryIntercept
 import net.recraft.annihilatoin.listener.PlayerLeaveServer
+import net.recraft.annihilatoin.listener.kit.KitScout
+import net.recraft.annihilatoin.listener.map.*
 import net.recraft.annihilatoin.objects.*
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
@@ -38,16 +37,23 @@ class Main : JavaPlugin() {
         val configMap = ConfigMap(dataFolder)
         val playerLeaveUnfairAdvantage  = PlayerLeaveUnfairAdvantage()
         ArrayList<Listener>().apply {
+            // player game quit
+            add(PlayerJoinServer    (playerLeaveUnfairAdvantage))
+            add(PlayerLeaveServer   (playerLeaveUnfairAdvantage))
+            add(ListenerUnfairZombie(playerLeaveUnfairAdvantage))
+            // objects
             add(PlayerAttackEnemyTeam())
             add(PlayerAttackNexus())
             add(PlayerBreakResourceBlock())
             add(ListenerEnderChest())
             add(ListenerEnderFurnace())
+            // menu
             add(ListenerShop(ShopBrewingMenu(), ShopWeaponMenu()))
-            add(PlayerJoinServer    (playerLeaveUnfairAdvantage))
-            add(PlayerLeaveServer   (playerLeaveUnfairAdvantage))
-            add(ListenerUnfairZombie(playerLeaveUnfairAdvantage))
             add(InventoryIntercept(configMap))
+            // national events
+            add(PlayerRespawn())
+            // kits
+            add(KitScout())
             forEach {
                 server.pluginManager.registerEvents(it, this@Main)
             }
@@ -67,6 +73,7 @@ class Main : JavaPlugin() {
         getCommand("teleport").executor = CommandTeleportSpecificLocation()
         getCommand("team").executor = CommandJoinTeam()
         getCommand("anniconfig").executor = CommandAnniConfig()
+        getCommand("kit").executor = CommandKit()
         if (debug) {
             val mapName = "world_test"
             val generator = configMap.getTeamGenerator(mapName)

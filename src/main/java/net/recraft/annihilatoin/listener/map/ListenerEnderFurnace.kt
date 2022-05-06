@@ -1,4 +1,4 @@
-package net.recraft.annihilatoin.listener
+package net.recraft.annihilatoin.listener.map
 
 import net.minecraft.server.v1_8_R3.EntityHuman
 import net.minecraft.server.v1_8_R3.TileEntityFurnace

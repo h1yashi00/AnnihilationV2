@@ -20,7 +20,8 @@ data class QuitPlayer(val zombie: Zombie, private val inventory: PlayerInventory
     fun respawn(player: Player, team: GameTeam) {
         // ゾンビが殺されていたときチームにスポーン
         if (zombieKilled) {
-            player.teleport(team.randomSpawn)
+            player.health = 0.0
+            // player.teleport(team.randomSpawn)
             return
         }
         // ゾンビが殺されなかった場合

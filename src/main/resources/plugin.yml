@@ -19,3 +19,7 @@ commands:
     description: maps.yamlにチームごとのブロックを設定する
     usage: /<command>
     permission: yourplugin.yourcommandpermission
+  kit:
+    description: kitを設定できる
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission

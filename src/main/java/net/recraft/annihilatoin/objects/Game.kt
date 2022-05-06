@@ -1,6 +1,6 @@
 package net.recraft.annihilatoin.objects
 
-import net.recraft.annihilatoin.objects.kit.Kit
+import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.map.Nexus
 import net.recraft.annihilatoin.util.GameGenerator
 import org.bukkit.Bukkit
@@ -23,7 +23,7 @@ object Game : KoinComponent {
     private lateinit var BLUE: GameTeam
     private lateinit var YELLOW: GameTeam
     private lateinit var GREEN :GameTeam
-    private val playersKit: MutableMap<UUID, Kit> = HashMap()
+    private val PLAYERS_KIT_TYPE: MutableMap<UUID, KitType> = HashMap()
     val candidateMaps: MutableList<VoteManager.Candidate> = ArrayList()
     val scoreboard  = Bukkit.getScoreboardManager().newScoreboard
     val lobby get() = _lobby
@@ -92,12 +92,16 @@ object Game : KoinComponent {
         return null
     }
 
-    fun getKit(uuid: UUID): Kit {
-        val kit = playersKit[uuid]
+    fun getKit(uuid: UUID): KitType {
+        val kit = PLAYERS_KIT_TYPE[uuid]
         if (kit == null) {
-            playersKit[uuid] = Kit.CIVILIAN
+            PLAYERS_KIT_TYPE[uuid] = KitType.CIVILIAN
         }
-        return kit ?: Kit.CIVILIAN
+        return kit ?: KitType.CIVILIAN
+    }
+
+    fun setKit(uuid: UUID, kitType: KitType) {
+        PLAYERS_KIT_TYPE[uuid] = kitType
     }
     fun isEnderChest(location: Location):Boolean {
         for (team in teams) {

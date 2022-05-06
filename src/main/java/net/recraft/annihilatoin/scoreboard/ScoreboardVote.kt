@@ -1,6 +1,5 @@
 package net.recraft.annihilatoin.scoreboard
 
-import net.recraft.annihilatoin.Main
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.Game.scoreboard
 import org.bukkit.Bukkit

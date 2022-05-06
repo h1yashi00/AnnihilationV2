@@ -5,14 +5,17 @@ import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.PlayerInventory
 
-class Scout: KitBase(Kit.SCOUT, Material.FISHING_ROD){
+class Scout: KitBase(KitType.SCOUT, Material.FISHING_ROD){
     companion object {
         fun isScoutFishingRod(itemStack: ItemStack): Boolean {
             if (scoutFishingRod == itemStack) return true
             return false
         }
         private val scoutFishingRod = ItemStack(Material.FISHING_ROD).apply{
-            itemMeta.lore.add("${ChatColor.GOLD}${type.name}")
+            val lore = ArrayList<String>() .apply {
+                add("${ChatColor.GOLD}${type.name}")
+            }
+            itemMeta.lore = lore
         }
     }
     override fun setItems(playerInventory: PlayerInventory) {

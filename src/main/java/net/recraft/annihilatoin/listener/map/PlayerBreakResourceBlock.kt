@@ -1,7 +1,7 @@
-package net.recraft.annihilatoin.listener
+package net.recraft.annihilatoin.listener.map
 
 import net.recraft.annihilatoin.objects.Game
-import net.recraft.annihilatoin.objects.kit.Kit
+import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Miner
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
@@ -22,13 +22,13 @@ class PlayerBreakResourceBlock : Listener {
         event.isCancelled = true
         brokenBlock.type = if (resourceBlock.setCobble) { Material.COBBLESTONE } else {Material.AIR}
         val kit = Game.getKit(player.uniqueId)
-        if (kit == Kit.MINER) {
+        if (kit == KitType.MINER) {
             if (Miner.isAffectedOre(resourceBlock.type)) {
                 val item = resourceBlock.getItemStack()
                 item.amount = 1
                 player.inventory.addItem(item)
             }
-        } else if (kit == Kit.LUMBERJACK) {
+        } else if (kit == KitType.LUMBERJACK) {
             if (Util.isLog(resourceBlock.type)) {
                 val item = resourceBlock.getItemStack()
                 item.amount = 1
@@ -36,7 +36,7 @@ class PlayerBreakResourceBlock : Listener {
             }
         }
         player.inventory.addItem(resourceBlock.getItemStack())
-        val exp = if (kit == Kit.ENCHANTER) { resourceBlock.exp * 2 }  else { resourceBlock.exp }
+        val exp = if (kit == KitType.ENCHANTER) { resourceBlock.exp * 2 }  else { resourceBlock.exp }
         player.giveExp(exp)
         val scheduler = Bukkit.getScheduler();
         val runnable = object : BukkitRunnable() {
