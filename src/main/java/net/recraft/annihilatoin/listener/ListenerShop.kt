@@ -4,6 +4,8 @@ import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.builder.Priceable
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
+import net.recraft.annihilatoin.util.Util
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -35,6 +37,7 @@ class ListenerShop(private val shopBrewingMenu: ShopBrewingMenu, private val sho
     fun onBuyShopItem(event: InventoryClickEvent) {
         val inventory = event.inventory
         val shopItem = if (inventory.title == shopBrewingMenu.title || inventory.title == shopWeaponMenu.title) { event.currentItem ?: return } else { return }
+        if (Util.isAir(shopItem)) return
         event.isCancelled = true
         val price = Priceable.getPrice(shopItem)
         val playerInventory = event.whoClicked.inventory

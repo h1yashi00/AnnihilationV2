@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack
 class PlayerJoinServer(
     private val playerLeaveUnfairAdvantage: PlayerLeaveUnfairAdvantage,
 ): Listener {
-    // TODO モブが死んだ際にプレイヤーが所有していたものをドロップさせて､プレイヤーのインベントリ空にする
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
         val player = event.player

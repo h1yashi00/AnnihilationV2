@@ -7,6 +7,7 @@ import org.bukkit.block.Block
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 
 
 object Util {
@@ -73,6 +74,10 @@ object Util {
 
     fun isLog(material: Material):Boolean {
         return material == Material.LOG || material == Material.LOG_2;
+    }
+
+    fun isAir(item: ItemStack): Boolean {
+        return item.type == Material.AIR
     }
     // TODO 何故か動かない
     fun removeAI(entity: Entity) {
