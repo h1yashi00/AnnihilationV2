@@ -24,7 +24,7 @@ class CommandTeleportSpecificLocation : CommandExecutor {
     private fun getTeleportLocation(team: GameTeam, location: String?): Location? {
         return when (location) {
             ConfigMap.shopWeapon    -> team.shopWeapon.location
-            ConfigMap.shopArmor     -> team.shopArmor.location
+            ConfigMap.shopBrewing     -> team.shopBrewing.location
             ConfigMap.nexus         -> team.nexus.location
             ConfigMap.spawn1        -> team.spawn1.location
             ConfigMap.spawn2        -> team.spawn2.location

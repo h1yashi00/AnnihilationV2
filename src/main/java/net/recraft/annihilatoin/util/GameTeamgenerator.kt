@@ -30,23 +30,23 @@ class GameGenerator(private val lobby: World, private val map: World, private va
     private fun teamGenerator(color: Color, chatColor: ChatColor): GameTeam{
         val name = chatColor.name.lowercase()
         val shopWeapon = shopWeapon(name)
-        val shopArmor  = shopArmor(name)
+        val shopBrewing  = shopBrewing(name)
         val nexus  = nexus(name)
         val spawn1 = spawn1(name)
         val spawn2 = spawn2(name)
         val spawn3 = spawn3(name)
         val enderChest   = enderChest(name)
         val enderFurnace = enderFurnace(name)
-        return GameTeam(color, chatColor, shopWeapon, shopArmor, nexus, spawn1, spawn2, spawn3, enderChest, enderFurnace)
+        return GameTeam(color, chatColor, shopWeapon, shopBrewing, nexus, spawn1, spawn2, spawn3, enderChest, enderFurnace)
     }
 
     private fun shopWeapon(team: String) : ShopWeapon {
         val loc = loadLoc(team, ConfigMap.shopWeapon)
         return ShopWeapon(loc)
     }
-    private fun shopArmor(team: String) : ShopArmor {
-        val loc = loadLoc(team, ConfigMap.shopArmor)
-        return ShopArmor(loc)
+    private fun shopBrewing(team: String) : ShopBrewing {
+        val loc = loadLoc(team, ConfigMap.shopBrewing)
+        return ShopBrewing(loc)
     }
     private fun spawn1(team: String) : Spawn {
         val loc = loadLoc(team, ConfigMap.spawn1)

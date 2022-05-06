@@ -5,7 +5,6 @@ import net.recraft.annihilatoin.objects.builder.Priceable
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
 import net.recraft.annihilatoin.util.Util
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -18,7 +17,7 @@ class ListenerShop(private val shopBrewingMenu: ShopBrewingMenu, private val sho
     @EventHandler
     fun onSignBreak(event: BlockBreakEvent) {
         val location = event.block.location
-        if (Game.isArmorShop(location) || Game.isWeaponShop(location))
+        if (Game.isBrewing(location) || Game.isWeaponShop(location))
             event.isCancelled = true
     }
 
@@ -29,7 +28,7 @@ class ListenerShop(private val shopBrewingMenu: ShopBrewingMenu, private val sho
         if (Game.isWeaponShop(location)) {
             event.player.openInventory(shopWeaponMenu.createInventory())
         }
-        if (Game.isArmorShop(location)) {
+        if (Game.isBrewing(location)) {
             event.player.openInventory(shopBrewingMenu.createInventory())
         }
     }

@@ -14,7 +14,7 @@ import kotlin.collections.ArrayList
 class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
     companion object {
         val shopWeapon = "shopweapon"
-        val shopArmor  = "shoparmor"
+        val shopBrewing  = "shopbrewing"
         val nexus      = "nexus"
         val spawn1      = "spawn1"
         val spawn2      = "spawn2"
@@ -52,7 +52,7 @@ class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
     }
     private fun addDefaultConfigValues(mapName: String): ConfigurationSection? {
         fileConfig.createSection("$mapName.$shopWeapon")
-        fileConfig.createSection("$mapName.$shopArmor")
+        fileConfig.createSection("$mapName.$shopBrewing")
         fileConfig.createSection("$mapName.$nexus")
         fileConfig.createSection("$mapName.$spawn1")
         fileConfig.createSection("$mapName.$spawn2")
@@ -63,7 +63,7 @@ class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
         teams.forEach {
             var section = fileConfig.getConfigurationSection("$mapName.$shopWeapon")
             section.addDefault(it, "0,0,0")
-            section = fileConfig.getConfigurationSection("$mapName.$shopArmor")
+            section = fileConfig.getConfigurationSection("$mapName.$shopBrewing")
             section.addDefault(it, "0,0,0")
             section = fileConfig.getConfigurationSection("$mapName.$nexus")
             section.addDefault(it, "0,0,0")

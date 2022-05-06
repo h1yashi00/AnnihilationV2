@@ -111,9 +111,9 @@ object Game : KoinComponent {
         }
         return false
     }
-    fun isArmorShop(location: Location):Boolean {
+    fun isBrewing(location: Location):Boolean {
         for (team in teams) {
-            if (team.shopArmor.location == location) return true
+            if (team.shopBrewing.location == location) return true
         }
         return false
     }

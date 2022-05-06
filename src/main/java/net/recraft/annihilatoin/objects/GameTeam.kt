@@ -8,7 +8,7 @@ import java.util.*
 class GameTeam (val color: Color,
                 val chatColor: ChatColor,
                 val shopWeapon:ShopWeapon,
-                val shopArmor: ShopArmor,
+                val shopBrewing: ShopBrewing,
                 val nexus:  Nexus,
                 val spawn1: Spawn,
                 val spawn2: Spawn,
@@ -28,7 +28,7 @@ class GameTeam (val color: Color,
 
     fun place() {
         shopWeapon  .place()
-        shopArmor   .place()
+        shopBrewing   .place()
         nexus       .place()
         spawn1      .place()
         spawn2      .place()

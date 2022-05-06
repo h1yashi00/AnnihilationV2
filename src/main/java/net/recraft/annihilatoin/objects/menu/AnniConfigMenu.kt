@@ -15,7 +15,7 @@ class AnniConfigMenu {
         val blueWool  = ItemStack(Material.WOOL,1, 11.toShort()) .apply { val meta = itemMeta; meta.lore = specialLore; setItemMeta(meta)}
         val yellowWool= ItemStack(Material.WOOL,1,  4.toShort()) .apply { val meta = itemMeta; meta.lore = specialLore; setItemMeta(meta)}
         val greenWool = ItemStack(Material.WOOL,1, 13.toShort()) .apply { val meta = itemMeta; meta.lore = specialLore; setItemMeta(meta)}
-        val shopArmor = ItemStack(Material.SIGN)       .apply { val meta = itemMeta; meta.lore = ArrayList<String>().apply { add(title); add("shoparmor") }; setItemMeta(meta)}
+        val shopBrewing = ItemStack(Material.SIGN)       .apply { val meta = itemMeta; meta.lore = ArrayList<String>().apply { add(title); add("shopbrewing") }; setItemMeta(meta)}
         val shopWeapon= ItemStack(Material.SIGN)       .apply { val meta = itemMeta; meta.lore = ArrayList<String>().apply { add(title); add("shopweapon") }; setItemMeta(meta)}
         val nexus       = ItemStack(Material.ENDER_STONE).apply { val meta = itemMeta; meta.lore = ArrayList<String>().apply { add(
             title
@@ -45,7 +45,7 @@ class AnniConfigMenu {
                 blueWool    -> true
                 yellowWool  -> true
                 greenWool   -> true
-                shopArmor   -> true
+                shopBrewing   -> true
                 shopWeapon  -> true
                 nexus       -> true
                 spawn1      -> true
@@ -68,7 +68,7 @@ class AnniConfigMenu {
             player.inventory.clear()
             player.inventory.setItem(0,colorWool)
             player.inventory.setItem(1, shopWeapon)
-            player.inventory.setItem(2, shopArmor)
+            player.inventory.setItem(2, shopBrewing)
             player.inventory.setItem(3, nexus)
             player.inventory.setItem(4, spawn1)
             player.inventory.setItem(5, spawn2)
