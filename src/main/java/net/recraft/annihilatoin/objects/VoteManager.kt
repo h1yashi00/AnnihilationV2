@@ -1,16 +1,20 @@
 package net.recraft.annihilatoin.objects
 
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class VoteManager(mapList: List<String>) {
+    private val _candidateMaps: ArrayList<Candidate>
     init {
+        _candidateMaps = ArrayList<Candidate>()
         mapList.forEach {
             addCandidate(it)
         }
     }
     data class Candidate(val worldName: String, var amount: Int = 0)
     private val votedPlayers = HashMap<UUID, Candidate>()
+    val candidateMaps: List<Candidate> get() = _candidateMaps.clone() as List<Candidate>
 
     operator fun contains(uuid: UUID): Boolean {
         return votedPlayers.containsKey(uuid)
@@ -30,7 +34,7 @@ class VoteManager(mapList: List<String>) {
     fun result() : String {
         var big = 0
         lateinit var resultCandidate: Candidate
-        for (candidate in Game.candidateMaps) {
+        for (candidate in _candidateMaps) {
             if (big < candidate.amount) {
                 big = candidate.amount
                 resultCandidate = candidate
@@ -41,13 +45,13 @@ class VoteManager(mapList: List<String>) {
     }
 
     private fun get(worldName: String): Candidate? {
-        for (candidate in Game.candidateMaps) {
+        for (candidate in _candidateMaps) {
             if (candidate.worldName == worldName) return candidate
         }
         return null
     }
 
     private fun addCandidate(name: String) {
-        Game.candidateMaps.add(Candidate(name))
+        _candidateMaps.add(Candidate(name))
     }
 }

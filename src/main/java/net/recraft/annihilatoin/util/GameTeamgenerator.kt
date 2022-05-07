@@ -7,10 +7,7 @@ import org.bukkit.*
 import org.bukkit.configuration.ConfigurationSection
 
 
-class GameGenerator(private val lobby: World, private val map: World, private val section: ConfigurationSection){
-    fun getLobby(): World {
-        return lobby
-    }
+class GameGenerator(private val map: World, private val section: ConfigurationSection){
     fun getMap(): World {
         return map
     }

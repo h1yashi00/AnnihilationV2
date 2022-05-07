@@ -2,12 +2,11 @@ package net.recraft.annihilatoin.config
 
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.util.GameGenerator
+import net.recraft.annihilatoin.util.Util
 import org.bukkit.*
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.generator.ChunkGenerator
 import java.io.File
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -31,25 +30,14 @@ class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
         fileConfig.save(file)
     }
     fun getTeamGenerator(worldName: String): GameGenerator {
-        val map = makeWorld(worldName)
-        val lobby = makeWorld("world_lobby")
+        val map = Util.makeWorld(worldName)
         // maps.yamlがない状態で起動すると
         val section = fileConfig.getConfigurationSection(worldName) ?: addDefaultConfigValues(worldName)!!
         fileConfig.options().copyDefaults(true)
         fileConfig.save(file)
-        return GameGenerator(lobby, map, section)
+        return GameGenerator(map, section)
     }
 
-    private fun makeWorld(nameWorld: String): World {
-        val wc = WorldCreator(nameWorld)
-        wc.generator(object : ChunkGenerator() {
-            override fun generate(world: World?, random: Random?, x: Int, z: Int): ByteArray? {
-                return ByteArray(32768) //Empty byte array
-            }
-        })
-        Bukkit.createWorld(wc)
-        return Bukkit.getWorld(nameWorld)
-    }
     private fun addDefaultConfigValues(mapName: String): ConfigurationSection? {
         fileConfig.createSection("$mapName.$shopWeapon")
         fileConfig.createSection("$mapName.$shopBrewing")

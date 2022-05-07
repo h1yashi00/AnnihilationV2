@@ -15,6 +15,7 @@ class PlayerJoinServer(
 ): Listener {
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
+        event.player.scoreboard = Game.scoreboard
         val player = event.player
         val uuid = player.uniqueId
         player.inventory.apply {

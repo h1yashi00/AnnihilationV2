@@ -1,28 +1,37 @@
 package net.recraft.annihilatoin.scoreboard
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.scoreboard.DisplaySlot
-import java.util.*
+import org.bukkit.scoreboard.Objective
 
 class ScoreboardNexusStatus {
-    fun registerNexusScoreboard() {
-        val objective = Game.scoreboard.registerNewObjective("world", "dummy")
-        objective.displaySlot = DisplaySlot.SIDEBAR
-        objective.displayName =
+    private var objective: Objective? = null
+    private var repeatTask: BukkitRunnable? = null
+    fun register() {
+        objective = Game.scoreboard.registerNewObjective("world", "dummy")
+        objective?.displaySlot = DisplaySlot.SIDEBAR
+        objective?.displayName =
             ChatColor.GOLD.toString() + "" + ChatColor.BOLD + "Map " + Game.map.name
-        val runnable = object : BukkitRunnable() {
+        repeatTask = object : BukkitRunnable() {
             override fun run() {
                 Game.teams.forEach {
-                    val teamHealth = objective.getScore(
-                        "${it.color}${it.name.toLowerCase(Locale.ROOT)}Nexus"
+                    val teamHealth = objective?.getScore(
+                        "${Util.getColoredTeamName(it)}${it.chatColor} Nexus"
                     )
-                    teamHealth.score = it.nexus.hp
+                    teamHealth?.score = it.nexus.hp
                 }
             }
         }
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(Game.plugin, runnable, 0, 1)
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Game.plugin, repeatTask, 0, 1)
+    }
+    fun clear() {
+        objective?.unregister()
+        objective = null
+        repeatTask?.cancel()
+        repeatTask = null
     }
 }

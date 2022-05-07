@@ -2,7 +2,9 @@ package net.recraft.annihilatoin.objects
 
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.map.Nexus
+import net.recraft.annihilatoin.scoreboard.ScoreboardNexusStatus
 import net.recraft.annihilatoin.util.GameGenerator
+import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
@@ -17,16 +19,14 @@ import kotlin.collections.ArrayList
 
 object Game : KoinComponent {
     val plugin: JavaPlugin by inject()
-    private lateinit var _lobby: World
+    val lobby: World = Util.makeWorld("world_lobby").apply {setSpawnLocation(0,2,0)}
     private lateinit var _map: World
     private lateinit var RED: GameTeam
     private lateinit var BLUE: GameTeam
     private lateinit var YELLOW: GameTeam
     private lateinit var GREEN :GameTeam
     private val PLAYERS_KIT_TYPE: MutableMap<UUID, KitType> = HashMap()
-    val candidateMaps: MutableList<VoteManager.Candidate> = ArrayList()
     val scoreboard  = Bukkit.getScoreboardManager().newScoreboard
-    val lobby get() = _lobby
     val map: World get() = _map
     val teams: MutableList<GameTeam>
         get() = listOf(RED, BLUE, GREEN, YELLOW).toMutableList()
@@ -34,6 +34,8 @@ object Game : KoinComponent {
     val isStart get() = phase.time != 0
 
     fun start() {
+        val scoreboardAnni = ScoreboardNexusStatus()
+        scoreboardAnni.register()
         teams.forEach { it.place() }
         Bukkit.getOnlinePlayers().forEach {
             teleportGameStartLocation(it.player)
@@ -48,7 +50,6 @@ object Game : KoinComponent {
     }
     // Gameを初期化する｡これを呼び出すクラスは
     fun init(generator: GameGenerator) {
-        _lobby = generator.getLobby().apply { setSpawnLocation(0,2,0) }
         _map = generator.getMap()
         RED = generator.getRed()
         BLUE = generator.getBlue()

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.scoreboard.NameTagVisibility
 import java.util.*
 
-class ScoreboardInvisible {
+class ScoreboardInvisible: ScoreboardBase {
     companion object {
         fun registerTeam(team: GameTeam) {
             val teamScore = scoreboard.registerNewTeam(team.name)
@@ -58,5 +58,13 @@ class ScoreboardInvisible {
                 p.scoreboard = scoreboard
             }
         }, 0, 10)
+    }
+
+    override fun register() {
+        TODO("Not yet implemented")
+    }
+
+    override fun clear() {
+        TODO("Not yet implemented")
     }
 }

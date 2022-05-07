@@ -11,6 +11,7 @@ import net.recraft.annihilatoin.listener.map.*
 import net.recraft.annihilatoin.objects.*
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
+import net.recraft.annihilatoin.scoreboard.ScoreboardVote
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
@@ -67,14 +68,19 @@ class Main : JavaPlugin() {
             add("test")
             add("canyon")
         }
+        Bukkit.getOnlinePlayers().forEach {it.scoreboard = Game.scoreboard }
         /* ↑↑↑↑↑↑↑  初期化するために必要なもの   ↑↑↑↑↑↑↑ */
         val debug = true
+        // vote初期化
         val voteManager = VoteManager(worldNames)
+        val scoreboardVote = ScoreboardVote(voteManager)
         getCommand("vote").executor = CommandVote(voteManager)
         getCommand("teleport").executor = CommandTeleportSpecificLocation()
         getCommand("team").executor = CommandJoinTeam()
         getCommand("anniconfig").executor = CommandAnniConfig()
         getCommand("kit").executor = CommandKit()
+        scoreboardVote.register()
+        scoreboardVote.clear()
         if (debug) {
             val mapName = "world_test"
             val generator = configMap.getTeamGenerator(mapName)
@@ -89,6 +95,7 @@ class Main : JavaPlugin() {
                     // プレイヤーがやってくるまで止まっている 一人でも入れば↓が動き出し､2分後にGameが始まる
                     Bukkit.getScheduler().scheduleSyncDelayedTask(this@Main, object : BukkitRunnable() {
                         override fun run() {
+                            scoreboardVote.clear()
                             val mapName = voteManager.result()
                             val generator = configMap.getTeamGenerator(mapName)
                             Game.init(generator)

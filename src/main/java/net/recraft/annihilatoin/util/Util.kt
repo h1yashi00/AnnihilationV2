@@ -6,7 +6,9 @@ import org.bukkit.*
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
+import org.bukkit.generator.ChunkGenerator
 import org.bukkit.inventory.ItemStack
+import java.util.*
 
 
 object Util {
@@ -27,7 +29,7 @@ object Util {
     }
 
     fun getColoredTeamName(team: GameTeam): String {
-        return "${team.chatColor}${team.name}${ChatColor.WHITE}"
+        return "${team.chatColor}${team.name.capitalize()}${ChatColor.WHITE}"
     }
     fun getColoredPlayersName(player: Player, team: GameTeam): String {
         return "${team.chatColor}${player.name}${ChatColor.WHITE}"
@@ -50,5 +52,16 @@ object Util {
         nmsEnt.c(tag)
         nmsEnt.f(tag)
         println("aljfdlsajfasdlflkasdj")
+    }
+
+    fun makeWorld(nameWorld: String): World {
+        val wc = WorldCreator(nameWorld)
+        wc.generator(object : ChunkGenerator() {
+            override fun generate(world: World?, random: Random?, x: Int, z: Int): ByteArray? {
+                return ByteArray(32768) //Empty byte array
+            }
+        })
+        Bukkit.createWorld(wc)
+        return Bukkit.getWorld(nameWorld)
     }
 }
