@@ -1,6 +1,8 @@
 package net.recraft.annihilatoin.objects
 
+import net.recraft.annihilatoin.util.Util
 import org.bukkit.Material
+import org.bukkit.block.Block
 import org.bukkit.inventory.ItemStack
 import java.util.*
 import kotlin.collections.ArrayList
@@ -45,6 +47,51 @@ enum class ResourceBlocks(val type: Material, val item: Material, val exp: Int =
             MELON -> ItemStack(item, randomAmount() + 2);
             GRAVEL -> ItemStack(gravelRandomItem(), randomAmount());
             else -> ItemStack(item, 1);
+        }
+    }
+    companion object {
+        fun getStatus(block: Block):ResourceBlocks? {
+            for (resource in values()) {
+                if (Util.isLog(block.type)) {
+                    return getResourceLog(block)
+                }
+                if (resource.type == block.type) {
+                    return resource
+                }
+            }
+            if (block.type == Material.GLOWING_REDSTONE_ORE) return REDSTONE // レッドストーン採掘する際に光ってしまうのでそれの処理
+            return null
+        }
+        // 原木はMaterial.Log Log_2で管理されている
+        private fun getResourceLog(log: Block): ResourceBlocks? {
+            when (log.type) {
+                Material.LOG -> {
+                    when (log.data % 4) {
+                        0 -> return OAK
+                        1 -> return SPRUCE
+                        2 -> return BIRCH
+                        3 -> return JUNGLE
+                        else -> Util.fatal("Is Log?")
+                    }
+                }
+                Material.LOG_2 -> {
+                    when (log.data % 4) {
+                        0 -> return ACACIA
+                        1 -> return DARK_OAK
+                        else -> Util.fatal("IS LOG_2?")
+                    }
+                }
+                else -> {
+                    Util.fatal("IS not LOG or LOG_2")
+                }
+            }
+            return null
+        }
+        fun isResourceBlocks(type: Material): Boolean {
+            values().forEach {
+                if (it.type == type) return true
+            }
+            return false
         }
     }
 }

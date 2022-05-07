@@ -3,7 +3,6 @@ package net.recraft.annihilatoin.util
 import net.minecraft.server.v1_8_R3.NBTTagCompound
 import net.recraft.annihilatoin.objects.*
 import org.bukkit.*
-import org.bukkit.block.Block
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
@@ -35,42 +34,6 @@ object Util {
     }
 
 
-    fun getStatus(block: Block):ResourceBlocks? {
-        for (resource in ResourceBlocks.values()) {
-            if (isLog(block.type)) {
-                return getResourceLog(block)
-            }
-            if (resource.type == block.type) {
-                return resource
-            }
-        }
-        return null
-    }
-    // 原木はMaterial.Log Log_2で管理されている
-    private fun getResourceLog(log: Block): ResourceBlocks? {
-        when (log.type) {
-            Material.LOG -> {
-                when (log.data % 4) {
-                    0 -> return ResourceBlocks.OAK
-                    1 -> return ResourceBlocks.SPRUCE
-                    2 -> return ResourceBlocks.BIRCH
-                    3 -> return ResourceBlocks.JUNGLE
-                    else -> fatal("Is Log?")
-                }
-            }
-            Material.LOG_2 -> {
-                when (log.data % 4) {
-                    0 -> return ResourceBlocks.ACACIA
-                    1 -> return ResourceBlocks.DARK_OAK
-                    else -> fatal("IS LOG_2?")
-                }
-            }
-            else -> {
-                fatal("IS not LOG or LOG_2")
-            }
-        }
-        return null
-    }
 
     fun isLog(material: Material):Boolean {
         return material == Material.LOG || material == Material.LOG_2;

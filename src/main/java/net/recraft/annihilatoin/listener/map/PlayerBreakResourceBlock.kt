@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.listener.map
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.ResourceBlocks
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Miner
 import net.recraft.annihilatoin.util.Util
@@ -17,7 +18,7 @@ class PlayerBreakResourceBlock : Listener {
         val player = event.player
         val brokenBlock = event.block
         // ResourceBlockじゃなければ返す
-        val resourceBlock = Util.getStatus(brokenBlock) ?: return
+        val resourceBlock = ResourceBlocks.getStatus(brokenBlock) ?: return
         val savedBlockData = brokenBlock.data
         event.isCancelled = true
         brokenBlock.type = if (resourceBlock.setCobble) { Material.COBBLESTONE } else {Material.AIR}

@@ -41,12 +41,13 @@ class Main : JavaPlugin() {
             add(PlayerJoinServer    (playerLeaveUnfairAdvantage))
             add(PlayerLeaveServer   (playerLeaveUnfairAdvantage))
             add(ListenerUnfairZombie(playerLeaveUnfairAdvantage))
-            // objects
+            // maps
             add(PlayerAttackEnemyTeam())
             add(PlayerAttackNexus())
             add(PlayerBreakResourceBlock())
             add(ListenerEnderChest())
             add(ListenerEnderFurnace())
+            add(PlayerPlaceBlock())
             // menu
             add(ListenerShop(ShopBrewingMenu(), ShopWeaponMenu()))
             add(InventoryIntercept(configMap))
