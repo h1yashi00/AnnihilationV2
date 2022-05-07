@@ -70,7 +70,7 @@ class Main : JavaPlugin() {
         }
         Bukkit.getOnlinePlayers().forEach {it.scoreboard = Game.scoreboard }
         /* ↑↑↑↑↑↑↑  初期化するために必要なもの   ↑↑↑↑↑↑↑ */
-        val debug = false
+        val debug = true
         // vote初期化
         val voteManager = VoteManager(worldNames)
         val scoreboardVote = ScoreboardVote(voteManager)
@@ -103,7 +103,7 @@ class Main : JavaPlugin() {
                 if (Bukkit.getOnlinePlayers().isNotEmpty()) {
                     cancel()
                     // プレイヤーがやってくるまで止まっている 一人でも入れば↓が動き出し､2分後にGameが始まる
-                    delayVoting.runTaskLater(this@Main, 20 * 60 * 2)
+                    delayVoting.runTaskLater(this@Main, 20)
                 }
             }
 

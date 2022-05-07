@@ -36,7 +36,7 @@ class VoteManager(mapList: List<String>) {
         var big = 0
         lateinit var resultCandidate: Candidate
         for (candidate in _candidateMaps) {
-            if (big < candidate.amount) {
+            if (big <= candidate.amount) {
                 big = candidate.amount
                 resultCandidate = candidate
             }
