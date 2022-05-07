@@ -70,7 +70,7 @@ class Main : JavaPlugin() {
         }
         Bukkit.getOnlinePlayers().forEach {it.scoreboard = Game.scoreboard }
         /* ↑↑↑↑↑↑↑  初期化するために必要なもの   ↑↑↑↑↑↑↑ */
-        val debug = true
+        val debug = false
         // vote初期化
         val voteManager = VoteManager(worldNames)
         val scoreboardVote = ScoreboardVote(voteManager)
@@ -80,30 +80,34 @@ class Main : JavaPlugin() {
         getCommand("anniconfig").executor = CommandAnniConfig()
         getCommand("kit").executor = CommandKit()
         scoreboardVote.register()
-        scoreboardVote.clear()
         if (debug) {
+            scoreboardVote.clear()
             val mapName = "world_test"
             val generator = configMap.getTeamGenerator(mapName)
             Game.init(generator)
             Game.start()
             return
         }
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, object : BukkitRunnable() {
+
+        val delayVoting = object: BukkitRunnable() {
+            override fun run() {
+                scoreboardVote.clear()
+                val mapName = voteManager.result()
+                val generator = configMap.getTeamGenerator(mapName)
+                Game.init(generator)
+                Game.start()
+            }
+        }
+        val waitPlayerJoin = object: BukkitRunnable() {
             override fun run() {
                 if (Bukkit.getOnlinePlayers().isNotEmpty()) {
                     cancel()
                     // プレイヤーがやってくるまで止まっている 一人でも入れば↓が動き出し､2分後にGameが始まる
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(this@Main, object : BukkitRunnable() {
-                        override fun run() {
-                            scoreboardVote.clear()
-                            val mapName = voteManager.result()
-                            val generator = configMap.getTeamGenerator(mapName)
-                            Game.init(generator)
-                            Game.start()
-                        }
-                    }, 20 * 60 * 2)
+                    delayVoting.runTaskLater(this@Main, 20 * 60 * 2)
                 }
             }
-        }, 1, 1)
+
+        }
+        waitPlayerJoin.runTaskTimerAsynchronously(this,0,1)
     }
 }

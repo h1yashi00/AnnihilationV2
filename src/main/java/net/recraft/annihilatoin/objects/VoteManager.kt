@@ -21,12 +21,13 @@ class VoteManager(mapList: List<String>) {
     }
 
     fun vote(uuid: UUID, worldName: String) :Boolean {
-        val c = get(worldName) ?: return false
-        votedPlayers[uuid] = c
+        val c = candidate(worldName) ?: return false
+        votedPlayers[uuid] = c.apply{ amount += 1 }
         return true
     }
 
     fun revote(uuid: UUID) {
+        votedPlayers[uuid]?.let {it.amount -= 1}
         votedPlayers.remove(uuid)
     }
 
@@ -44,7 +45,7 @@ class VoteManager(mapList: List<String>) {
         return "world_${resultCandidate.worldName}"
     }
 
-    private fun get(worldName: String): Candidate? {
+    private fun candidate(worldName: String): Candidate? {
         for (candidate in _candidateMaps) {
             if (candidate.worldName == worldName) return candidate
         }
