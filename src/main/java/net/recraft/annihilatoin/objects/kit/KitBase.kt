@@ -18,8 +18,8 @@ KitBase(private val _type: KitType,
 {
     open val icon    = ItemStack(_icon)
     open val sword   = ItemStack(Material.WOOD_SWORD)
-    open val pickaxe = ItemStack(Material.WOOD_AXE)
-    open val axe     = ItemStack(Material.WOOD_PICKAXE)
+    open val pickaxe = ItemStack(Material.WOOD_PICKAXE)
+    open val axe     = ItemStack(Material.WOOD_AXE)
     open val helmet  = ItemStack(Material.LEATHER_HELMET)
     open val chestPlate = ItemStack(Material.LEATHER_CHESTPLATE)
     open val leggings   = ItemStack(Material.LEATHER_LEGGINGS)
