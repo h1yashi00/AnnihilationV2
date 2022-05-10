@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.listener.map
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.builder.Priceable
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
@@ -17,7 +18,7 @@ class ListenerShop(private val shopBrewingMenu: ShopBrewingMenu, private val sho
     @EventHandler
     fun onSignBreak(event: BlockBreakEvent) {
         val location = event.block.location
-        if (Game.isBrewing(location) || Game.isWeaponShop(location))
+        if (GameTeam.isShopBrewing(location) || GameTeam.isShopBrewing(location))
             event.isCancelled = true
     }
 
@@ -25,10 +26,10 @@ class ListenerShop(private val shopBrewingMenu: ShopBrewingMenu, private val sho
     fun onSignClick(event: PlayerInteractEvent) {
         val type = event.clickedBlock?.type ?: return
         val location = if (type == Material.SIGN || type == Material.WALL_SIGN) { event.clickedBlock.location } else { return }
-        if (Game.isWeaponShop(location)) {
+        if (GameTeam.isShopBrewing(location)) {
             event.player.openInventory(shopWeaponMenu.createInventory())
         }
-        if (Game.isBrewing(location)) {
+        if (GameTeam.isShopWeapon(location)) {
             event.player.openInventory(shopBrewingMenu.createInventory())
         }
     }

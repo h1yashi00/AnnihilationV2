@@ -18,7 +18,7 @@ class PlayerRespawn: Listener {
         // プレイヤーにkit装備を渡す
         val team   = Game.getTeam(player.uniqueId)
         team?.let {kit.equip(player, it.color)}
-        val loc = team?.randomSpawn ?: Game.lobby.spawnLocation
+        val loc = team?.objects?.randomSpawn ?: Game.lobby.spawnLocation
         val delayTask = object: BukkitRunnable() {
             override fun run() {
                 player.teleport(loc)

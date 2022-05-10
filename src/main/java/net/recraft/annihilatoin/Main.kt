@@ -11,6 +11,7 @@ import net.recraft.annihilatoin.listener.map.*
 import net.recraft.annihilatoin.objects.*
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
+import net.recraft.annihilatoin.scoreboard.ScoreboardTeamTag
 import net.recraft.annihilatoin.scoreboard.ScoreboardVote
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
@@ -39,23 +40,24 @@ class Main : JavaPlugin() {
         val playerLeaveUnfairAdvantage  = PlayerLeaveUnfairAdvantage()
         ArrayList<Listener>().apply {
             // player game quit
-            add(PlayerJoinServer    (playerLeaveUnfairAdvantage))
-            add(PlayerLeaveServer   (playerLeaveUnfairAdvantage))
-            add(ListenerUnfairZombie(playerLeaveUnfairAdvantage))
+            add( PlayerJoinServer    (playerLeaveUnfairAdvantage) )
+            add( PlayerLeaveServer   (playerLeaveUnfairAdvantage) )
+            add( ListenerUnfairZombie(playerLeaveUnfairAdvantage) )
             // maps
-            add(PlayerAttackEnemyTeam())
-            add(PlayerAttackNexus())
-            add(PlayerBreakResourceBlock())
-            add(ListenerEnderChest())
-            add(ListenerEnderFurnace())
-            add(PlayerPlaceBlock())
+            add( PlayerAttackNexus()       )
+            add( PlayerBreakResourceBlock())
+            add( ListenerEnderChest()      )
+            add( ListenerEnderFurnace()    )
+            add( PlayerPlaceBlock()        )
             // menu
-            add(ListenerShop(ShopBrewingMenu(), ShopWeaponMenu()))
-            add(InventoryIntercept(configMap))
+            add( ListenerShop(ShopBrewingMenu(), ShopWeaponMenu()) )
+            add( InventoryIntercept(configMap)                     )
             // national events
-            add(PlayerRespawn())
+            add( PlayerAttackEnemyTeam()  )
+            add( PlayerRespawn()          )
+            // add( PlayerPotionInvisible()  )
             // kits
-            add(KitScout())
+            add( KitScout() )
             forEach {
                 server.pluginManager.registerEvents(it, this@Main)
             }
@@ -68,6 +70,9 @@ class Main : JavaPlugin() {
             add("test")
             add("canyon")
         }
+        val scoreboardTeamTag = ScoreboardTeamTag().apply {
+            register()
+        }
         Bukkit.getOnlinePlayers().forEach {it.scoreboard = Game.scoreboard }
         /* ↑↑↑↑↑↑↑  初期化するために必要なもの   ↑↑↑↑↑↑↑ */
         val debug = true
@@ -76,7 +81,7 @@ class Main : JavaPlugin() {
         val scoreboardVote = ScoreboardVote(voteManager)
         getCommand("vote").executor = CommandVote(voteManager)
         getCommand("teleport").executor = CommandTeleportSpecificLocation()
-        getCommand("team").executor = CommandJoinTeam()
+        getCommand("team").executor = CommandJoinTeam(scoreboardTeamTag)
         getCommand("anniconfig").executor = CommandAnniConfig()
         getCommand("kit").executor = CommandKit()
         scoreboardVote.register()
@@ -103,7 +108,7 @@ class Main : JavaPlugin() {
                 if (Bukkit.getOnlinePlayers().isNotEmpty()) {
                     cancel()
                     // プレイヤーがやってくるまで止まっている 一人でも入れば↓が動き出し､2分後にGameが始まる
-                    delayVoting.runTaskLater(this@Main, 20)
+                    delayVoting.runTaskLater(this@Main, 20 * 60 * 2)
                 }
             }
 

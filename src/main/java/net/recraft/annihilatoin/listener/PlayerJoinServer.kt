@@ -1,9 +1,7 @@
 package net.recraft.annihilatoin.listener
 
 import net.recraft.annihilatoin.objects.Game
-import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.PlayerLeaveUnfairAdvantage
-import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

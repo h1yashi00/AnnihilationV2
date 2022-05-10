@@ -1,7 +1,5 @@
 package net.recraft.annihilatoin.objects.kit
 
-import net.recraft.annihilatoin.objects.Game
-import net.recraft.annihilatoin.objects.GameTeam
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.entity.Player

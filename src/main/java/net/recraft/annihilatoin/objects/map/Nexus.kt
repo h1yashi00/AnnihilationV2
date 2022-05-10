@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.objects.map
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.*
 import org.bukkit.entity.Player
@@ -15,7 +16,7 @@ class Nexus (location: Location) : Placeable(location, Material.ENDER_STONE) {
         val damage = if (Game.phase.currentPhase == 5) {1} else {2}
         _hp -= damage
         if (hp < 0) return
-        val team = Game.getTeam(this)!!
+        val team = GameTeam.getTeam(this)!!
         val playerTeam = Game.getTeam(player.uniqueId)!!
         val msg = "${Util.getColoredPlayersName(player, playerTeam)} is now attacking ${Util.getColoredTeamName(team)} Nexus!!! $hp"
         Bukkit.broadcastMessage(msg)
@@ -29,7 +30,7 @@ class Nexus (location: Location) : Placeable(location, Material.ENDER_STONE) {
     }
     fun destroyedEvent() {
         location.block.type = Material.BEDROCK
-        val team = Game.getTeam(this)!!
+        val team = GameTeam.getTeam(this)!!
         Bukkit.broadcastMessage("${Util.getColoredTeamName(team)}'s Nexus was destroyed!!!")
         var n = 0
         val runnable = object : BukkitRunnable() {
@@ -59,7 +60,7 @@ class Nexus (location: Location) : Placeable(location, Material.ENDER_STONE) {
     }
     private fun victimSound() {
         Bukkit.getOnlinePlayers().forEach {
-            val victimTeam = Game.getTeam(this)
+            val victimTeam = GameTeam.getTeam(this)
             val playerTeam = Game.getTeam(it.uniqueId)
             if (victimTeam != playerTeam) return
             it?.player?.playSound(it.location, Sound.NOTE_PLING, 9.0F, 11.0F);

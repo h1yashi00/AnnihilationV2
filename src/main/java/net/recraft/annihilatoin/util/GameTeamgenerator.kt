@@ -1,8 +1,9 @@
 package net.recraft.annihilatoin.util
 
-import net.recraft.annihilatoin.objects.GameTeam
+import net.recraft.annihilatoin.objects.map.GameTeamObjects
 import net.recraft.annihilatoin.objects.map.*
 import net.recraft.annihilatoin.config.ConfigMap
+import net.recraft.annihilatoin.objects.GameTeam
 import org.bukkit.*
 import org.bukkit.configuration.ConfigurationSection
 
@@ -11,21 +12,21 @@ class GameGenerator(private val map: World, private val section: ConfigurationSe
     fun getMap(): World {
         return map
     }
-    fun getRed(): GameTeam {
-        return teamGenerator(Color.RED, ChatColor.RED)
+    fun getRed(): GameTeamObjects {
+        return teamGenerator(GameTeam.RED)
     }
-    fun getBlue(): GameTeam {
-        return teamGenerator(Color.BLUE, ChatColor.BLUE)
+    fun getBlue(): GameTeamObjects {
+        return teamGenerator(GameTeam.BLUE)
     }
-    fun getYellow(): GameTeam {
-        return teamGenerator(Color.YELLOW, ChatColor.YELLOW)
+    fun getYellow(): GameTeamObjects {
+        return teamGenerator(GameTeam.YELLOW)
     }
-    fun getGreen(): GameTeam {
-        return teamGenerator(Color.GREEN, ChatColor.GREEN)
+    fun getGreen(): GameTeamObjects {
+        return teamGenerator(GameTeam.GREEN)
     }
 
-    private fun teamGenerator(color: Color, chatColor: ChatColor): GameTeam{
-        val name = chatColor.name.lowercase()
+    private fun teamGenerator(team: GameTeam): GameTeamObjects {
+        val name = team.name.lowercase()
         val shopWeapon = shopWeapon(name)
         val shopBrewing  = shopBrewing(name)
         val nexus  = nexus(name)
@@ -34,7 +35,7 @@ class GameGenerator(private val map: World, private val section: ConfigurationSe
         val spawn3 = spawn3(name)
         val enderChest   = enderChest(name)
         val enderFurnace = enderFurnace(name)
-        return GameTeam(color, chatColor, shopWeapon, shopBrewing, nexus, spawn1, spawn2, spawn3, enderChest, enderFurnace)
+        return GameTeamObjects(shopWeapon, shopBrewing, nexus, spawn1, spawn2, spawn3, enderChest, enderFurnace)
     }
 
     private fun shopWeapon(team: String) : ShopWeapon {

@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.listener.map
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.GameTeam
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.Block
@@ -24,15 +25,15 @@ class PlayerAttackNexus: Listener {
     fun onBreakBlock(event: BlockBreakEvent){
         val brokenBlock = event.block
         if (brokenBlock.type != Material.ENDER_STONE) return
-        val damagedNexus = Game.getNexus(brokenBlock) ?: return
+        val damagedNexus = GameTeam.getNexus(brokenBlock.location) ?: return
         event.isCancelled = true
         val player = event.player
         val playerTeam = Game.getTeam(player.uniqueId) ?: return
-        if (playerTeam.nexus == damagedNexus) return
+        if (playerTeam.objects.nexus == damagedNexus) return
         damagedNexus.damage(player)
         if (damagedNexus.isAlive()) { delayRespawn(brokenBlock); return;}
         damagedNexus.destroyedEvent()
-        if (!Game.isFinishStatus()) return
+        if (!GameTeam.isFinishStatus()) return
         Game.end()
     }
 }

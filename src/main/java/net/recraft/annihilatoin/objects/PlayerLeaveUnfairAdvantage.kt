@@ -28,7 +28,7 @@ data class QuitPlayer(val zombie: Zombie, private val inventory: PlayerInventory
         inventory.forEach { player.inventory.addItem(it ?: return@forEach) }
         player.inventory.armorContents = armorContents.toTypedArray() // setHelmet methodを使うと何故か正常に動かない｡
         // 一分以内に戻ってくるとZombieがremoveされていないのでzombieの場所に戻ってくる
-        val loc = if (survived) { team.randomSpawn } else { zombie.location }
+        val loc = if (survived) { team.objects.randomSpawn } else { zombie.location }
         player.teleport(loc)
         zombie.remove()
     }
@@ -55,7 +55,7 @@ class PlayerLeaveUnfairAdvantage {
         val quitPlayer = quitPlayers[uuid]
         // playerがleaveに居なかった場合自分のチームに戻る
         if (quitPlayer == null) {
-            player.teleport(team.randomSpawn)
+            player.teleport(team.objects.randomSpawn)
             return
         }
         // playerのゾンビが殺されていた場合

@@ -1,48 +1,79 @@
 package net.recraft.annihilatoin.objects
 
-import net.recraft.annihilatoin.objects.map.*
+import net.recraft.annihilatoin.objects.map.GameTeamObjects
+import net.recraft.annihilatoin.objects.map.Nexus
 import org.bukkit.ChatColor
 import org.bukkit.Color
-import java.util.*
+import org.bukkit.Location
 
-class GameTeam (val color: Color,
-                val chatColor: ChatColor,
-                val shopWeapon:ShopWeapon,
-                val shopBrewing: ShopBrewing,
-                val nexus:  Nexus,
-                val spawn1: Spawn,
-                val spawn2: Spawn,
-                val spawn3: Spawn,
-                val enderChest: EnderChest,
-                val enderFurnace: EnderFurnace)
-{
-    val randomSpawn get() = listOf(spawn1, spawn2, spawn3).shuffled().first().location.apply {y += 1}
-    val name
-        get() = chatColor.name.lowercase()
-    private val mate: MutableSet<UUID> = HashSet()
+enum class GameTeam(
+    val color: Color,
+    val chatColor: ChatColor
+) {
+    RED     (Color.RED, ChatColor.RED),
+    BLUE    (Color.BLUE, ChatColor.BLUE),
+    YELLOW  (Color.YELLOW, ChatColor.YELLOW),
+    GREEN   (Color.GREEN, ChatColor.GREEN);
+    companion object {
+        fun isShopBrewing(location: Location): Boolean {
+            values().forEach {
+                if (it.objects.shopBrewing.location == location) return true
+            }
+            return false
+        }
+        fun isShopWeapon(location: Location): Boolean {
+            values().forEach {
+                if (it.objects.shopWeapon.location == location) return true
+            }
+            return false
+        }
+        fun isEnderChest(location: Location): Boolean {
+            values().forEach {
+                if (it.objects.enderChest.location == location) return true
+            }
+            return false
+        }
+        fun isEnderFurnace(location: Location): Boolean {
+            values().forEach {
+                if (it.objects.enderFurnace.location == location) return true
+            }
+            return false
+        }
+        fun isFinishStatus():Boolean {
+            var i = 0
+            values().forEach {
+                if (it.objects.nexus.isAlive()) {
+                    i+=1
+                }
+            }
+            if (i == 1) {
+                return true
+            }
+            return false
+        }
+        fun getTeam(color: String): GameTeam? {
+            values().forEach {
+                if (it.name.lowercase() == color) return it
+            }
+            return null
+        }
+        fun getTeam(nexus: Nexus): GameTeam? {
+            values().forEach {
+                if (it.objects.nexus == nexus) return it
+            }
+            return null
+        }
+        fun getNexus(location: Location): Nexus? {
+            values().forEach {
+                if (it.objects.nexus.location == location) return it.objects.nexus
+            }
+            return null
+        }
+    }
+    lateinit var objects: GameTeamObjects
     val prefix: String
         get()  {
-            val prefixTeamIcon = "[${color}${name[0]}${ChatColor.WHITE}]"
-            return "${prefixTeamIcon}${color}"
+            val prefixTeamIcon = "[${chatColor}${name[0]}${ChatColor.WHITE}]"
+            return "${prefixTeamIcon}${chatColor}"
         }
-
-    fun place() {
-        shopWeapon  .place()
-        shopBrewing   .place()
-        nexus       .place()
-        spawn1      .place()
-        spawn2      .place()
-        spawn3      .place()
-        enderChest  .place()
-        enderFurnace.place()
-    }
-    fun remove(uuid: UUID) {
-        mate.remove(uuid)
-    }
-    fun join(uuid: UUID) {
-        mate.add(uuid)
-    }
-    operator fun contains(uuid: UUID): Boolean {
-        return uuid in mate
-    }
 }

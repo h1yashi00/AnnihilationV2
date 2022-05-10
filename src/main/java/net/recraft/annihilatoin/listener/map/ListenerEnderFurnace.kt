@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.listener.map
 
 import net.minecraft.server.v1_8_R3.EntityHuman
 import net.minecraft.server.v1_8_R3.TileEntityFurnace
+import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.map.EnderFurnace
 import org.bukkit.Bukkit
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
@@ -36,7 +37,7 @@ class ListenerEnderFurnace : Listener, KoinComponent {
     @EventHandler
     fun playerOpenEnderFurnace(event: PlayerInteractEvent) {
         if (event.action != Action.RIGHT_CLICK_BLOCK) return
-        if (!EnderFurnace.isIn(event.clickedBlock.location)) return
+        if (!GameTeam.isEnderFurnace(event.clickedBlock.location)) return
         event.isCancelled = true
         val player = event.player
         val uuid   = event.player.uniqueId
@@ -49,7 +50,7 @@ class ListenerEnderFurnace : Listener, KoinComponent {
 
     @EventHandler
     fun onPlayerBreakEnderFurnace(event: BlockBreakEvent) {
-        if (!EnderFurnace.isIn(event.block.location))  return
+        if (!GameTeam.isEnderFurnace(event.block.location))  return
         event.isCancelled = true
     }
     private inner class VirtualFurnace(entity: EntityHuman) : TileEntityFurnace() {

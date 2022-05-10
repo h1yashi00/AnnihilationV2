@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.scoreboard
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -18,11 +19,11 @@ class ScoreboardNexusStatus {
             ChatColor.GOLD.toString() + "" + ChatColor.BOLD + "Map " + Game.map.name
         repeatTask = object : BukkitRunnable() {
             override fun run() {
-                Game.teams.forEach {
+                GameTeam.values().forEach {
                     val teamHealth = objective?.getScore(
                         "${Util.getColoredTeamName(it)}${it.chatColor} Nexus"
                     )
-                    teamHealth?.score = it.nexus.hp
+                    teamHealth?.score = it.objects.nexus.hp
                 }
             }
         }

@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.listener.menu
 
 import net.recraft.annihilatoin.config.ConfigMap
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.menu.AnniConfigMenu
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -18,10 +19,10 @@ class InventoryIntercept(private val configMap: ConfigMap): Listener {
         val slotItem = event.player.inventory.getItem(0) ?: return
         val specialWool = if (AnniConfigMenu.isSpecialWool(slotItem)) { slotItem } else { return }
         val team = when (specialWool) {
-            AnniConfigMenu.redWool      -> Game.getTeam("red")  ?: return
-            AnniConfigMenu.blueWool     ->Game.getTeam("blue")  ?: return
-            AnniConfigMenu.yellowWool   ->Game.getTeam("yellow")?: return
-            AnniConfigMenu.greenWool    ->Game.getTeam("green") ?: return
+            AnniConfigMenu.redWool      ->GameTeam.getTeam("red")  ?: return
+            AnniConfigMenu.blueWool     ->GameTeam.getTeam("blue")  ?: return
+            AnniConfigMenu.yellowWool   ->GameTeam.getTeam("yellow")?: return
+            AnniConfigMenu.greenWool    ->GameTeam.getTeam("green") ?: return
             else -> return
         }
         val holdingItem = player.itemInHand
