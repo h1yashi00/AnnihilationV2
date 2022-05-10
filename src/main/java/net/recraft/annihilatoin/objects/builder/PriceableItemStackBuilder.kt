@@ -15,7 +15,7 @@ class PriceableItemStackBuilder(material: Material): ItemStackBuilder(material),
         val item = super.build()
         val meta = item.itemMeta
         val lore = meta.lore ?: ArrayList()
-        val newLore = lore.apply {add("${ChatColor.GOLD}price: $price")}
+        val newLore = lore.apply {add(0,("${ChatColor.GOLD}price: $price"))}
         meta.lore = newLore
         item.setItemMeta(meta)
         return item
