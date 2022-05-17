@@ -1,5 +1,6 @@
 package net.recraft.annihilatoin.objects
 
+import com.comphenix.protocol.ProtocolLibrary
 import net.recraft.annihilatoin.scoreboard.ScoreboardNexusStatus
 import net.recraft.annihilatoin.util.GameGenerator
 import net.recraft.annihilatoin.util.Util
@@ -17,16 +18,28 @@ import kotlin.collections.HashMap
 // playerのデータはここで管理している ex..kit, team
 object Game : KoinComponent {
     val plugin: JavaPlugin by inject()
+    val protocolManager = ProtocolLibrary.getProtocolManager()!!
     val lobby: World = Util.makeWorld("world_lobby").apply {setSpawnLocation(0,2,0)}
     private lateinit var _map: World
     private val playerDatas: MutableMap<UUID, PlayerData> = HashMap()
     fun getPlayerData(uuid: UUID): PlayerData {
-        return playerDatas[uuid] ?: PlayerData()
+        if (!playerDatas.containsKey(uuid))  {
+            playerDatas[uuid] = PlayerData()
+        }
+        return playerDatas[uuid]!!
     }
     val scoreboard  = Bukkit.getScoreboardManager().newScoreboard!!
     val map: World get() = _map
     val phase : PhaseController = PhaseController()
     val isStart get() = phase.time != 0
+    fun getNonPlayers(team: GameTeam): ArrayList<Player> {
+        val playersKey = playerDatas.keys.filter { getPlayerData(it).team != team && getPlayerData(it).team != null}
+        val nonTeamPlayers = ArrayList<Player>()
+        playersKey.forEach {
+            nonTeamPlayers.add(Bukkit.getPlayer(it) ?: return@forEach)
+        }
+        return nonTeamPlayers
+    }
 
     fun start() {
         val scoreboardAnni = ScoreboardNexusStatus().apply {

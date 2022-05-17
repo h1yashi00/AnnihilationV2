@@ -3,6 +3,7 @@ package net.recraft.annihilatoin.command
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.scoreboard.ScoreboardTeamTag
+import net.recraft.annihilatoin.scoreboard.scoreboard_team.ScoreboardTeamManager
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
@@ -11,7 +12,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 
-class CommandJoinTeam(private val scoreTeamTag: ScoreboardTeamTag): CommandExecutor {
+class CommandJoinTeam(private val scorePacket: ScoreboardTeamManager): CommandExecutor {
     override fun onCommand(sender: CommandSender?, command: Command?, label: String?, args: Array<String?>?): Boolean {
         val player = if (sender is Player) { sender.player ?: return false } else { return false }
         if (!player.isOp) return false
@@ -21,8 +22,7 @@ class CommandJoinTeam(private val scoreTeamTag: ScoreboardTeamTag): CommandExecu
         val uuid = player.uniqueId
         // command の引数がred blue yellow green 以外
         val team = GameTeam.getTeam(teamColor) ?: return false
-        Game.getPlayerData(uuid).team = team
-        scoreTeamTag.registerPlayer(uuid, team)
+        scorePacket.addTeam(player, team)
         if (Game.isStart) {
             player.teleport(team.objects.randomSpawn)
             return true

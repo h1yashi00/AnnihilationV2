@@ -2,6 +2,7 @@ name: Annihilation
 version: 0.0.1
 main: net.recraft.annihilatoin.Main
 api-version: 1.8.9
+depend: [ProtocolLib]
 commands:
   vote:
     description: マップの投票を行う

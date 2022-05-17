@@ -8,11 +8,12 @@ import net.recraft.annihilatoin.listener.menu.InventoryIntercept
 import net.recraft.annihilatoin.listener.PlayerLeaveServer
 import net.recraft.annihilatoin.listener.kit.KitScout
 import net.recraft.annihilatoin.listener.map.*
+import net.recraft.annihilatoin.listener.PlayerInvisible
 import net.recraft.annihilatoin.objects.*
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
-import net.recraft.annihilatoin.scoreboard.ScoreboardTeamTag
 import net.recraft.annihilatoin.scoreboard.ScoreboardVote
+import net.recraft.annihilatoin.scoreboard.scoreboard_team.ScoreboardTeamManager
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
@@ -34,8 +35,10 @@ class Main : JavaPlugin() {
         }
     }
 
+    private val scoreboardTeamManager = ScoreboardTeamManager()
     override fun onEnable() {
         setupKoin()
+        scoreboardTeamManager.enable()
         val configMap = ConfigMap(dataFolder)
         val playerLeaveUnfairAdvantage  = PlayerLeaveUnfairAdvantage()
         ArrayList<Listener>().apply {
@@ -55,7 +58,7 @@ class Main : JavaPlugin() {
             // national events
             add( PlayerAttackEnemyTeam()  )
             add( PlayerRespawn()          )
-            // add( PlayerPotionInvisible()  )
+            add( PlayerInvisible(scoreboardTeamManager))
             // kits
             add( KitScout() )
             forEach {
@@ -70,9 +73,7 @@ class Main : JavaPlugin() {
             add("test")
             add("canyon")
         }
-        val scoreboardTeamTag = ScoreboardTeamTag().apply {
-            register()
-        }
+
         Bukkit.getOnlinePlayers().forEach {it.scoreboard = Game.scoreboard }
         /* ↑↑↑↑↑↑↑  初期化するために必要なもの   ↑↑↑↑↑↑↑ */
         val debug = true
@@ -81,7 +82,7 @@ class Main : JavaPlugin() {
         val scoreboardVote = ScoreboardVote(voteManager)
         getCommand("vote").executor = CommandVote(voteManager)
         getCommand("teleport").executor = CommandTeleportSpecificLocation()
-        getCommand("team").executor = CommandJoinTeam(scoreboardTeamTag)
+        getCommand("team").executor = CommandJoinTeam(scoreboardTeamManager)
         getCommand("anniconfig").executor = CommandAnniConfig()
         getCommand("kit").executor = CommandKit()
         scoreboardVote.register()
@@ -114,5 +115,9 @@ class Main : JavaPlugin() {
 
         }
         waitPlayerJoin.runTaskTimerAsynchronously(this,0,1)
+    }
+
+    override fun onDisable() {
+        scoreboardTeamManager.disable()
     }
 }
