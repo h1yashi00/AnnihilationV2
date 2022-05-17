@@ -10,6 +10,7 @@ import net.recraft.annihilatoin.listener.kit.KitScout
 import net.recraft.annihilatoin.listener.map.*
 import net.recraft.annihilatoin.listener.PlayerInvisible
 import net.recraft.annihilatoin.objects.*
+import net.recraft.annihilatoin.objects.menu.KitMenu
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
 import net.recraft.annihilatoin.scoreboard.ScoreboardVote
@@ -59,6 +60,7 @@ class Main : JavaPlugin() {
             add( PlayerAttackEnemyTeam()  )
             add( PlayerRespawn()          )
             add( PlayerInvisible(scoreboardTeamManager))
+            add( NetherGate(KitMenu()) )
             // kits
             add( KitScout() )
             add( Soulbound() )

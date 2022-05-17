@@ -54,7 +54,7 @@ object Game : KoinComponent {
                 it.teleport(lobby.spawnLocation)
                 return@forEach
             }
-            KitGenerator.get(pd.kitType)!!.equip(it, team.color)
+            KitGenerator.get(pd.kitType)!!.equip(it.inventory, team.color)
             it.teleport(team.objects.randomSpawn)
         }
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, object: BukkitRunnable() {
