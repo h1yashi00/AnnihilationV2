@@ -8,11 +8,10 @@ import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.inventory.ItemStack
 
-
 class Soulbound : Listener {
     @EventHandler
     fun onPlayerDropItem(event: PlayerDropItemEvent) {
-        val item  = event.itemDrop.itemStack
+        val item = event.itemDrop.itemStack
         if (!isSoulbound(item)) return
         val player = event.player
         player.playSound(player.location, Sound.BLAZE_HIT, 0.5f, 0.1f)
@@ -31,7 +30,7 @@ class Soulbound : Listener {
 
     companion object {
         fun isSoulbound(item: ItemStack): Boolean {
-            val meta  = item.itemMeta
+            val meta = item.itemMeta
             val lores = meta.lore ?: return false
             for (lore in lores) {
                 if (lore.equals(data)) {
@@ -43,7 +42,7 @@ class Soulbound : Listener {
 
         private val data: String = ChatColor.YELLOW.toString() + "Soulbound"
         fun set(item: ItemStack) {
-            val meta  = item.itemMeta
+            val meta = item.itemMeta
             val lores = meta.lore
             if (lores == null) {
                 val lore: MutableList<String> = ArrayList()

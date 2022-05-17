@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.objects
 
 import com.comphenix.protocol.ProtocolLibrary
+import net.recraft.annihilatoin.objects.kit.KitGenerator
 import net.recraft.annihilatoin.scoreboard.ScoreboardNexusStatus
 import net.recraft.annihilatoin.util.GameGenerator
 import net.recraft.annihilatoin.util.Util
@@ -42,12 +43,19 @@ object Game : KoinComponent {
     }
 
     fun start() {
-        val scoreboardAnni = ScoreboardNexusStatus().apply {
+        ScoreboardNexusStatus().apply {
             register()
         }
         GameTeam.values().forEach { it.objects.place() }
         Bukkit.getOnlinePlayers().forEach {
-            teleportGameStartLocation(it.player)
+            val pd = getPlayerData(it.uniqueId)
+            val team = pd.team
+            if (team == null) {
+                it.teleport(lobby.spawnLocation)
+                return@forEach
+            }
+            KitGenerator.get(pd.kitType)!!.equip(it, team.color)
+            it.teleport(team.objects.randomSpawn)
         }
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, object: BukkitRunnable() {
             override fun run() {
@@ -64,16 +72,5 @@ object Game : KoinComponent {
         GameTeam.BLUE.objects   = generator.getBlue()
         GameTeam.YELLOW.objects = generator.getYellow()
         GameTeam.GREEN.objects  = generator.getGreen()
-    }
-
-    private fun teleportGameStartLocation(player: Player) {
-        val uuid = player.uniqueId
-        val team = playerDatas[uuid]?.team
-        if (team == null) {
-            player.teleport(lobby.spawnLocation)
-            println(lobby.spawnLocation)
-            return
-        }
-        player.teleport(team.objects.randomSpawn)
     }
 }

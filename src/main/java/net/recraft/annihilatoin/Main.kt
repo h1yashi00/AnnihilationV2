@@ -61,6 +61,7 @@ class Main : JavaPlugin() {
             add( PlayerInvisible(scoreboardTeamManager))
             // kits
             add( KitScout() )
+            add( Soulbound() )
             forEach {
                 server.pluginManager.registerEvents(it, this@Main)
             }

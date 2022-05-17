@@ -1,14 +1,12 @@
 package net.recraft.annihilatoin.objects.kit
 
+import net.recraft.annihilatoin.listener.Soulbound
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.PlayerInventory
 import org.bukkit.inventory.meta.LeatherArmorMeta
-
-
-
 
 abstract class
 KitBase(private val _type: KitType,
@@ -25,6 +23,12 @@ KitBase(private val _type: KitType,
     fun equip(player: Player, color: Color) {
         setEquipments(player.inventory, color)
         setItems(player.inventory)
+        player.inventory.armorContents.forEach {
+            Soulbound.set(it)
+        }
+        player.inventory.forEach {
+            Soulbound.set(it ?: return@forEach)
+        }
     }
     open fun setItems(playerInventory: PlayerInventory) {
         playerInventory.setItem(0, sword)
