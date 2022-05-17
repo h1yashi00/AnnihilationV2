@@ -24,7 +24,7 @@ class PlayerJoinServer(
         }
         player.inventory.clear()
         if (!Game.isStart) player.teleport(Game.lobby.spawnLocation)
-        val team = Game.getTeam(uuid)
+        val team = Game.getPlayerData(uuid).team
         if (team == null) {player.teleport(Game.lobby.spawnLocation)}
         else playerLeaveUnfairAdvantage.respawn(player, team)
     }

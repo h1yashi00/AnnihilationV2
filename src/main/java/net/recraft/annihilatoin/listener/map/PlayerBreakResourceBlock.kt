@@ -22,7 +22,7 @@ class PlayerBreakResourceBlock : Listener {
         val savedBlockData = brokenBlock.data
         event.isCancelled = true
         brokenBlock.type = if (resourceBlock.setCobble) { Material.COBBLESTONE } else {Material.AIR}
-        val kit = Game.getKit(player.uniqueId)
+        val kit = Game.getPlayerData(player.uniqueId).kitType
         if (kit == KitType.MINER) {
             if (Miner.isAffectedOre(resourceBlock.type)) {
                 val item = resourceBlock.getItemStack()

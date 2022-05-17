@@ -22,7 +22,7 @@ class KitScout : Listener {
     @EventHandler
     fun onRightClickFishingRod(event: PlayerFishEvent) {
         val player = event.player
-        if (Game.getKit(player.uniqueId) != KitType.SCOUT) return
+        if (Game.getPlayerData(player.uniqueId).kitType != KitType.SCOUT) return
         if (event.state == PlayerFishEvent.State.FISHING) return
         val handItem = event.player.itemInHand
         if (!Scout.isScoutFishingRod(handItem)) return

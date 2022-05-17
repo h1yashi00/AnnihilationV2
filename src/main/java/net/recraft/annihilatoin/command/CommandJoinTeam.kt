@@ -21,7 +21,7 @@ class CommandJoinTeam(private val scoreTeamTag: ScoreboardTeamTag): CommandExecu
         val uuid = player.uniqueId
         // command の引数がred blue yellow green 以外
         val team = GameTeam.getTeam(teamColor) ?: return false
-        Game.setTeam(uuid, team)
+        Game.getPlayerData(uuid).team = team
         scoreTeamTag.registerPlayer(uuid, team)
         if (Game.isStart) {
             player.teleport(team.objects.randomSpawn)
@@ -31,7 +31,7 @@ class CommandJoinTeam(private val scoreTeamTag: ScoreboardTeamTag): CommandExecu
         return true
     }
     private fun showPlayerTeamColor(player: Player) {
-        val msg = Game.getTeam(player.uniqueId)
+        val msg = Game.getPlayerData(player.uniqueId).team
             ?.let {"you current team is ${Util.getColoredTeamName(it)}"}
             ?: "you have not chosen a team"
         player.sendMessage(msg)

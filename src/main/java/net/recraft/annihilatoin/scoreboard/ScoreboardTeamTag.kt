@@ -37,7 +37,7 @@ class ScoreboardTeamTag: ScoreboardBase {
 
     fun registerPlayer(uuid: UUID, newTeam: GameTeam) {
         val offlinePlayer = Bukkit.getOfflinePlayer(uuid)
-        val currentTeam = Game.getTeam(uuid) ?: return
+        val currentTeam = Game.getPlayerData(uuid).team ?: return
         val lastTeamScore = scoreboard.getTeam(currentTeam.name)
         lastTeamScore.removePlayer(offlinePlayer)
         val teamScore = scoreboard.getTeam(newTeam.name)

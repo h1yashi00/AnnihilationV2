@@ -17,7 +17,7 @@ class PlayerLeaveServer(
         val player = event.player
         if (!Game.isStart) return
         // ゲームが始まっていてチームに所属している
-        val team = Game.getTeam(player.uniqueId) ?: return
+        val team = Game.getPlayerData(player.uniqueId).team ?: return
         val leaveLocation = player.location
         val hp =  player.health
         val inventory = player.inventory

@@ -16,7 +16,7 @@ class CommandKit: CommandExecutor {
         val uuid = player.uniqueId
         Bukkit.broadcastMessage("${ChatColor.RED}$kitName")
         val kitType = KitType.getKitByName(kitName) ?: return false
-        Game.setKit(uuid, kitType)
+        Game.getPlayerData(uuid).kitType = kitType
         Bukkit.broadcastMessage("${ChatColor.GOLD}success!! ${ChatColor.AQUA} ${ChatColor.BOLD}your kit is now $kitType")
         return true
     }

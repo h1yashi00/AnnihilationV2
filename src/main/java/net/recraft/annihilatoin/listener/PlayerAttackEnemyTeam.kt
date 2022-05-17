@@ -14,8 +14,8 @@ class PlayerAttackEnemyTeam: Listener {
         val attacker : Entity = event.damager
         val victim: Entity = event.entity
         if (attacker !is Player || victim !is Player) return
-        val attackerTeam = Game.getTeam(attacker.uniqueId) ?: return
-        val victimTeam   = Game.getTeam(victim.uniqueId) ?: return
+        val attackerTeam = Game.getPlayerData(attacker.uniqueId).team ?: return
+        val victimTeam   = Game.getPlayerData(victim.uniqueId).team ?: return
         if (attackerTeam !== victimTeam) return
         event.isCancelled = true
     }

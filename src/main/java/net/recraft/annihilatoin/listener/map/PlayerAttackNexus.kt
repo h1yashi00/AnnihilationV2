@@ -28,7 +28,7 @@ class PlayerAttackNexus: Listener {
         val damagedNexus = GameTeam.getNexus(brokenBlock.location) ?: return
         event.isCancelled = true
         val player = event.player
-        val playerTeam = Game.getTeam(player.uniqueId) ?: return
+        val playerTeam = Game.getPlayerData(player.uniqueId).team ?: return
         if (playerTeam.objects.nexus == damagedNexus) return
         damagedNexus.damage(player)
         if (damagedNexus.isAlive()) { delayRespawn(brokenBlock); return;}

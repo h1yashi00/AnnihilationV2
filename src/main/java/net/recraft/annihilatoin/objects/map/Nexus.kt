@@ -17,7 +17,7 @@ class Nexus (location: Location) : Placeable(location, Material.ENDER_STONE) {
         _hp -= damage
         if (hp < 0) return
         val team = GameTeam.getTeam(this)!!
-        val playerTeam = Game.getTeam(player.uniqueId)!!
+        val playerTeam = Game.getPlayerData(player.uniqueId).team ?: return
         val msg = "${Util.getColoredPlayersName(player, playerTeam)} is now attacking ${Util.getColoredTeamName(team)} Nexus!!! $hp"
         Bukkit.broadcastMessage(msg)
         attackedSound();
@@ -61,7 +61,7 @@ class Nexus (location: Location) : Placeable(location, Material.ENDER_STONE) {
     private fun victimSound() {
         Bukkit.getOnlinePlayers().forEach {
             val victimTeam = GameTeam.getTeam(this)
-            val playerTeam = Game.getTeam(it.uniqueId)
+            val playerTeam = Game.getPlayerData(it.uniqueId).team
             if (victimTeam != playerTeam) return
             it?.player?.playSound(it.location, Sound.NOTE_PLING, 9.0F, 11.0F);
         }

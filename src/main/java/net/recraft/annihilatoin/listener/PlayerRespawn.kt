@@ -13,10 +13,10 @@ class PlayerRespawn: Listener {
     fun onRespawn(event: PlayerRespawnEvent) {
         val player = event.player
         // kit 取得
-        val kitType = Game.getKit(player.uniqueId) // default CIVILIAN
+        val kitType = Game.getPlayerData(player.uniqueId).kitType // default CIVILIAN
         val kit = KitGenerator.get(kitType)!!
         // プレイヤーにkit装備を渡す
-        val team   = Game.getTeam(player.uniqueId)
+        val team   = Game.getPlayerData(player.uniqueId).team
         team?.let {kit.equip(player, it.color)}
         val loc = team?.objects?.randomSpawn ?: Game.lobby.spawnLocation
         val delayTask = object: BukkitRunnable() {
