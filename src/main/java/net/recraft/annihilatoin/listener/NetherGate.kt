@@ -64,18 +64,20 @@ class NetherGate(val menu: KitMenu): Listener {
 
     @EventHandler
     fun onInventoryInterecept(event: InventoryClickEvent) {
-        if (!event.whoClicked.isOp) return
         if (event.clickedInventory?.title != menu.title) return
         if (Util.isAir(event.currentItem)) return
         event.isCancelled = true
-        Bukkit.broadcastMessage(event.currentItem.toString())
+        val player = event.whoClicked
         KitType.values().forEach {
-            if (KitGenerator.get(it)!!.icon == event.currentItem) {
+            val kit = KitGenerator.get(it)
+            if (kit.icon == event.currentItem) {
                 val inventory = Bukkit.createInventory(null, InventoryType.CHEST)
-                KitGenerator.get(it)!!.allItems().forEach { item ->
+                val pd = Game.getPlayerData(player.uniqueId)
+                pd.kitType = it
+                kit.allItems().forEach { item ->
                     inventory.addItem(item)
                 }
-                event.whoClicked.openInventory(inventory)
+                player.openInventory(inventory)
             }
         }
     }

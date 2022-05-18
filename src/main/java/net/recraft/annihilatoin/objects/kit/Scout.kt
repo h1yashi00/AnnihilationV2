@@ -1,5 +1,6 @@
 package net.recraft.annihilatoin.objects.kit
 
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
@@ -11,16 +12,21 @@ class Scout: KitBase(
     listOf("material[")
 ){
     companion object {
+        private val scoutFishLore= "${ChatColor.GOLD}Grapple"
         fun isScoutFishingRod(itemStack: ItemStack): Boolean {
-            if (scoutFishingRod == itemStack) return true
+            itemStack.itemMeta.lore.forEach {
+                if (it == scoutFishLore) return true
+            }
             return false
         }
-        private val scoutFishingRod = ItemStack(Material.FISHING_ROD).apply{
-            val lore = ArrayList<String>() .apply {
-                add("${ChatColor.GOLD}${type.name}")
-            }
-            itemMeta.lore = lore
+    }
+    private val scoutFishingRod = ItemStack(Material.FISHING_ROD).apply{
+        val lore = ArrayList<String>().apply {
+            add(scoutFishLore)
         }
+        val meta = Bukkit.getItemFactory().getItemMeta(Material.FISHING_ROD)
+        meta.lore = lore
+        itemMeta = meta
     }
     override fun setItems(playerInventory: PlayerInventory) {
         super.setItems(playerInventory)
