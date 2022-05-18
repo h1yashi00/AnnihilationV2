@@ -13,7 +13,7 @@ class Nexus (location: Location) : Placeable(location, Material.ENDER_STONE) {
     private var _hp = 75
     val hp get() = _hp
     fun damage(player: Player) {
-        val damage = if (Game.phase.currentPhase == 5) {1} else {2}
+        val damage = if (Game.phase.currentPhase == 5) {2} else {1}
         _hp -= damage
         if (hp < 0) return
         val team = GameTeam.getTeam(this)!!
