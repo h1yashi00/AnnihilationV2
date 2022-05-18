@@ -5,8 +5,9 @@ import org.bukkit.Material
 
 class ShopBrewingMenu: Menu("ShopBrewing") {
     init {
-        items.add(PriceableItemStackBuilder(Material.GLASS_BOTTLE)          .price(1).build())
-        items.add(PriceableItemStackBuilder(Material.BREWING_STAND)         .price(20).build())
+        items.add(PriceableItemStackBuilder(Material.GLASS_BOTTLE)          .price(1).amount(3).build())
+        items.add(PriceableItemStackBuilder(Material.BREWING_STAND_ITEM)    .price(15).build())
+        items.add(PriceableItemStackBuilder(Material.NETHER_STALK)          .price(5).build())
         items.add(PriceableItemStackBuilder(Material.SUGAR)                 .price(3).build())
         items.add(PriceableItemStackBuilder(Material.GHAST_TEAR)            .price(15).build())
         items.add(PriceableItemStackBuilder(Material.SPIDER_EYE)            .price(3).build())
@@ -14,5 +15,7 @@ class ShopBrewingMenu: Menu("ShopBrewing") {
         items.add(PriceableItemStackBuilder(Material.GOLDEN_CARROT)         .price(3).build())
         items.add(PriceableItemStackBuilder(Material.SPECKLED_MELON)        .price(2).build())
         items.add(PriceableItemStackBuilder(Material.RABBIT_FOOT)           .price(5).build())
+        items.add(PriceableItemStackBuilder(Material.REDSTONE)              .price(1).build())
+        items.add(PriceableItemStackBuilder(Material.GLOWSTONE_DUST)        .price(1).build())
     }
 }
