@@ -23,7 +23,6 @@ class PlayerInventoryImpl: PlayerInventory {
     }
     override fun iterator(): MutableListIterator<ItemStack> {
         val mutableList = ArrayList<ItemStack>()
-        armor.forEach { mutableList.add(it) }
         items.forEach { mutableList.add(it) }
         return mutableList.listIterator()
     }
