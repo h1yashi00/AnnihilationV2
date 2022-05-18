@@ -8,7 +8,8 @@ class PhaseController {
     val time
         get() = currentTime
     val currentPhase
-        get() = (currentTime / (60*10))
+        get() = (currentTime / (60*10)) + 1
+    private var phase1Called = false
     private var phase2Called = false
     private var phase3Called = false
     private var phase4Called = false
@@ -16,11 +17,19 @@ class PhaseController {
     fun pass() {
         currentTime+= 1
         when (currentPhase) {
-            1 -> phase2()
-            2 -> phase3()
-            3 -> phase4()
-            4 -> phase5()
+            1 -> phase1()
+            2 -> phase2()
+            3 -> phase3()
+            4 -> phase4()
+            5 -> phase5()
         }
+    }
+    private fun phase1() {
+        if (phase1Called) return
+        phase1Called = true
+        Bukkit.broadcastMessage("phase 1!!!!!!!!!!!!!!!!!").times(5)
+        Bukkit.getOnlinePlayers().forEach{ it.playSound(it.location, Sound.AMBIENCE_THUNDER, 1F,1F)}
+        thunderSound()
     }
     private fun phase2() {
         if (phase2Called) return
@@ -33,6 +42,7 @@ class PhaseController {
         if (phase3Called) return
         phase3Called = true
         Bukkit.broadcastMessage("phase 3!!!!!!!!!!!!!!!!!").times(5)
+        Bukkit.broadcastMessage("DIAMOND!!!!!!!!!!!").times(5)
         Bukkit.getOnlinePlayers().forEach{ it.playSound(it.location, Sound.AMBIENCE_THUNDER, 1F,1F)}
         thunderSound()
     }

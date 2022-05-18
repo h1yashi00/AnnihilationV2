@@ -21,6 +21,12 @@ class PlayerBreakResourceBlock : Listener {
         val resourceBlock = ResourceBlocks.getStatus(brokenBlock) ?: return
         val savedBlockData = brokenBlock.data
         event.isCancelled = true
+        if (brokenBlock.type == Material.DIAMOND_ORE) {
+            if (Game.phase.currentPhase <= 2) {
+                player.sendMessage("current Phase is ${Game.phase.currentPhase}!! you cannot break Diamond")
+                return
+            }
+        }
         brokenBlock.type = if (resourceBlock.setCobble) { Material.COBBLESTONE } else {Material.AIR}
         val kit = Game.getPlayerData(player.uniqueId).kitType
         if (kit == KitType.MINER) {
