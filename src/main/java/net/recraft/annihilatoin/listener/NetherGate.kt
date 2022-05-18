@@ -1,13 +1,19 @@
 package net.recraft.annihilatoin.listener
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.kit.KitGenerator
+import net.recraft.annihilatoin.objects.kit.KitType
+import net.recraft.annihilatoin.objects.menu.AnniConfigMenu
 import net.recraft.annihilatoin.objects.menu.KitMenu
+import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.player.PlayerPortalEvent
 import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.event.world.PortalCreateEvent
@@ -54,5 +60,23 @@ class NetherGate(val menu: KitMenu): Listener {
                 player.openInventory(menu.createInventory())
             }
         }.runTaskLater(Game.plugin, 10)
+    }
+
+    @EventHandler
+    fun onInventoryInterecept(event: InventoryClickEvent) {
+        if (!event.whoClicked.isOp) return
+        if (event.clickedInventory?.title != menu.title) return
+        if (Util.isAir(event.currentItem)) return
+        event.isCancelled = true
+        Bukkit.broadcastMessage(event.currentItem.toString())
+        KitType.values().forEach {
+            if (KitGenerator.get(it)!!.icon == event.currentItem) {
+                val inventory = Bukkit.createInventory(null, InventoryType.CHEST)
+                KitGenerator.get(it)!!.allItems().forEach { item ->
+                    inventory.addItem(item)
+                }
+                event.whoClicked.openInventory(inventory)
+            }
+        }
     }
 }

@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.listener.map
 
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.builder.Priceable
+import net.recraft.annihilatoin.objects.menu.AnniConfigMenu
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
 import net.recraft.annihilatoin.util.Util

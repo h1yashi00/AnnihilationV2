@@ -17,7 +17,7 @@ abstract class ItemStackBuilder(private val material: Material) {
         amount = _amount
         return this
     }
-    fun lore(vararg _lores: String): ItemStackBuilder {
+    fun lore(_lores: List<String>): ItemStackBuilder {
         _lores.forEach {
             lore.add(it)
         }

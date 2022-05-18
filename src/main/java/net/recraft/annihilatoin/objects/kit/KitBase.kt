@@ -1,20 +1,30 @@
 package net.recraft.annihilatoin.objects.kit
 
 import net.recraft.annihilatoin.listener.Soulbound
+import net.recraft.annihilatoin.objects.builder.KitClassIconCreator
+import net.recraft.annihilatoin.objects.builder.PlayerInventoryImpl
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Color
 import org.bukkit.Material
-import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.PlayerInventory
 import org.bukkit.inventory.meta.LeatherArmorMeta
 
 abstract class
-KitBase(private val _type: KitType,
-        private val _icon: Material)
+KitBase(_type: KitType,
+        _icon: Material,
+        description: List<String>
+)
 {
-    open val icon    = ItemStack(_icon)
+    init {
+        check(description.isNotEmpty() || description.size < 4)
+    }
+    open val icon    = KitClassIconCreator(_icon)
+        .title("${ChatColor.AQUA}${_type.name}")
+        .lore(description)
+        .build()
     open val sword   = ItemStack(Material.WOOD_SWORD)
     open val pickaxe = ItemStack(Material.WOOD_PICKAXE)
     open val axe     = ItemStack(Material.WOOD_AXE)
@@ -23,12 +33,9 @@ KitBase(private val _type: KitType,
     open val leggings   = ItemStack(Material.LEATHER_LEGGINGS)
     open val boots      = ItemStack(Material.LEATHER_BOOTS)
     fun allItems(): List<ItemStack> {
-        val items :MutableList<ItemStack> = ArrayList()
-        val inventory = Bukkit.createInventory(null, InventoryType.PLAYER) as PlayerInventory
-        equip(inventory, Color.WHITE)
-        inventory.armorContents.forEach { items.add(it ?: ItemStack(Material.AIR)) }
-        inventory.forEach { items.add(it ?: return@forEach)  }
-        return items
+        val playerInventory = PlayerInventoryImpl()
+        equip(playerInventory, Color.WHITE)
+        return playerInventory.getItems()
     }
     fun equip(playerInventory: PlayerInventory, color: Color) {
         setEquipments(playerInventory, color)

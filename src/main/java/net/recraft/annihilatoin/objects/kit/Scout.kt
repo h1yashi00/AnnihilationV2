@@ -5,7 +5,11 @@ import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.PlayerInventory
 
-class Scout: KitBase(KitType.SCOUT, Material.FISHING_ROD){
+class Scout: KitBase(
+    KitType.SCOUT,
+    Material.FISHING_ROD,
+    listOf("material[")
+){
     companion object {
         fun isScoutFishingRod(itemStack: ItemStack): Boolean {
             if (scoutFishingRod == itemStack) return true
