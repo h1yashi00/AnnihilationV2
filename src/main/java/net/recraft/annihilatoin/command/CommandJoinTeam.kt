@@ -2,7 +2,7 @@ package net.recraft.annihilatoin.command
 
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.GameTeam
-import net.recraft.annihilatoin.scoreboard.ScoreboardTeamTag
+import net.recraft.annihilatoin.objects.kit.KitGenerator
 import net.recraft.annihilatoin.scoreboard.scoreboard_team.ScoreboardTeamManager
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.ChatColor
@@ -24,6 +24,9 @@ class CommandJoinTeam(private val scorePacket: ScoreboardTeamManager): CommandEx
         val team = GameTeam.getTeam(teamColor) ?: return false
         scorePacket.addTeam(player, team)
         if (Game.isStart) {
+            player.inventory.clear()
+            val pd = Game.getPlayerData(uuid)
+            KitGenerator.get(pd.kitType).equip(player.inventory, team.color)
             player.teleport(team.objects.randomSpawn)
             return true
         }

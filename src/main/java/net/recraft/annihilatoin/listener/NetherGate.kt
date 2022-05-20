@@ -6,6 +6,7 @@ import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.menu.KitMenu
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -14,6 +15,7 @@ import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.player.PlayerPortalEvent
 import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.event.world.PortalCreateEvent
+import org.bukkit.inventory.PlayerInventory
 import org.bukkit.scheduler.BukkitRunnable
 
 class NetherGate(val menu: KitMenu): Listener {
@@ -55,8 +57,17 @@ class NetherGate(val menu: KitMenu): Listener {
                 kit.allItems(pd.team!!).forEach { item ->
                     inventory.addItem(item)
                 }
+                removeKitSpecificSoulBound(player.inventory)
                 player.openInventory(inventory)
             }
+        }
+    }
+    private fun removeKitSpecificSoulBound(inventory: PlayerInventory){
+        inventory.forEach {
+            if (it == null) return@forEach
+            if (!Soulbound.isSoulbound(it)) return@forEach
+            if (it.type == Material.WOOD_SWORD || it.type == Material.WOOD_AXE || it.type == Material.WOOD_PICKAXE) return@forEach
+            inventory.remove(it)
         }
     }
 }
