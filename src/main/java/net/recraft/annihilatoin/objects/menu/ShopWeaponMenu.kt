@@ -3,8 +3,17 @@ package net.recraft.annihilatoin.objects.menu
 import net.recraft.annihilatoin.objects.builder.PriceableItemStackBuilder
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.inventory.ItemStack
 
 class ShopWeaponMenu: Menu("ShopWeapon") {
+    companion object {
+        fun isSpecifalTool(item: ItemStack): Boolean {
+            item.itemMeta.lore.forEach {
+                if (it.toRegex().containsMatchIn("Special Tool")) return true
+            }
+            return false
+        }
+    }
     init {
         items.add(PriceableItemStackBuilder(Material.IRON_HELMET)       .price(20).build())
         items.add(PriceableItemStackBuilder(Material.IRON_CHESTPLATE)   .price(20).build())
@@ -15,9 +24,9 @@ class ShopWeaponMenu: Menu("ShopWeapon") {
         items.add(PriceableItemStackBuilder(Material.ARROW)             .price(5).amount(32).build())
         items.add(PriceableItemStackBuilder(Material.EXP_BOTTLE)        .price(5).amount(16).build())
         items.add(PriceableItemStackBuilder(Material.COOKED_BEEF)       .price(20).amount(16).build())
-        items.add(PriceableItemStackBuilder(Material.DIAMOND_PICKAXE)   .price(20).enchantment(Enchantment.DIG_SPEED, 5).lore(listOf("special diamond axe that can't mine ores")).build())
-        items.add(PriceableItemStackBuilder(Material.DIAMOND_AXE)       .price(20).enchantment(Enchantment.DIG_SPEED, 5).lore(listOf("special diamond axe that can't mine ores")).build())
-        items.add(PriceableItemStackBuilder(Material.DIAMOND_SPADE)     .price(20).enchantment(Enchantment.DIG_SPEED, 5).lore(listOf("special diamond axe that can't mine ores")).build())
-        items.add(PriceableItemStackBuilder(Material.DIAMOND_HOE)       .price(20).enchantment(Enchantment.DIG_SPEED, 5).lore(listOf("special diamond axe that can't mine ores")).build())
+        items.add(PriceableItemStackBuilder(Material.DIAMOND_PICKAXE)   .price(20).enchantment(Enchantment.DIG_SPEED, 5).lore(listOf("Special Tool", "special diamond pickaxe that can't mine ores")).build())
+        items.add(PriceableItemStackBuilder(Material.DIAMOND_AXE)       .price(20).enchantment(Enchantment.DIG_SPEED, 5).lore(listOf("Special Tool", "special diamond axe that can't mine Logs")).build())
+        items.add(PriceableItemStackBuilder(Material.DIAMOND_SPADE)     .price(20).enchantment(Enchantment.DIG_SPEED, 5).lore(listOf("Special Tool", "special diamond spade")).build())
+        items.add(PriceableItemStackBuilder(Material.DIAMOND_HOE)       .price(20).enchantment(Enchantment.DIG_SPEED, 5).lore(listOf("Special Tool", "special diamond hoe")).build())
     }
 }

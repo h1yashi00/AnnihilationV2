@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.listener.map
 
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.GameTeam
+import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.Block
@@ -27,11 +28,15 @@ class PlayerAttackNexus: Listener {
         if (brokenBlock.type != Material.ENDER_STONE) return
         val damagedNexus = GameTeam.getNexus(brokenBlock.location) ?: return
         event.isCancelled = true
-        if (Game.phase.currentPhase <= 2) {
-            Bukkit.broadcastMessage("current phase is ${Game.phase.currentPhase}!")
+        val player = event.player
+        if (ShopWeaponMenu.isSpecifalTool(player.itemInHand)) {
+            player.sendMessage("special tool cant break nexus!!")
             return
         }
-        val player = event.player
+        if (Game.phase.currentPhase <= 2) {
+            player.sendMessage("current phase is ${Game.phase.currentPhase}!")
+            return
+        }
         val playerTeam = Game.getPlayerData(player.uniqueId).team ?: return
         if (playerTeam.objects.nexus == damagedNexus) return
         damagedNexus.damage(player)

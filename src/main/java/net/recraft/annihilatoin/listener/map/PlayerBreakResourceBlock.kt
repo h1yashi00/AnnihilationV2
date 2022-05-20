@@ -4,6 +4,7 @@ import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.ResourceBlocks
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Miner
+import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -21,6 +22,10 @@ class PlayerBreakResourceBlock : Listener {
         val resourceBlock = ResourceBlocks.getStatus(brokenBlock) ?: return
         val savedBlockData = brokenBlock.data
         event.isCancelled = true
+        if (ShopWeaponMenu.isSpecifalTool(player.itemInHand)) {
+            player.sendMessage("Special Tool cant break ResourceBlocks!!!")
+            return
+        }
         if (brokenBlock.type == Material.DIAMOND_ORE) {
             if (Game.phase.currentPhase <= 2) {
                 player.sendMessage("current Phase is ${Game.phase.currentPhase}!! you cannot break Diamond")
