@@ -1,12 +1,16 @@
 package net.recraft.annihilatoin.objects
 
+import net.recraft.annihilatoin.scoreboard.ScoreboardSideBar
 import org.bukkit.Bukkit
 import org.bukkit.Sound
+
 
 class PhaseController {
     private var currentTime: Int = 0
     val time
         get() = currentTime
+    val nextPhaseTime
+        get() = formatTime()
     val currentPhase
         get() = (currentTime / (60*10)) + 1
     private var phase1Called = false
@@ -15,6 +19,7 @@ class PhaseController {
     private var phase4Called = false
     private var phase5Called = false
     fun pass() {
+        ScoreboardSideBar().update()
         currentTime+= 1
         when (currentPhase) {
             1 -> phase1()
@@ -24,6 +29,15 @@ class PhaseController {
             5 -> phase5()
         }
     }
+    private fun formatTime(): String {
+        val phaseNum = 600 * currentPhase
+        val minute = ((phaseNum - time) / 60)
+        val secound = (phaseNum - time) - (minute*60)
+        val sec = if (secound < 10) "0$secound" else secound
+        val min = if (minute  < 10) "0$minute" else minute
+        return "$min:$sec"
+    }
+
     private fun phase1() {
         if (phase1Called) return
         phase1Called = true

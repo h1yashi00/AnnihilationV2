@@ -27,6 +27,10 @@ class PlayerAttackNexus: Listener {
         if (brokenBlock.type != Material.ENDER_STONE) return
         val damagedNexus = GameTeam.getNexus(brokenBlock.location) ?: return
         event.isCancelled = true
+        if (Game.phase.currentPhase <= 2) {
+            Bukkit.broadcastMessage("current phase is ${Game.phase.currentPhase}!")
+            return
+        }
         val player = event.player
         val playerTeam = Game.getPlayerData(player.uniqueId).team ?: return
         if (playerTeam.objects.nexus == damagedNexus) return

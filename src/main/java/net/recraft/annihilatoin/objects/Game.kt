@@ -3,6 +3,7 @@ package net.recraft.annihilatoin.objects
 import com.comphenix.protocol.ProtocolLibrary
 import net.recraft.annihilatoin.objects.kit.KitGenerator
 import net.recraft.annihilatoin.scoreboard.ScoreboardNexusStatus
+import net.recraft.annihilatoin.scoreboard.ScoreboardSideBar
 import net.recraft.annihilatoin.util.GameGenerator
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
@@ -43,9 +44,6 @@ object Game : KoinComponent {
     }
 
     fun start() {
-        ScoreboardNexusStatus().apply {
-            register()
-        }
         GameTeam.values().forEach { it.objects.place() }
         Bukkit.getOnlinePlayers().forEach {
             val pd = getPlayerData(it.uniqueId)

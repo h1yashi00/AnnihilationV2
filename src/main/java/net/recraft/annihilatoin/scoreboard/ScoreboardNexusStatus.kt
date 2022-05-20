@@ -15,10 +15,12 @@ class ScoreboardNexusStatus {
     fun register() {
         objective = Game.scoreboard.registerNewObjective("world", "dummy")
         objective?.displaySlot = DisplaySlot.SIDEBAR
-        objective?.displayName =
-            ChatColor.GOLD.toString() + "" + ChatColor.BOLD + "Map " + Game.map.name
+        objective?.displayName = ChatColor.GOLD.toString() + "" + ChatColor.BOLD + "Map " + Game.map.name
         repeatTask = object : BukkitRunnable() {
             override fun run() {
+                val phase = objective?.getScore("phase")
+                phase?.score = Game.phase.currentPhase
+                objective?.getScore(Game.phase.nextPhaseTime)?.score = 14
                 GameTeam.values().forEach {
                     val teamHealth = objective?.getScore(
                         "${Util.getColoredTeamName(it)}${it.chatColor} Nexus"
