@@ -7,8 +7,9 @@ import org.bukkit.inventory.ItemStack
 
 class ShopWeaponMenu: Menu("ShopWeapon") {
     companion object {
-        fun isSpecifalTool(item: ItemStack): Boolean {
-            item.itemMeta.lore.forEach {
+        fun isSpecialTool(item: ItemStack): Boolean {
+            val lores = item.itemMeta.lore ?: return false
+            lores.forEach {
                 if (it.toRegex().containsMatchIn("Special Tool")) return true
             }
             return false

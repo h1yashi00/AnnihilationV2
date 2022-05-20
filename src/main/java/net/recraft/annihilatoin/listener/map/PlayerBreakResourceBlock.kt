@@ -22,7 +22,7 @@ class PlayerBreakResourceBlock : Listener {
         val resourceBlock = ResourceBlocks.getStatus(brokenBlock) ?: return
         val savedBlockData = brokenBlock.data
         event.isCancelled = true
-        if (ShopWeaponMenu.isSpecifalTool(player.itemInHand)) {
+        if (ShopWeaponMenu.isSpecialTool(player.itemInHand)) {
             player.sendMessage("Special Tool cant break ResourceBlocks!!!")
             return
         }

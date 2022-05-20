@@ -26,10 +26,8 @@ class NetherGate(val menu: KitMenu): Listener {
     @EventHandler
     fun portal(event: PlayerPortalEvent) {
         if (event.cause != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) return
-        Bukkit.broadcastMessage("aaaa")
         val player = event.player
         val team = Game.getPlayerData(player.uniqueId).team ?: return
-        Bukkit.broadcastMessage("aaaa")
         player.teleport(team.objects.randomSpawn)
         openKitMenu(player)
     }

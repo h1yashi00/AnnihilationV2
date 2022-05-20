@@ -28,9 +28,9 @@ enum class ResourceBlocks(val type: Material, val item: Material, val exp: Int =
     private fun randomAmount(): Int = Random().nextInt(3) + 1;
     private fun gravelRandomItem(): Material {
         val gravelItems = ArrayList<Material>()
-        gravelItems[0] = Material.FLINT;
-        gravelItems[1] = Material.FEATHER;
-        gravelItems[2] = Material.STRING;
+        gravelItems.add( Material.FLINT   )
+        gravelItems.add( Material.FEATHER )
+        gravelItems.add( Material.STRING  )
         val randomItem = Random().nextInt(gravelItems.size);
         return gravelItems[randomItem];
     }

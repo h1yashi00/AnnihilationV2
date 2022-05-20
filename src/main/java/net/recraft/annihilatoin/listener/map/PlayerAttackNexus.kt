@@ -29,7 +29,7 @@ class PlayerAttackNexus: Listener {
         val damagedNexus = GameTeam.getNexus(brokenBlock.location) ?: return
         event.isCancelled = true
         val player = event.player
-        if (ShopWeaponMenu.isSpecifalTool(player.itemInHand)) {
+        if (ShopWeaponMenu.isSpecialTool(player.itemInHand)) {
             player.sendMessage("special tool cant break nexus!!")
             return
         }
