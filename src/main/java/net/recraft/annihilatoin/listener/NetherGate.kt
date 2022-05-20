@@ -3,12 +3,9 @@ package net.recraft.annihilatoin.listener
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.kit.KitGenerator
 import net.recraft.annihilatoin.objects.kit.KitType
-import net.recraft.annihilatoin.objects.menu.AnniConfigMenu
 import net.recraft.annihilatoin.objects.menu.KitMenu
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
-import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -27,33 +24,14 @@ class NetherGate(val menu: KitMenu): Listener {
     @EventHandler
     fun portal(event: PlayerPortalEvent) {
         if (event.cause != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) return
+        Bukkit.broadcastMessage("aaaa")
         val player = event.player
         val team = Game.getPlayerData(player.uniqueId).team ?: return
-        object: BukkitRunnable() {
-            var counter = 0
-            override fun run() {
-                if (counter == 9) {
-                    player.teleport(team.objects.randomSpawn)
-                    openKitMenu(player)
-                    cancel()
-                }
-                Bukkit.broadcastMessage("$counter")
-                counter++
-                if (!isPortal(player.location)) {
-                    cancel()
-                }
-            }
-        }.runTaskTimerAsynchronously(Game.plugin, 5, 10L)
+        Bukkit.broadcastMessage("aaaa")
+        player.teleport(team.objects.randomSpawn)
+        openKitMenu(player)
     }
-    fun isPortal(loc: Location): Boolean {
-        val north = Location(loc.world, loc.x+1, loc.y, loc.z).block.type
-        val east  = Location(loc.world, loc.x-1, loc.y, loc.z).block.type
-        val west  = Location(loc.world, loc.x, loc.y, loc.z+1).block.type
-        val south = Location(loc.world, loc.x, loc.y, loc.z-1).block.type
 
-        if (north == Material.PORTAL || east == Material.PORTAL || west == Material.PORTAL || south == Material.PORTAL) return true
-        return false
-    }
     fun openKitMenu(player: Player) {
         object: BukkitRunnable() {
             override fun run() {

@@ -15,7 +15,7 @@ class ScoreboardSideBar  {
         objective.displaySlot = DisplaySlot.SIDEBAR
         objective.displayName = "${ChatColor.GOLD}${ChatColor.BOLD}Annihilation"
         objective.getScore("${ChatColor.GRAY}${LocalDate.now()}").score = 15
-        objective.getScore("").score = 14
+        objective.getScore("  ").score = 14
         objective.getScore(getNexusHpFormat(GameTeam.RED)).score = 13
         objective.getScore(getNexusHpFormat(GameTeam.BLUE)).score = 12
         objective.getScore(getNexusHpFormat(GameTeam.YELLOW)).score = 11
