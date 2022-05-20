@@ -74,7 +74,7 @@ class NetherGate(val menu: KitMenu): Listener {
                 val inventory = Bukkit.createInventory(null, InventoryType.CHEST)
                 val pd = Game.getPlayerData(player.uniqueId)
                 pd.kitType = it
-                kit.allItems().forEach { item ->
+                kit.allItems(pd.team!!).forEach { item ->
                     inventory.addItem(item)
                 }
                 player.openInventory(inventory)

@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.objects.kit
 
 import net.recraft.annihilatoin.listener.Soulbound
+import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.builder.KitClassIconCreator
 import net.recraft.annihilatoin.objects.builder.PlayerInventoryImpl
 import org.bukkit.Bukkit
@@ -32,9 +33,9 @@ KitBase(_type: KitType,
     open val chestPlate = ItemStack(Material.LEATHER_CHESTPLATE)
     open val leggings   = ItemStack(Material.LEATHER_LEGGINGS)
     open val boots      = ItemStack(Material.LEATHER_BOOTS)
-    fun allItems(): List<ItemStack> {
+    fun allItems(team: GameTeam): List<ItemStack> {
         val playerInventory = PlayerInventoryImpl()
-        equip(playerInventory, Color.WHITE)
+        equip(playerInventory, team.color)
         return playerInventory.getItems()
     }
     fun equip(playerInventory: PlayerInventory, color: Color) {
