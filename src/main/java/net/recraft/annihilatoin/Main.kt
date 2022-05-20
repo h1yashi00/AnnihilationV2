@@ -61,6 +61,7 @@ class Main : JavaPlugin() {
             add( PlayerRespawn()          )
             add( PlayerInvisible(scoreboardTeamManager))
             add( NetherGate(KitMenu()) )
+            add (PlayerOpenEnchantTable())
             // kits
             add( KitScout() )
             add( Soulbound() )
