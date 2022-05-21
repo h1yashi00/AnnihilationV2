@@ -2,12 +2,10 @@ package net.recraft.annihilatoin.listener.map
 
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.GameTeam
-import net.recraft.annihilatoin.objects.PlayerData
 import net.recraft.annihilatoin.objects.builder.Priceable
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
 import net.recraft.annihilatoin.util.Util
-import org.bukkit.Bukkit
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
@@ -16,8 +14,6 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.material.MaterialData
-import org.bukkit.material.Wool
 import java.util.*
 
 class ListenerShop(private val shopBrewingMenu: ShopBrewingMenu, private val shopWeaponMenu: ShopWeaponMenu): Listener {

@@ -8,6 +8,7 @@ import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Color
 import org.bukkit.Material
+import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.PlayerInventory
@@ -38,6 +39,7 @@ KitBase(_type: KitType,
         equip(playerInventory, team.color)
         return playerInventory.getItems()
     }
+    abstract fun setInit(player: Player)
     fun equip(playerInventory: PlayerInventory, color: Color) {
         setEquipments(playerInventory, color)
         setItems(playerInventory)

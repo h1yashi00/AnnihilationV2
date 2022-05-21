@@ -45,7 +45,7 @@ class NetherGate(val menu: KitMenu): Listener {
         if (event.clickedInventory?.title != menu.title) return
         if (Util.isAir(event.currentItem)) return
         event.isCancelled = true
-        val player = event.whoClicked
+        val player = event.whoClicked as Player
         KitType.values().forEach {
             val kit = KitGenerator.get(it)
             if (kit.icon == event.currentItem) {
@@ -55,6 +55,7 @@ class NetherGate(val menu: KitMenu): Listener {
                 kit.allItems(pd.team!!).forEach { item ->
                     inventory.addItem(item)
                 }
+                kit.setInit(player)
                 removeKitSpecificSoulBound(player.inventory)
                 player.openInventory(inventory)
             }

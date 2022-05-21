@@ -1,9 +1,11 @@
 package net.recraft.annihilatoin.command
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.kit.KitGenerator
 import net.recraft.annihilatoin.objects.kit.KitType
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.Color
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -16,7 +18,10 @@ class CommandKit: CommandExecutor {
         val uuid = player.uniqueId
         Bukkit.broadcastMessage("${ChatColor.RED}$kitName")
         val kitType = KitType.getKitByName(kitName) ?: return false
-        Game.getPlayerData(uuid).kitType = kitType
+        val pd = Game.getPlayerData(uuid)
+        pd.kitType = kitType
+        val kit = KitGenerator.get(kitType)
+        kit.setInit(player)
         Bukkit.broadcastMessage("${ChatColor.GOLD}success!! ${ChatColor.AQUA} ${ChatColor.BOLD}your kit is now $kitType")
         return true
     }

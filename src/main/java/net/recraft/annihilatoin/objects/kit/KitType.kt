@@ -6,7 +6,8 @@ enum class KitType {
     MINER,
     ENCHANTER,
     LUMBERJACK,
-    SCOUT;
+    SCOUT,
+    ACROBAT;
     companion object {
         fun getKitByName(name: String): KitType? {
             values().forEach { if (it.name.toLowerCase() == name.toLowerCase()) return it }

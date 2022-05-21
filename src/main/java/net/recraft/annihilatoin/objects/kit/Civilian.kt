@@ -4,6 +4,7 @@ import net.recraft.annihilatoin.objects.builder.ItemStackBuilder
 import net.recraft.annihilatoin.objects.builder.KitClassIconCreator
 import org.bukkit.ChatColor
 import org.bukkit.Material
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.PlayerInventory
 
@@ -15,6 +16,9 @@ class Civilian: KitBase(
                 "material",
                 "material")
 ) {
+    override fun setInit(player: Player) {
+    }
+
     override fun setItems(playerInventory: PlayerInventory) {
         super.setItems(playerInventory)
         playerInventory.setItem(3, ItemStack(Material.WOOD_SPADE))

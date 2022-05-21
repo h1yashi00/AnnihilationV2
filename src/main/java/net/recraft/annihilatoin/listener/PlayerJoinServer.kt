@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.listener
 
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.PlayerLeaveUnfairAdvantage
+import net.recraft.annihilatoin.objects.kit.KitGenerator
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -24,7 +25,11 @@ class PlayerJoinServer(
         }
         player.inventory.clear()
         if (!Game.isStart) player.teleport(Game.lobby.spawnLocation)
-        val team = Game.getPlayerData(uuid).team
+        val pd = Game.getPlayerData(uuid)
+        val kitType = pd.kitType
+        val kit = KitGenerator.get(kitType)
+        kit.setInit(player)
+        val team = pd.team
         if (team == null) {player.teleport(Game.lobby.spawnLocation)}
         else playerLeaveUnfairAdvantage.respawn(player, team)
     }

@@ -10,6 +10,7 @@ object KitGenerator {
             KitType.MINER    -> Miner()
             KitType.SCOUT    -> Scout()
             KitType.ENCHANTER-> Enchanter()
+            KitType.ACROBAT  -> Acrobat()
         }
     }
 }
