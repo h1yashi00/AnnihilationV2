@@ -29,5 +29,6 @@ class ShopWeaponMenu: Menu("ShopWeapon") {
         items.add(PriceableItemStackBuilder(Material.DIAMOND_AXE)       .price(20).enchantment(Enchantment.DIG_SPEED, 5).lore(listOf("Special Tool", "special diamond axe that can't mine Logs")).build())
         items.add(PriceableItemStackBuilder(Material.DIAMOND_SPADE)     .price(20).enchantment(Enchantment.DIG_SPEED, 5).lore(listOf("Special Tool", "special diamond spade")).build())
         items.add(PriceableItemStackBuilder(Material.DIAMOND_HOE)       .price(20).enchantment(Enchantment.DIG_SPEED, 5).lore(listOf("Special Tool", "special diamond hoe")).build())
+        items.add(PriceableItemStackBuilder(Material.ENCHANTED_BOOK)    .price(20).enchantment(Enchantment.LOOT_BONUS_BLOCKS, 3).build())
     }
 }

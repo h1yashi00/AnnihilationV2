@@ -1,8 +1,11 @@
 package net.recraft.annihilatoin.objects.builder
 
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.EnchantmentStorageMeta
+import org.bukkit.inventory.meta.ItemMeta
 
 abstract class ItemStackBuilder(private val material: Material) {
     private var title: String?      = null
@@ -31,7 +34,12 @@ abstract class ItemStackBuilder(private val material: Material) {
         val item = ItemStack(material, amount)
         val meta = item.itemMeta
         meta.displayName = title
+        if (meta is EnchantmentStorageMeta) addStoredEnchantments(meta) else addEnchantments(meta)
         meta.lore = lore
+        item.setItemMeta(meta)
+        return item
+    }
+    private fun addEnchantments(meta: ItemMeta) {
         if (enchantments.isNotEmpty()) {
             val keys = enchantments.keys
             for (key in keys) {
@@ -39,7 +47,15 @@ abstract class ItemStackBuilder(private val material: Material) {
                 meta.addEnchant(key, level!!, true)
             }
         }
-        item.setItemMeta(meta)
-        return item
+    }
+
+    private fun addStoredEnchantments(meta: EnchantmentStorageMeta) {
+        if (enchantments.isNotEmpty()) {
+            val keys = enchantments.keys
+            for (key in keys) {
+                val level = enchantments[key]
+                meta.addStoredEnchant(key, level!!, true)
+            }
+        }
     }
 }
