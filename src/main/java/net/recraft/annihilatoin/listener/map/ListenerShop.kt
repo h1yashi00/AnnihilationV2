@@ -1,10 +1,14 @@
 package net.recraft.annihilatoin.listener.map
 
+import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.GameTeam
+import net.recraft.annihilatoin.objects.PlayerData
 import net.recraft.annihilatoin.objects.builder.Priceable
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
 import net.recraft.annihilatoin.util.Util
+import org.bukkit.Bukkit
+import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -12,6 +16,9 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
+import org.bukkit.material.MaterialData
+import org.bukkit.material.Wool
+import java.util.*
 
 class ListenerShop(private val shopBrewingMenu: ShopBrewingMenu, private val shopWeaponMenu: ShopWeaponMenu): Listener {
     @EventHandler
@@ -39,8 +46,21 @@ class ListenerShop(private val shopBrewingMenu: ShopBrewingMenu, private val sho
         if (Util.isAir(shopItem)) return
         event.isCancelled = true
         val price = Priceable.getPrice(shopItem)
-        val playerInventory = event.whoClicked.inventory
+        val player = event.whoClicked
+        val playerInventory = player.inventory
         if (playerInventory.contains(Material.GOLD_INGOT, price)) { playerInventory.removeItem(ItemStack(Material.GOLD_INGOT, price)) } else { return }
-        playerInventory.addItem(shopItem)
+        val addItem = if (shopItem.type == Material.WOOL) {colorWool(shopItem, player.uniqueId)} else {shopItem}
+        playerInventory.addItem(addItem)
+    }
+    private fun colorWool(whiteWool: ItemStack, uuid: UUID): ItemStack {
+        val color = Game.getPlayerData(uuid).team?.color ?: Color.WHITE
+        val amount = whiteWool.amount
+        return when(color) {
+            Color.RED    -> ItemStack(Material.WOOL, amount, 14)
+            Color.BLUE   -> ItemStack(Material.WOOL, amount, 11)
+            Color.YELLOW -> ItemStack(Material.WOOL, amount, 4)
+            Color.GREEN  -> ItemStack(Material.WOOL, amount, 13)
+            else -> whiteWool
+        }
     }
 }
