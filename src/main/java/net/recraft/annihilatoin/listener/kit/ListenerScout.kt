@@ -3,18 +3,15 @@ package net.recraft.annihilatoin.listener.kit
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Scout
-import org.bukkit.Bukkit
-import org.bukkit.ChatColor
-import org.bukkit.Location
-import org.bukkit.Material
+import org.bukkit.*
 import org.bukkit.block.Block
-import org.bukkit.entity.Entity
-import org.bukkit.entity.FishHook
-import org.bukkit.entity.Player
+import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.player.PlayerFishEvent
+import org.bukkit.event.player.PlayerItemHeldEvent
 import org.bukkit.projectiles.ProjectileSource
 import org.bukkit.util.Vector
 
@@ -27,7 +24,10 @@ class KitScout : Listener {
         val handItem = event.player.itemInHand
         if (!Scout.isScoutFishingRod(handItem)) return
         val hookLocation = event.hook.location
-        if (!isPlaceHookUp(hookLocation)) return
+        if (!isPlaceHookUp(hookLocation))  {
+            player.sendMessage("${ChatColor.RED} Unable to grapple")
+            return
+        }
         val diff = hookLocation.toVector().subtract(player.location.toVector())
         val vel = Vector()
         val d: Double = hookLocation.distance(player.location)
@@ -35,6 +35,38 @@ class KitScout : Listener {
         vel.y = (1.0 + 0.04 * d) * diff.y / d + 0.05 * d
         vel.z = (1.0 + 0.07 * d) * diff.z / d
         player.velocity = vel
+        player.playSound(player.location, Sound.ZOMBIE_INFECT, 10.0F, 2.0F)
+    }
+    @EventHandler
+    fun onDamageHook(event: EntityDamageByEntityEvent) {
+        if (event.cause != EntityDamageEvent.DamageCause.PROJECTILE) return
+        if (event.damager.type != EntityType.FISHING_HOOK) return
+        event.isCancelled = true
+    }
+
+    @EventHandler
+    fun onPlayerSelectInventory(event: PlayerItemHeldEvent) {
+        val player = event.player
+        val pd = Game.getPlayerData(player.uniqueId)
+        if (pd.kitType != KitType.SCOUT) return
+        val currentItem = player.inventory.getItem(event.newSlot)
+        val prevItem    = player.inventory.getItem(event.previousSlot)
+        if (Scout.isScoutFishingRod(currentItem) || Scout.isScoutFishingRod(prevItem)) {
+            player.world.playSound(player.location, Sound.NOTE_STICKS, 10.0F, 1.0F);
+        }
+        return
+    }
+
+    @EventHandler
+    fun onDamage(event: EntityDamageEvent) {
+        if (event.cause != EntityDamageEvent.DamageCause.FALL) return
+        val player: Player = if (event.entity is Player)  {event.entity as Player} else {return}
+        val pd = Game.getPlayerData(player.uniqueId)
+        if (pd.kitType != KitType.SCOUT) return
+        if (!Scout.isScoutFishingRod(player.itemInHand)) return
+        player.sendMessage("${ChatColor.GRAY}fall damage was reduced")
+        val damage = event.damage
+        event.damage = damage/2
     }
 
     @EventHandler

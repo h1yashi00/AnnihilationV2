@@ -13,7 +13,8 @@ class Scout: KitBase(
 ){
     companion object {
         private val scoutFishLore= "${ChatColor.GOLD}Grapple"
-        fun isScoutFishingRod(itemStack: ItemStack): Boolean {
+        fun isScoutFishingRod(itemStack: ItemStack?): Boolean {
+            if (itemStack == null) return false
             itemStack.itemMeta.lore.forEach {
                 if (it == scoutFishLore) return true
             }
