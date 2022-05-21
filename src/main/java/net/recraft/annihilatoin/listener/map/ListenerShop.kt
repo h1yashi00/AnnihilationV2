@@ -27,10 +27,10 @@ class ListenerShop(private val shopBrewingMenu: ShopBrewingMenu, private val sho
         val type = event.clickedBlock?.type ?: return
         val location = if (type == Material.SIGN || type == Material.WALL_SIGN) { event.clickedBlock.location } else { return }
         if (GameTeam.isShopBrewing(location)) {
-            event.player.openInventory(shopWeaponMenu.createInventory())
+            event.player.openInventory(shopBrewingMenu.createInventory())
         }
         if (GameTeam.isShopWeapon(location)) {
-            event.player.openInventory(shopBrewingMenu.createInventory())
+            event.player.openInventory(shopWeaponMenu.createInventory())
         }
     }
     @EventHandler
