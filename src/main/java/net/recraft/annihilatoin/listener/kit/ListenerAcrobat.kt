@@ -5,7 +5,6 @@ import net.recraft.annihilatoin.objects.kit.KitType
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
 import org.bukkit.Sound
-import org.bukkit.entity.FallingBlock
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -47,12 +46,12 @@ class ListenerAcrobat: Listener {
 
     @EventHandler
     fun onPlayerScout(event: PlayerToggleFlightEvent){
-        event.isCancelled = true
         val player = event.player
         if (player.gameMode == GameMode.CREATIVE || player.gameMode == GameMode.SPECTATOR || player.isFlying) { return }
         val pd = Game.getPlayerData(player.uniqueId)
         if (pd.kitType != KitType.ACROBAT) return
         // Activate Ability
+        event.isCancelled = true
         player.playSound(player.location, Sound.ZOMBIE_INFECT, 0.5F, 2.0F)
         if (cooldownPlayers.containsKey(player.uniqueId)) return
         cooldownPlayers[player.uniqueId] = 7

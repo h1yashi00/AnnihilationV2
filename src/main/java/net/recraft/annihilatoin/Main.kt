@@ -10,6 +10,7 @@ import net.recraft.annihilatoin.listener.kit.KitScout
 import net.recraft.annihilatoin.listener.map.*
 import net.recraft.annihilatoin.listener.PlayerInvisible
 import net.recraft.annihilatoin.listener.kit.ListenerAcrobat
+import net.recraft.annihilatoin.listener.kit.ListenerSwapper
 import net.recraft.annihilatoin.objects.*
 import net.recraft.annihilatoin.objects.menu.KitMenu
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
@@ -67,6 +68,7 @@ class Main : JavaPlugin() {
             add( KitScout() )
             add( Soulbound() )
             add( ListenerAcrobat() )
+            add( ListenerSwapper() )
             forEach {
                 server.pluginManager.registerEvents(it, this@Main)
             }

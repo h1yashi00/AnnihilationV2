@@ -11,6 +11,7 @@ object KitGenerator {
             KitType.SCOUT    -> Scout()
             KitType.ENCHANTER-> Enchanter()
             KitType.ACROBAT  -> Acrobat()
+            KitType.SWAPPER  -> Swapper()
         }
     }
 }
