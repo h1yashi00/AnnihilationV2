@@ -12,6 +12,7 @@ object KitGenerator {
             KitType.ENCHANTER-> Enchanter()
             KitType.ACROBAT  -> Acrobat()
             KitType.SWAPPER  -> Swapper()
+            KitType.SCORPIO  -> Scorpio()
         }
     }
 }

@@ -10,6 +10,7 @@ import net.recraft.annihilatoin.listener.kit.KitScout
 import net.recraft.annihilatoin.listener.map.*
 import net.recraft.annihilatoin.listener.PlayerInvisible
 import net.recraft.annihilatoin.listener.kit.ListenerAcrobat
+import net.recraft.annihilatoin.listener.kit.ListenerScorpio
 import net.recraft.annihilatoin.listener.kit.ListenerSwapper
 import net.recraft.annihilatoin.objects.*
 import net.recraft.annihilatoin.objects.menu.KitMenu
@@ -63,12 +64,15 @@ class Main : JavaPlugin() {
             add( PlayerRespawn()          )
             add( PlayerInvisible(scoreboardTeamManager))
             add( NetherGate(KitMenu()) )
-            add (PlayerOpenEnchantTable())
+            add( PlayerOpenEnchantTable() )
+            add( ListenerGapple() )
             // kits
             add( KitScout() )
             add( Soulbound() )
             add( ListenerAcrobat() )
             add( ListenerSwapper() )
+            add( ListenerScorpio() )
+
             forEach {
                 server.pluginManager.registerEvents(it, this@Main)
             }
