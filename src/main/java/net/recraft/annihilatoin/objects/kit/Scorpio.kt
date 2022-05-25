@@ -16,7 +16,7 @@ class Scorpio: KitBase(
     )
 ) {
     companion object {
-        val displayName = "${ChatColor.YELLOW}Scorpio"
+        val displayName = "${ChatColor.YELLOW}Hook"
         fun isScorpioItem(item: ItemStack): Boolean {
             if (item.type != Material.NETHER_STAR) return false
             if (item.itemMeta.displayName != displayName) return false

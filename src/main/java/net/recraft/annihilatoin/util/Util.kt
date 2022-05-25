@@ -51,7 +51,6 @@ object Util {
         tag.setInt("NoAI", 0)
         nmsEnt.c(tag)
         nmsEnt.f(tag)
-        println("aljfdlsajfasdlflkasdj")
     }
 
     fun makeWorld(nameWorld: String): World {
@@ -63,5 +62,15 @@ object Util {
         })
         Bukkit.createWorld(wc)
         return Bukkit.getWorld(nameWorld)
+    }
+    fun isUnderVoid(location: Location): Boolean {
+        val world = location.world
+        var y = location.y
+        while(0 <= y) {
+            val checkLoc = Location(world, location.x, y, location.z)
+            if (checkLoc.block.type != Material.AIR) return false
+            y -= 1
+        }
+        return true
     }
 }

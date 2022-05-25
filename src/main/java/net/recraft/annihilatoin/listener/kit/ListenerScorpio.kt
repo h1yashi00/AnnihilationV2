@@ -1,8 +1,10 @@
 package net.recraft.annihilatoin.listener.kit
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Scorpio
 import net.recraft.annihilatoin.util.ParticleEffect
+import net.recraft.annihilatoin.util.Util
 import org.bukkit.*
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -20,7 +22,7 @@ class ListenerScorpio: Listener {
         if (!Scorpio.isScorpioItem(item)) return
         val player = event.player
         val pd = Game.getPlayerData(player.uniqueId)
-//        if (pd.kitType != KitType.SCORPIO) return
+        if (pd.kitType != KitType.SCORPIO) return
         val dropScorpio = player.world.dropItem(player.location.apply {y+=1}, item)
         dropScorpio.pickupDelay = 20 * 5
         val push = player.location.direction
@@ -31,6 +33,10 @@ class ListenerScorpio: Listener {
                 ParticleEffect.FIREWORKS_SPARK.display(0F, 0F, 0F, 0F, 1, dropScorpio.location, 256.0)
                 val hitted = getPlayerByLocation(dropScorpio.location, 1.0F)?: return
                 if (hitted.displayName == player.displayName) return
+                if (Util.isUnderVoid(player.location)) {
+                    player.sendMessage("${ChatColor.RED}奈良スコピは許可されていません")
+                    return
+                }
                 player.playSound(player.location, Sound.DOOR_CLOSE, 1F,0.2F)
                 hitted.playSound(player.location, Sound.DOOR_CLOSE, 1F,0.2F)
                 playEffect(hitted.location.apply {y+=1})
@@ -50,7 +56,7 @@ class ListenerScorpio: Listener {
         }.runTaskLater(Game.plugin, 20*5)
     }
     private fun playEffect(location: Location) {
-        ParticleEffect.FIREWORKS_SPARK.display(0F, 0F, 0F, 0F, 20, location, 256.0)
+        ParticleEffect.SNOW_SHOVEL.display(0F, 0F, 0F, 0F, 1, location, 256.0)
     }
     private fun getPlayerByLocation(loc: Location, r: Float): Player? {
         loc.world.entities.forEach {
