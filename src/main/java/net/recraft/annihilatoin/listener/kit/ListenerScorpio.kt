@@ -33,10 +33,20 @@ class ListenerScorpio: Listener {
                 ParticleEffect.FIREWORKS_SPARK.display(0F, 0F, 0F, 0F, 1, dropScorpio.location, 256.0)
                 val hitted = getPlayerByLocation(dropScorpio.location, 1.0F)?: return
                 if (hitted.displayName == player.displayName) return
+                val hittedData  = Game.getPlayerData(hitted.uniqueId)
+                if (pd.team == hittedData.team) return
                 if (Util.isUnderVoid(player.location)) {
                     player.sendMessage("${ChatColor.RED}奈良スコピは許可されていません")
                     return
                 }
+                // フックが当たり､チェックが完了
+                object: BukkitRunnable() {
+                    override fun run() {
+                        // 5秒間Voidに行けない
+                        hittedData.voidCancel = false
+                    }
+                }.runTaskLater(Game.plugin, 20*5)
+                hittedData.voidCancel = true
                 player.playSound(player.location, Sound.DOOR_CLOSE, 1F,0.2F)
                 hitted.playSound(player.location, Sound.DOOR_CLOSE, 1F,0.2F)
                 playEffect(hitted.location.apply {y+=1})

@@ -64,6 +64,13 @@ class ListenerSwapper: Listener {
             val targetData = Game.getPlayerData(target.uniqueId)
             if (pd.team == targetData.team) continue
             // swap target from player!!!
+            object: BukkitRunnable() {
+                override fun run() {
+                    // 5秒間Voidに行けない
+                    targetData.voidCancel = false
+                }
+            }.runTaskLater(Game.plugin, 20*5)
+            targetData.voidCancel = true
             swapperCoolDown[player.uniqueId] = Swapper.cooldown
             playSound(player, target)
             switchLocation(player, target)

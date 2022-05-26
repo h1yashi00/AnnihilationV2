@@ -3,7 +3,6 @@ package net.recraft.annihilatoin.util
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.scoreboard.ScoreboardAnni
 import net.recraft.annihilatoin.scoreboard.ScoreboardVote
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 abstract class ScoreboardUtil {
@@ -29,7 +28,7 @@ abstract class ScoreboardUtil {
                 return
             }
         }
-        Util.fatal("scoreboard: can't find Section: $section")
+//        Util.fatal("scoreboard: can't find Section: $section")
     }
     private fun removeAllScores(p: Player) {
         try {

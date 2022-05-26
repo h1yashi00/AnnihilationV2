@@ -46,14 +46,14 @@ object ScoreboardAnni: ScoreboardUtil() {
     }
     fun nextPhaseTimeUpdate() {
         Bukkit.getOnlinePlayers().forEach {
-            replaceScore(it, AnniSection.NEXT_PHASE_TIME.value, nextPhaseTimeFormat())
+            replaceScore(it?: return@forEach, AnniSection.NEXT_PHASE_TIME.value, nextPhaseTimeFormat())
         }
     }
 
     fun breakNexusUpdate(team: GameTeam) {
         Bukkit.getOnlinePlayers().forEach {
             val nexusHp = getNexusHpFormat(team)
-            replaceScore(it, AnniSection.get(team.name)!!.value, nexusHp)
+            replaceScore(it?: return@forEach, AnniSection.get(team.name)!!.value, nexusHp)
         }
     }
 

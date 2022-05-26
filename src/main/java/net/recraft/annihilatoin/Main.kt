@@ -66,6 +66,7 @@ class Main : JavaPlugin() {
             add( NetherGate(KitMenu()) )
             add( PlayerOpenEnchantTable() )
             add( ListenerGapple() )
+            add( ListenerFlaggedPlayerVoid() )
             // kits
             add( KitScout() )
             add( Soulbound() )
