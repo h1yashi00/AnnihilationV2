@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.objects.map
 
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.GameTeam
+import net.recraft.annihilatoin.scoreboard.ScoreboardAnni
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.*
 import org.bukkit.entity.Player
@@ -18,6 +19,7 @@ class Nexus (location: Location) : Placeable(location, Material.ENDER_STONE) {
         if (hp < 0) return
         val team = GameTeam.getTeam(this)!!
         val playerTeam = Game.getPlayerData(player.uniqueId).team ?: return
+        ScoreboardAnni.breakNexusUpdate(team)
         val msg = "${Util.getColoredPlayersName(player, playerTeam)} is now attacking ${Util.getColoredTeamName(team)} Nexus!!! $hp"
         Bukkit.broadcastMessage(msg)
         attackedSound();

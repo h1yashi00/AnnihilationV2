@@ -1,5 +1,6 @@
 package net.recraft.annihilatoin.objects
 
+import net.recraft.annihilatoin.scoreboard.ScoreboardVote
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -11,10 +12,16 @@ class VoteManager(mapList: List<String>) {
         mapList.forEach {
             addCandidate(it)
         }
+        ScoreboardVote.registerCandidates(_candidateMaps.clone() as ArrayList<Candidate>)
     }
-    data class Candidate(val worldName: String, var amount: Int = 0)
+    companion object {
+        var section: Int = 0
+    }
+    private fun getCandidate(name: String): Candidate {
+        return Candidate(name, section)
+    }
+    data class Candidate(val worldName: String, val section: Int, var amount: Int = 0)
     private val votedPlayers = HashMap<UUID, Candidate>()
-    val candidateMaps: List<Candidate> get() = _candidateMaps.clone() as List<Candidate>
 
     operator fun contains(uuid: UUID): Boolean {
         return votedPlayers.containsKey(uuid)
@@ -22,12 +29,18 @@ class VoteManager(mapList: List<String>) {
 
     fun vote(uuid: UUID, worldName: String) :Boolean {
         val c = candidate(worldName) ?: return false
-        votedPlayers[uuid] = c.apply{ amount += 1 }
+        votedPlayers[uuid] = c.apply{
+            amount += 1
+        }
+        ScoreboardVote.voteUpdate(c)
         return true
     }
 
     fun revote(uuid: UUID) {
-        votedPlayers[uuid]?.let {it.amount -= 1}
+        votedPlayers[uuid]?.let {
+            it.amount -= 1
+            ScoreboardVote.voteUpdate(it)
+        }
         votedPlayers.remove(uuid)
     }
 
@@ -53,6 +66,6 @@ class VoteManager(mapList: List<String>) {
     }
 
     private fun addCandidate(name: String) {
-        _candidateMaps.add(Candidate(name))
+        _candidateMaps.add(getCandidate(name))
     }
 }

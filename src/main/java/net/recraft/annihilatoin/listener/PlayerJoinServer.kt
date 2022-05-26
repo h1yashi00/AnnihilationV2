@@ -3,6 +3,9 @@ package net.recraft.annihilatoin.listener
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.PlayerLeaveUnfairAdvantage
 import net.recraft.annihilatoin.objects.kit.KitGenerator
+import net.recraft.annihilatoin.scoreboard.ScoreboardAnni
+import net.recraft.annihilatoin.util.ScoreboardUtil
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -14,7 +17,9 @@ class PlayerJoinServer(
 ): Listener {
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
-        event.player.scoreboard = Game.scoreboard
+        event.player.scoreboard = Bukkit.getScoreboardManager().newScoreboard
+        val scoreboard: ScoreboardUtil = ScoreboardAnni
+        scoreboard.display(event.player)
         val player = event.player
         val uuid = player.uniqueId
         player.inventory.apply {

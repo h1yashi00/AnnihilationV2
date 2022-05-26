@@ -2,8 +2,7 @@ package net.recraft.annihilatoin.objects
 
 import com.comphenix.protocol.ProtocolLibrary
 import net.recraft.annihilatoin.objects.kit.KitGenerator
-import net.recraft.annihilatoin.scoreboard.ScoreboardNexusStatus
-import net.recraft.annihilatoin.scoreboard.ScoreboardSideBar
+import net.recraft.annihilatoin.scoreboard.ScoreboardAnni
 import net.recraft.annihilatoin.util.GameGenerator
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
@@ -30,7 +29,6 @@ object Game : KoinComponent {
         }
         return playerDatas[uuid]!!
     }
-    val scoreboard  = Bukkit.getScoreboardManager().newScoreboard!!
     val map: World get() = _map
     val phase : PhaseController = PhaseController()
     val isStart get() = phase.time != 0
@@ -44,8 +42,10 @@ object Game : KoinComponent {
     }
 
     fun start() {
+        phase.pass()
         GameTeam.values().forEach { it.objects.place() }
         Bukkit.getOnlinePlayers().forEach {
+            ScoreboardAnni.display(it)
             val pd = getPlayerData(it.uniqueId)
             val team = pd.team
             if (team == null) {

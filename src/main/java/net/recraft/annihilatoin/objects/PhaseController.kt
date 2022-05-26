@@ -1,6 +1,6 @@
 package net.recraft.annihilatoin.objects
 
-import net.recraft.annihilatoin.scoreboard.ScoreboardSideBar
+import net.recraft.annihilatoin.scoreboard.ScoreboardAnni
 import org.bukkit.Bukkit
 import org.bukkit.Sound
 
@@ -19,7 +19,7 @@ class PhaseController {
     private var phase4Called = false
     private var phase5Called = false
     fun pass() {
-        ScoreboardSideBar().update()
+        ScoreboardAnni.nextPhaseTimeUpdate()
         currentTime+= 1
         when (currentPhase) {
             1 -> phase1()

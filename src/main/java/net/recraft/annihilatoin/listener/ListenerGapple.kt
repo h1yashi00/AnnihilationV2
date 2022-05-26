@@ -1,7 +1,6 @@
 package net.recraft.annihilatoin.listener
 
 import net.recraft.annihilatoin.objects.Game
-import org.bukkit.Bukkit
 import org.bukkit.Effect
 import org.bukkit.Material
 import org.bukkit.event.EventHandler

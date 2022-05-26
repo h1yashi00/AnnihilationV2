@@ -6,5 +6,6 @@ data class PlayerData(
     var team: GameTeam? = null,
     var kitType: KitType = KitType.CIVILIAN,
     var invisible: Boolean = false,
+    var voidCancel: Boolean = false
 ) {
 }

@@ -86,20 +86,17 @@ class Main : JavaPlugin() {
             add("canyon")
         }
 
-        Bukkit.getOnlinePlayers().forEach {it.scoreboard = Game.scoreboard }
+        val voteManager = VoteManager(worldNames)
+        Bukkit.getOnlinePlayers().forEach { ScoreboardVote.display(it ?: return@forEach) }
         /* ↑↑↑↑↑↑↑  初期化するために必要なもの   ↑↑↑↑↑↑↑ */
         val debug = true
         // vote初期化
-        val voteManager = VoteManager(worldNames)
-        val scoreboardVote = ScoreboardVote(voteManager)
         getCommand("vote").executor = CommandVote(voteManager)
         getCommand("teleport").executor = CommandTeleportSpecificLocation()
         getCommand("team").executor = CommandJoinTeam(scoreboardTeamManager)
         getCommand("anniconfig").executor = CommandAnniConfig()
         getCommand("kit").executor = CommandKit()
-        scoreboardVote.register()
         if (debug) {
-            scoreboardVote.clear()
             val mapName = "world_test"
             val generator = configMap.getTeamGenerator(mapName)
             Game.init(generator)
@@ -109,7 +106,6 @@ class Main : JavaPlugin() {
 
         val delayVoting = object: BukkitRunnable() {
             override fun run() {
-                scoreboardVote.clear()
                 val mapName = voteManager.result()
                 val generator = configMap.getTeamGenerator(mapName)
                 Game.init(generator)
