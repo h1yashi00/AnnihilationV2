@@ -16,24 +16,28 @@ enum class GameTeam(
     GREEN   (Color.GREEN, ChatColor.GREEN);
     companion object {
         fun isShopBrewing(location: Location): Boolean {
+            if (!Game.isStart) return false
             values().forEach {
                 if (it.objects.shopBrewing.location == location) return true
             }
             return false
         }
         fun isShopWeapon(location: Location): Boolean {
+            if (!Game.isStart) return false
             values().forEach {
                 if (it.objects.shopWeapon.location == location) return true
             }
             return false
         }
         fun isEnderChest(location: Location): Boolean {
+            if (!Game.isStart) return false
             values().forEach {
                 if (it.objects.enderChest.location == location) return true
             }
             return false
         }
         fun isEnderFurnace(location: Location): Boolean {
+            if (!Game.isStart) return false
             values().forEach {
                 if (it.objects.enderFurnace.location == location) return true
             }

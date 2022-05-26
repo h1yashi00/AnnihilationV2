@@ -12,7 +12,12 @@ class PhaseController {
     val nextPhaseTime
         get() = formatTime()
     val currentPhase
-        get() = (currentTime / (60*10)) + 1
+        get() = currentPhase()
+    private fun currentPhase(): Int {
+        val phase = (currentTime / (60*10)) + 1
+        if (5 <= phase) return 5
+        return phase
+    }
     private var phase1Called = false
     private var phase2Called = false
     private var phase3Called = false

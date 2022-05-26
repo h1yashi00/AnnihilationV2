@@ -26,6 +26,7 @@ class PlayerAttackNexus: Listener {
     fun onBreakBlock(event: BlockBreakEvent){
         val brokenBlock = event.block
         if (brokenBlock.type != Material.ENDER_STONE) return
+        if (!Game.isStart) return
         val damagedNexus = GameTeam.getNexus(brokenBlock.location) ?: return
         event.isCancelled = true
         val player = event.player

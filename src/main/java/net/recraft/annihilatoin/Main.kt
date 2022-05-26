@@ -67,6 +67,7 @@ class Main : JavaPlugin() {
             add( PlayerOpenEnchantTable() )
             add( ListenerGapple() )
             add( ListenerFlaggedPlayerVoid() )
+            add( PlayerDeath() )
             // kits
             add( KitScout() )
             add( Soulbound() )

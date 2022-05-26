@@ -18,7 +18,9 @@ class VoteManager(mapList: List<String>) {
         var section: Int = 0
     }
     private fun getCandidate(name: String): Candidate {
-        return Candidate(name, section)
+        val c = Candidate(name, section)
+        section += 1
+        return c
     }
     data class Candidate(val worldName: String, val section: Int, var amount: Int = 0)
     private val votedPlayers = HashMap<UUID, Candidate>()
