@@ -4,10 +4,10 @@ import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.SpecialItem
 import net.recraft.annihilatoin.util.ParticleEffect
-import org.bukkit.Bukkit
 import org.bukkit.Effect
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -108,7 +108,19 @@ class ListenerTransPortItem: Listener {
         player.sendMessage("aaaaaaa")
         val block = player.location.block.location.apply {y-=1}.block
         player.sendMessage("${block.type}")
-        tps.values.forEach { if(it.loc1 == block) player.teleport(it.loc2?.location?.apply{y+=1}) else if (it.loc2 == block) player.teleport(it.loc1.location?.apply{y+=1});}
+        tps.values.forEach {
+            if (it.loc1 == block) {
+                player.teleport(it.loc2?.location?.apply { y += 1 }); player.playSound(player.location,
+                    Sound.ENDERMAN_TELEPORT,
+                    1f,
+                    1f)
+            } else if (it.loc2 == block) {
+                player.teleport(it.loc1.location?.apply { y += 1 }); player.playSound(player.location,
+                    Sound.ENDERMAN_TELEPORT,
+                    1f,
+                    1f)
+            }
+        }
     }
     @EventHandler
     fun onBreak(event: BlockBreakEvent) {
