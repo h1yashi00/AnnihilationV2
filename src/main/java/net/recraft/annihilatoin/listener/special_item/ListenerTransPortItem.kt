@@ -4,6 +4,7 @@ import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.SpecialItem
 import net.recraft.annihilatoin.util.ParticleEffect
+import org.bukkit.Bukkit
 import org.bukkit.Effect
 import org.bukkit.Location
 import org.bukkit.Material
@@ -11,6 +12,7 @@ import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
+import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
 import org.bukkit.scheduler.BukkitRunnable
@@ -84,9 +86,13 @@ class ListenerTransPortItem: Listener {
             if (it.objects.spawn1.location == loc) return false
             if (it.objects.spawn2.location == loc) return false
             if (it.objects.spawn3.location == loc) return false
-            tps.values.forEach {transPort ->  if (transPort.loc1 == loc || transPort.loc2 == loc) return false}
         }
+        if (isTransPortLocation(loc)) return false
         return true
+    }
+    private fun isTransPortLocation(loc: Location): Boolean {
+        tps.values.forEach {transPort ->  if (transPort.loc1.location == loc || transPort.loc2?.location == loc) return true}
+        return false
     }
     private fun showEffect(location: Location) {
         val addX = Random().nextDouble()
@@ -103,5 +109,11 @@ class ListenerTransPortItem: Listener {
         val block = player.location.block.location.apply {y-=1}.block
         player.sendMessage("${block.type}")
         tps.values.forEach { if(it.loc1 == block) player.teleport(it.loc2?.location?.apply{y+=1}) else if (it.loc2 == block) player.teleport(it.loc1.location?.apply{y+=1});}
+    }
+    @EventHandler
+    fun onBreak(event: BlockBreakEvent) {
+        if (event.block.type != Material.QUARTZ_ORE) return
+        if (!isTransPortLocation(event.block.location)) return
+        event.isCancelled = true
     }
 }
