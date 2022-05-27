@@ -8,12 +8,9 @@ import org.bukkit.inventory.ItemStack
 class Lumberjack: KitBase(
     KitType.LUMBERJACK,
     Material.STONE_AXE,
-    listOf("maalkjfd[")
+    listOf("取れる原木が2倍に!?")
 ) {
     override val axe = ItemStack(Material.STONE_AXE).also {
         it.addUnsafeEnchantment(Enchantment.DIG_SPEED, 1)
-    }
-
-    override fun setInit(player: Player) {
     }
 }

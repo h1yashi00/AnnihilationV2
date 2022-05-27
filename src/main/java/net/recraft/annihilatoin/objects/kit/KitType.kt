@@ -9,7 +9,8 @@ enum class KitType {
     SCOUT,
     ACROBAT,
     SWAPPER,
-    SCORPIO;
+    SCORPIO,
+    DASHER;
     companion object {
         fun getKitByName(name: String): KitType? {
             values().forEach { if (it.name.toLowerCase() == name.toLowerCase()) return it }

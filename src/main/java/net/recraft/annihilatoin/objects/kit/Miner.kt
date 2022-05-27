@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack
 class Miner: KitBase(
     KitType.MINER,
     Material.STONE_PICKAXE,
-    listOf("aaaaaaa[")
+    listOf("取れる鉱石の量が二倍になる")
 ) {
     companion object {
         fun isAffectedOre(material: Material): Boolean
@@ -23,8 +23,5 @@ class Miner: KitBase(
     }
     override val pickaxe = ItemStack(Material.STONE_PICKAXE) .also {
         it.addUnsafeEnchantment(Enchantment.DIG_SPEED, 1)
-    }
-
-    override fun setInit(player: Player) {
     }
 }

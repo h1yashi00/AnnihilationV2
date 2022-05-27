@@ -14,23 +14,23 @@ import org.bukkit.scheduler.BukkitRunnable
 class PlayerRespawn: Listener {
     @EventHandler
     fun onRespawn(event: PlayerRespawnEvent) {
-        val player = event.player
-        if (!Game.isStart) {
-            delaySpawn(player, Game.lobby.spawnLocation)
-            return
-        }
-        // kit 取得
-        val kitType = Game.getPlayerData(player.uniqueId).kitType // default CIVILIAN
-        val kit = KitGenerator.get(kitType)!!
-        // プレイヤーにkit装備を渡す
-        val team   = Game.getPlayerData(player.uniqueId).team
-        team?.let {kit.equip(player.inventory, it.color)}
-        val loc = team?.objects?.randomSpawn ?: Game.lobby.spawnLocation
-        delaySpawn(player, loc)
+        delaySpawn(event.player)
     }
-    private fun delaySpawn(player: Player, loc: Location) {
+    private fun delaySpawn(player: Player) {
         val delayTask = object: BukkitRunnable() {
             override fun run() {
+                Bukkit.broadcastMessage("aaaaaa")
+                if (!Game.isStart) {
+                    player.realTeleport(Game.lobby.spawnLocation)
+                    return
+                }
+                // kit 取得
+                val kitType = Game.getPlayerData(player.uniqueId).kitType // default CIVILIAN
+                val kit = KitGenerator.get(kitType)
+                // プレイヤーにkit装備を渡す
+                val team   = Game.getPlayerData(player.uniqueId).team
+                team?.let {kit.equip(player.inventory, it.color)}
+                val loc = team?.objects?.randomSpawn ?: Game.lobby.spawnLocation
                 player.realTeleport(loc)
             }
         }

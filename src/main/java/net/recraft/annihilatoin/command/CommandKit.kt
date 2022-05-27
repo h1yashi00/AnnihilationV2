@@ -5,7 +5,6 @@ import net.recraft.annihilatoin.objects.kit.KitGenerator
 import net.recraft.annihilatoin.objects.kit.KitType
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.Color
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender

@@ -35,6 +35,4 @@ class Scorpio: KitBase(
         scorpio.itemMeta = meta
         return scorpio
     }
-    override fun setInit(player: Player) {
-    }
 }

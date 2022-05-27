@@ -107,7 +107,6 @@ class ListenerTransPortItem: Listener {
         if (!event.isSneaking) return
         val player = event.player
         val block = player.location.block.location.apply {y-=1}.block
-        player.sendMessage("${block.type}")
         tps.values.forEach {
             if (it.loc1 == block) {
                 player.realTeleport(it.loc2!!.location!!.apply { y += 1 }); player.playSound(player.location,

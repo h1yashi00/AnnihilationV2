@@ -6,12 +6,9 @@ import net.recraft.annihilatoin.config.ConfigMap
 import net.recraft.annihilatoin.listener.*
 import net.recraft.annihilatoin.listener.menu.InventoryIntercept
 import net.recraft.annihilatoin.listener.PlayerLeaveServer
-import net.recraft.annihilatoin.listener.kit.KitScout
 import net.recraft.annihilatoin.listener.map.*
 import net.recraft.annihilatoin.listener.PlayerInvisible
-import net.recraft.annihilatoin.listener.kit.ListenerAcrobat
-import net.recraft.annihilatoin.listener.kit.ListenerScorpio
-import net.recraft.annihilatoin.listener.kit.ListenerSwapper
+import net.recraft.annihilatoin.listener.kit.*
 import net.recraft.annihilatoin.listener.special_item.ListenerTransPortItem
 import net.recraft.annihilatoin.objects.*
 import net.recraft.annihilatoin.objects.menu.KitMenu
@@ -83,6 +80,7 @@ class Main : JavaPlugin() {
             add( ListenerAcrobat() )
             add( ListenerSwapper() )
             add( ListenerScorpio() )
+            add( ListenerDasher()  )
 
             // special item
             add (ListenerTransPortItem())

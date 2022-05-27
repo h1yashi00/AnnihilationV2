@@ -35,6 +35,4 @@ class Swapper: KitBase(
         playerInventory.setItem(3, getSwapItem())
     }
 
-    override fun setInit(player: Player) {
-    }
 }

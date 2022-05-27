@@ -13,6 +13,7 @@ object KitGenerator {
             KitType.ACROBAT  -> Acrobat()
             KitType.SWAPPER  -> Swapper()
             KitType.SCORPIO  -> Scorpio()
+            KitType.DASHER   -> Dasher()
         }
     }
 }

@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.ItemMeta
 
-abstract class ItemStackBuilder(private val material: Material) {
+open class ItemStackBuilder(private val material: Material) {
     private var title: String?      = null
     private var lore:  MutableList<String> = ArrayList()
     private var amount = 1

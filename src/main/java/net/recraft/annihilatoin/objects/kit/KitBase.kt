@@ -39,7 +39,7 @@ KitBase(_type: KitType,
         equip(playerInventory, team.color)
         return playerInventory.getItems()
     }
-    abstract fun setInit(player: Player)
+    open fun setInit(player: Player) {}
     fun equip(playerInventory: PlayerInventory, color: Color) {
         setEquipments(playerInventory, color)
         setItems(playerInventory)

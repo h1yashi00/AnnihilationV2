@@ -3,14 +3,13 @@ package net.recraft.annihilatoin.objects.kit
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
-import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.PlayerInventory
 
 class Scout: KitBase(
     KitType.SCOUT,
     Material.FISHING_ROD,
-    listOf("material[")
+    listOf("グラップルを使って自由自在にマップを駆け回ろう!")
 ){
     companion object {
         private val scoutFishLore= "${ChatColor.GOLD}Grapple"
@@ -29,9 +28,6 @@ class Scout: KitBase(
         val meta = Bukkit.getItemFactory().getItemMeta(Material.FISHING_ROD)
         meta.lore = lore
         itemMeta = meta
-    }
-
-    override fun setInit(player: Player) {
     }
 
     override fun setItems(playerInventory: PlayerInventory) {

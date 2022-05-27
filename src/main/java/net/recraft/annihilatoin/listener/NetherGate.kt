@@ -7,6 +7,7 @@ import net.recraft.annihilatoin.objects.menu.KitMenu
 import net.recraft.annihilatoin.realTeleport
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
+import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -22,6 +23,7 @@ import org.bukkit.scheduler.BukkitRunnable
 class NetherGate(val menu: KitMenu): Listener {
     @EventHandler
     fun portal(event: PortalCreateEvent) {
+        Bukkit.getOnlinePlayers().forEach { if (it.itemInHand.type == Material.FLINT_AND_STEEL) {if (it.gameMode == GameMode.CREATIVE) {event.isCancelled = false; return} }}
         event.isCancelled = true
     }
     @EventHandler

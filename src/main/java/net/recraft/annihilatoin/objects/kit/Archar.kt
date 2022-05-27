@@ -10,8 +10,6 @@ class Archar: KitBase(
     Material.ARROW,
     listOf("you are the archer")
 ){
-    override fun setInit(player: Player) {
-    }
 
     override fun setItems(playerInventory: PlayerInventory) {
         super.setItems(playerInventory)
