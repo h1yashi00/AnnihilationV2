@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.listener
 
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.kit.KitGenerator
+import net.recraft.annihilatoin.realTeleport
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Player
@@ -30,7 +31,7 @@ class PlayerRespawn: Listener {
     private fun delaySpawn(player: Player, loc: Location) {
         val delayTask = object: BukkitRunnable() {
             override fun run() {
-                player.teleport(loc)
+                player.realTeleport(loc)
             }
         }
         Bukkit.getScheduler().scheduleSyncDelayedTask(Game.plugin, delayTask, 1) // バグ?でoneTick送らせないとrespawnできない

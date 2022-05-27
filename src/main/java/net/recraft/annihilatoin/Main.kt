@@ -20,12 +20,19 @@ import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
 import net.recraft.annihilatoin.scoreboard.ScoreboardVote
 import net.recraft.annihilatoin.scoreboard.scoreboard_team.ScoreboardTeamManager
 import org.bukkit.Bukkit
+import org.bukkit.Location
+import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import java.io.File
+
+// external functions
+fun Player.realTeleport(loc: Location){
+    player.teleport(loc.apply{x+=0.5; z+=0.5})
+}
 
 class Main : JavaPlugin() {
     private val myModule = module {

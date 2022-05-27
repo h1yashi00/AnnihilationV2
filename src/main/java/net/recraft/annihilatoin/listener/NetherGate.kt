@@ -4,6 +4,7 @@ import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.kit.KitGenerator
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.menu.KitMenu
+import net.recraft.annihilatoin.realTeleport
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -28,7 +29,7 @@ class NetherGate(val menu: KitMenu): Listener {
         if (event.cause != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) return
         val player = event.player
         val team = Game.getPlayerData(player.uniqueId).team ?: return
-        player.teleport(team.objects.randomSpawn)
+        player.realTeleport(team.objects.randomSpawn)
         openKitMenu(player)
     }
 

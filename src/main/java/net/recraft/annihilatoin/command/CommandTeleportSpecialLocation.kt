@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.command
 
 import net.recraft.annihilatoin.config.ConfigMap
 import net.recraft.annihilatoin.objects.GameTeam
+import net.recraft.annihilatoin.realTeleport
 import org.bukkit.Location
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -16,7 +17,7 @@ class CommandTeleportSpecificLocation : CommandExecutor {
         val team: GameTeam = GameTeam.getTeam(args?.get(0)?.toLowerCase()) ?: return false
         val teleportLocation = getTeleportLocation(team, args?.get(1)?.toLowerCase()) ?: return false
         player.sendMessage(teleportLocation.toString())
-        player.teleport(teleportLocation)
+        player.realTeleport(teleportLocation)
         return true
     }
 
