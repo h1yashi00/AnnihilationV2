@@ -31,7 +31,8 @@ import java.io.File
 
 // external functions
 fun Player.realTeleport(loc: Location){
-    player.teleport(loc.apply{x+=0.5; z+=0.5})
+    val cloneLoc = loc.clone()
+    player.teleport(cloneLoc.apply{x+=0.5; z+=0.5})
 }
 
 class Main : JavaPlugin() {
