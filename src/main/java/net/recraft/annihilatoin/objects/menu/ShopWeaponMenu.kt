@@ -1,5 +1,6 @@
 package net.recraft.annihilatoin.objects.menu
 
+import net.recraft.annihilatoin.objects.SpecialItem
 import net.recraft.annihilatoin.objects.builder.PriceableItemStackBuilder
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
@@ -34,5 +35,6 @@ class ShopWeaponMenu: Menu("ShopWeapon") {
         items.add(PriceableItemStackBuilder(Material.PACKED_ICE)        .price(2).amount(16).build())
         items.add(PriceableItemStackBuilder(Material.BOOK)              .price(1).amount(4).build())
         items.add(PriceableItemStackBuilder(Material.WOOL)              .price(1).amount(16).build())
+        items.add(SpecialItem.item)
     }
 }

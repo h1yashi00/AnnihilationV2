@@ -17,7 +17,7 @@ class ListenerScorpio: Listener {
     @EventHandler
     private fun onInteractEventHoldingNetherStar(event: PlayerInteractEvent) {
         if (!(event.action == Action.RIGHT_CLICK_AIR || event.action == Action.RIGHT_CLICK_BLOCK)) return
-        val item = event.item
+        val item = event.item ?: return
         if (item.type != Material.NETHER_STAR) return
         if (!Scorpio.isScorpioItem(item)) return
         val player = event.player

@@ -12,6 +12,7 @@ import net.recraft.annihilatoin.listener.PlayerInvisible
 import net.recraft.annihilatoin.listener.kit.ListenerAcrobat
 import net.recraft.annihilatoin.listener.kit.ListenerScorpio
 import net.recraft.annihilatoin.listener.kit.ListenerSwapper
+import net.recraft.annihilatoin.listener.special_item.ListenerTransPortItem
 import net.recraft.annihilatoin.objects.*
 import net.recraft.annihilatoin.objects.menu.KitMenu
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
@@ -74,6 +75,9 @@ class Main : JavaPlugin() {
             add( ListenerAcrobat() )
             add( ListenerSwapper() )
             add( ListenerScorpio() )
+
+            // special item
+            add (ListenerTransPortItem())
 
             forEach {
                 server.pluginManager.registerEvents(it, this@Main)
