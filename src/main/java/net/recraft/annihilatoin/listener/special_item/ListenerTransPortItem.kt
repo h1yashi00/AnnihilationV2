@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerQuitEvent
@@ -74,7 +75,7 @@ class ListenerTransPortItem: Listener {
                     showEffect(it.loc2!!.location) }
             }
         }.runTaskTimerAsynchronously(Game.plugin, 0, 5)
-
+        
         object: BukkitRunnable() {
             override fun run() {
                 val ite = handicapCapCoolDown.iterator()
@@ -108,6 +109,25 @@ class ListenerTransPortItem: Listener {
         val tp = tps[player.uniqueId] ?: return
         tp.remove()
         tps.remove(player.uniqueId)
+    }
+    @EventHandler
+    fun onPlaceBlock(event: BlockPlaceEvent) {
+        val loc = event.block.location
+        if (!checkAbove(loc)) return
+        event.isCancelled = true
+    }
+    private fun checkAbove(loc: Location): Boolean {
+        tps.values.forEach {
+            val clonedTp1y1 = it.loc1.location.clone().apply {y+=1}
+            val clonedTp1y2 = it.loc1.location.clone().apply {y+=2}
+            val clonedTp2y1 = it.loc2?.location?.clone()?.apply{y+=1}
+            val clonedTp2y2 = it.loc2?.location?.clone()?.apply{y+=2}
+            if (loc == clonedTp1y1) return true
+            if (loc == clonedTp1y2) return true
+            if (loc == clonedTp2y1) return true
+            if (loc == clonedTp2y2) return true
+        }
+        return false
     }
     @EventHandler
     fun onPlayerInteract(event: PlayerInteractEvent) {
