@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.listener.special_item
 
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.GameTeam
+import net.recraft.annihilatoin.objects.ResourceBlocks
 import net.recraft.annihilatoin.objects.SpecialItem
 import net.recraft.annihilatoin.realTeleport
 import net.recraft.annihilatoin.team
@@ -58,6 +59,11 @@ class ListenerTransPortItem: Listener {
             this.forEach { if (it.uuid == uuid) return it}
             return null
         }
+        fun remove(uuid: UUID) {
+            this.forEach {
+                if (it.uuid == uuid) { this.remove(it); return }
+            }
+        }
     }
     init {
         object: BukkitRunnable() {
@@ -78,6 +84,7 @@ class ListenerTransPortItem: Listener {
                         continue
                     }
                     a.pass()
+                    Bukkit.broadcastMessage(taskId.toString())
                 }
             }
         }.runTaskTimerAsynchronously(Game.plugin, 0, 20)
@@ -139,7 +146,9 @@ class ListenerTransPortItem: Listener {
             }
             // TP2つ目設置(開通)
             tp.loc2 = block
+            if (handicapCapCoolDown.contains(player.uniqueId)) handicapCapCoolDown.remove(player.uniqueId)
             handicapCapCoolDown.add(CoolDown(player.uniqueId))
+            player.sendMessage("${ChatColor.GRAY}利用可能まで${SpecialItem.handicapCapCoolDown}秒かかります")
         }
     }
 
@@ -167,7 +176,11 @@ class ListenerTransPortItem: Listener {
             if (it.objects.spawn2.location == loc) return false
             if (it.objects.spawn3.location == loc) return false
         }
+        if (ResourceBlocks.isResourceBlocks(loc.block.type)) return false
         if (isTransPortLocation(loc)) return false
+        val blockY1 = loc.clone().apply{y+=1}.block
+        val blockY2 = loc.clone().apply{y+=2}.block
+        if (!(blockY1.type == Material.AIR || blockY2.type == Material.AIR)) return false
         return true
     }
     private fun isTransPortLocation(loc: Location): Boolean {
@@ -192,10 +205,9 @@ class ListenerTransPortItem: Listener {
             val loc = if (tp.loc1 == block) {tp.loc2!! } else if (tp.loc2 == block) {tp.loc1} else return@forEach
             // tpがplayerが設置したものか検査する
             if (player.uniqueId == uuid) {
-                Bukkit.broadcastMessage("a")
                 // cooldown中だったら中止
                 if (handicapCapCoolDown.contains(player.uniqueId)) {
-                    player.sendMessage("${ChatColor.RED}設置してからのクールダウンは${handicapCapCoolDown[player.uniqueId]!!.coolDown}秒あります")
+                    player.sendMessage("${ChatColor.RED}利用可能まで${handicapCapCoolDown[player.uniqueId]!!.coolDown}秒")
                     return
                 }
             }
