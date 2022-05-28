@@ -31,6 +31,9 @@ fun Player.realTeleport(loc: Location){
     val cloneLoc = loc.clone()
     player.teleport(cloneLoc.apply{x+=0.5; z+=0.5})
 }
+fun Player.team(): GameTeam? {
+    return Game.getPlayerData(player.uniqueId).team
+}
 
 class Main : JavaPlugin() {
     private val myModule = module {
@@ -46,8 +49,10 @@ class Main : JavaPlugin() {
     }
 
     private val scoreboardTeamManager = ScoreboardTeamManager()
+    private var tp: ListenerTransPortItem? = null
     override fun onEnable() {
         setupKoin()
+        tp = ListenerTransPortItem()
         scoreboardTeamManager.enable()
         val configMap = ConfigMap(dataFolder)
         val playerLeaveUnfairAdvantage  = PlayerLeaveUnfairAdvantage()
@@ -83,7 +88,7 @@ class Main : JavaPlugin() {
             add( ListenerDasher()  )
 
             // special item
-            add (ListenerTransPortItem())
+            add (tp!!)
 
             forEach {
                 server.pluginManager.registerEvents(it, this@Main)
@@ -139,5 +144,6 @@ class Main : JavaPlugin() {
 
     override fun onDisable() {
         scoreboardTeamManager.disable()
+        tp!!.disable()
     }
 }

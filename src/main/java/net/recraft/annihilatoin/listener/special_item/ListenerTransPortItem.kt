@@ -4,17 +4,17 @@ import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.SpecialItem
 import net.recraft.annihilatoin.realTeleport
+import net.recraft.annihilatoin.team
 import net.recraft.annihilatoin.util.ParticleEffect
-import org.bukkit.Effect
-import org.bukkit.Location
-import org.bukkit.Material
-import org.bukkit.Sound
+import org.bukkit.*
 import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
 import org.bukkit.scheduler.BukkitRunnable
 import java.util.*
@@ -36,11 +36,27 @@ class ListenerTransPortItem: Listener {
         }
         fun remove() {
             loc1.world.playEffect(loc1.location, Effect.STEP_SOUND, Material.QUARTZ_ORE)
-            loc1.world.playEffect(loc2!!.location, Effect.STEP_SOUND, Material.QUARTZ_ORE)
             loc1.type = savedBlock1.type
             loc1.data = savedBlock1.data
+            if (loc2 == null) return
+            loc2!!.world.playEffect(loc2!!.location, Effect.STEP_SOUND, Material.QUARTZ_ORE)
             loc2!!.type = savedBlock2!!.type
             loc2!!.data= savedBlock2!!.data
+        }
+    }
+    private data class CoolDown(val uuid: UUID, var coolDown: Int = SpecialItem.handicapCapCoolDown) {
+        fun pass() {
+            coolDown -= 1
+        }
+    }
+    private val handicapCapCoolDown = object : ArrayList<CoolDown>() {
+        fun contains(uuid: UUID): Boolean {
+            this.forEach { if (it.uuid == uuid) return true }
+            return false
+        }
+        operator fun get(uuid: UUID): CoolDown? {
+            this.forEach { if (it.uuid == uuid) return it}
+            return null
         }
     }
     init {
@@ -52,21 +68,68 @@ class ListenerTransPortItem: Listener {
                     showEffect(it.loc2!!.location) }
             }
         }.runTaskTimerAsynchronously(Game.plugin, 0, 5)
+        object: BukkitRunnable() {
+            override fun run() {
+                if (handicapCapCoolDown.isEmpty()) return
+                for (i in 0 until handicapCapCoolDown.size) {
+                    val a = handicapCapCoolDown[i]
+                    if (a.coolDown <= 0) {
+                        handicapCapCoolDown.remove(a)
+                        continue
+                    }
+                    a.pass()
+                }
+            }
+        }.runTaskTimerAsynchronously(Game.plugin, 0, 20)
     }
     private val tps = HashMap<UUID, TransPort>()
+    fun disable() {
+        tps.values.forEach { it.remove() }
+        tps.clear()
+    }
     // プレイヤー一人一つ???
+    @EventHandler
+    fun onPlayerDeath(event: PlayerDeathEvent) {
+        val player = event.entity
+        val tp = tps[player.uniqueId] ?: return
+        tp.remove()
+        tps.remove(player.uniqueId)
+    }
+    @EventHandler
+    fun onLeave(event: PlayerQuitEvent) {
+        val player = event.player
+        val tp = tps[player.uniqueId] ?: return
+        tp.remove()
+        tps.remove(player.uniqueId)
+    }
     @EventHandler
     fun onPlayerInteract(event: PlayerInteractEvent) {
         if (event.action != Action.RIGHT_CLICK_BLOCK) return
         val player = event.player
         val item = player.itemInHand ?: return
+        if (!Game.isStart) return
         if (!SpecialItem.isTeleportItem(item)) return
-        if (!isPlaceAble(event.clickedBlock.location)) return
-        val block = event.clickedBlock
-        // TPの片方を設置済み
+        val team = player.team() ?: return
+        if (!isPlaceableHeight(event.clickedBlock.location)) {
+            player.sendMessage("${ChatColor.RED}最大${SpecialItem.maxHight}までしか設置できません!")
+            return
+        }
+        if (!isPlaceableDistance(event.clickedBlock.location, team.objects.nexus.location)) {
+            player.sendMessage("${ChatColor.RED}自軍から離れすぎています!")
+            return
+        }
+        if (!isPlaceableBlock(event.clickedBlock.location)) {
+            val tp = if (tps.contains(player.uniqueId)) {tps[player.uniqueId]} else {return}
+            tp!!.remove()
+            tps.remove(player.uniqueId)
+            return
+        }
+        val block = event.clickedBlock ?: return
+        // まだ設置していない
         if (!tps.contains(player.uniqueId)) {
             tps[player.uniqueId] = TransPort(block)
         }
+        // 片方設置済み
         else {
             val tp = tps[player.uniqueId]!!
             if (tp.loc2 != null) {
@@ -74,10 +137,26 @@ class ListenerTransPortItem: Listener {
                 tps.remove(player.uniqueId)
                 return
             }
+            // TP2つ目設置(開通)
             tp.loc2 = block
+            handicapCapCoolDown.add(CoolDown(player.uniqueId))
         }
     }
-    private fun isPlaceAble(loc: Location): Boolean {
+
+    private fun isPlaceableHeight(location: Location): Boolean {
+        return location.y < SpecialItem.maxHight
+    }
+
+    private fun isPlaceableDistance(from: Location, to: Location): Boolean {
+        val x1 = from.x
+        val x2 = to.x
+        val y1  = from.z
+        val y2  = to.z
+        val distance = Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))
+        return distance < SpecialItem.maxDisntance
+    }
+
+    private fun isPlaceableBlock(loc: Location): Boolean {
         GameTeam.values().forEach {
             if (it.objects.nexus.location == loc) return false
             if (it.objects.enderFurnace.location == loc) return false
@@ -102,23 +181,28 @@ class ListenerTransPortItem: Listener {
         val spawn = location.apply {x+=addX; y+=addY; z+=addZ}
         ParticleEffect.CLOUD.display(0F, 0F, 0F, 0F, 2, spawn, 256.0)
     }
+
     @EventHandler
     fun onSneak(event: PlayerToggleSneakEvent) {
         if (!event.isSneaking) return
         val player = event.player
         val block = player.location.block.location.apply {y-=1}.block
-        tps.values.forEach {
-            if (it.loc1 == block) {
-                player.realTeleport(it.loc2!!.location!!.apply { y += 1 }); player.playSound(player.location,
-                    Sound.ENDERMAN_TELEPORT,
-                    1f,
-                    1f)
-            } else if (it.loc2 == block) {
-                player.realTeleport(it.loc1.location!!.apply { y += 1 }); player.playSound(player.location,
-                    Sound.ENDERMAN_TELEPORT,
-                    1f,
-                    1f)
+        tps.forEach { (uuid, tp) ->
+            if (tp.loc2 == null) return@forEach
+            val loc = if (tp.loc1 == block) {tp.loc2!! } else if (tp.loc2 == block) {tp.loc1} else return@forEach
+            // tpがplayerが設置したものか検査する
+            if (player.uniqueId == uuid) {
+                Bukkit.broadcastMessage("a")
+                // cooldown中だったら中止
+                if (handicapCapCoolDown.contains(player.uniqueId)) {
+                    player.sendMessage("${ChatColor.RED}設置してからのクールダウンは${handicapCapCoolDown[player.uniqueId]!!.coolDown}秒あります")
+                    return
+                }
             }
+            player.realTeleport(loc.location.apply { y += 1 }); player.world.playSound(player.location,
+            Sound.ENDERMAN_TELEPORT,
+            1f,
+            1f)
         }
     }
     @EventHandler

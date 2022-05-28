@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack
 
 class SpecialItem {
     companion object {
+        const val handicapCapCoolDown = 20
         private val title = "${ChatColor.GOLD}TransPort Item!?"
         fun isTeleportItem(item: ItemStack?): Boolean {
             if (item == null) return false
@@ -14,6 +15,18 @@ class SpecialItem {
             if (item.itemMeta.displayName != title) return false
             return true
         }
-        val item = PriceableItemStackBuilder(Material.QUARTZ).price(3).title(title).build()
+        // 設置できる最大の距離
+        const val maxDisntance = 80
+        const val maxHight     = 80
+        val item = PriceableItemStackBuilder(Material.QUARTZ)
+            .price(3)
+            .title(title)
+            .lore(listOf(
+                "制限付きのTP",
+                "自軍との距離が${maxDisntance}離れていると設置できない(ユークリッド距離)",
+                "最高高度は${maxHight}以下",
+                "設置者は${handicapCapCoolDown}秒使用できません"
+            ))
+            .build()
     }
 }
