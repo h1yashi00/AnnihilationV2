@@ -25,7 +25,7 @@ object Game : KoinComponent {
     private val playerDatas: MutableMap<UUID, PlayerData> = HashMap()
     fun getPlayerData(uuid: UUID): PlayerData {
         if (!playerDatas.containsKey(uuid))  {
-            playerDatas[uuid] = PlayerData()
+            playerDatas[uuid] = PlayerData(uuid)
         }
         return playerDatas[uuid]!!
     }
