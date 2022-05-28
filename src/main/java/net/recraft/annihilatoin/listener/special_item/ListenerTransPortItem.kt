@@ -74,17 +74,17 @@ class ListenerTransPortItem: Listener {
                     showEffect(it.loc2!!.location) }
             }
         }.runTaskTimerAsynchronously(Game.plugin, 0, 5)
+
         object: BukkitRunnable() {
             override fun run() {
-                if (handicapCapCoolDown.isEmpty()) return
-                for (i in 0 until handicapCapCoolDown.size) {
-                    val a = handicapCapCoolDown[i]
-                    if (a.coolDown <= 0) {
-                        handicapCapCoolDown.remove(a)
+                val ite = handicapCapCoolDown.iterator()
+                while(ite.hasNext()) {
+                    val it = ite.next()
+                    if (it.coolDown <= 0) {
+                        ite.remove()
                         continue
                     }
-                    a.pass()
-                    Bukkit.broadcastMessage(taskId.toString())
+                    it.pass()
                 }
             }
         }.runTaskTimerAsynchronously(Game.plugin, 0, 20)
@@ -180,7 +180,7 @@ class ListenerTransPortItem: Listener {
         if (isTransPortLocation(loc)) return false
         val blockY1 = loc.clone().apply{y+=1}.block
         val blockY2 = loc.clone().apply{y+=2}.block
-        if (!(blockY1.type == Material.AIR || blockY2.type == Material.AIR)) return false
+        if (!(blockY1.type == Material.AIR && blockY2.type == Material.AIR)) return false
         return true
     }
     private fun isTransPortLocation(loc: Location): Boolean {
