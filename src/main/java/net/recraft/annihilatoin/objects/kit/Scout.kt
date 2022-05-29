@@ -15,6 +15,7 @@ class Scout: KitBase(
         private val scoutFishLore= "${ChatColor.GOLD}Grapple"
         fun isScoutFishingRod(itemStack: ItemStack?): Boolean {
             if (itemStack == null) return false
+            if (itemStack.itemMeta.lore == null) return false
             itemStack.itemMeta.lore.forEach {
                 if (it == scoutFishLore) return true
             }
