@@ -7,6 +7,7 @@ import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.Color
+import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -44,6 +45,7 @@ class ListenerShop(private val shopBrewingMenu: ShopBrewingMenu, private val sho
         val price = Priceable.getPrice(shopItem)
         val player = event.whoClicked
         val playerInventory = player.inventory
+        if (player.gameMode == GameMode.CREATIVE) playerInventory.addItem(shopItem)
         if (playerInventory.contains(Material.GOLD_INGOT, price)) { playerInventory.removeItem(ItemStack(Material.GOLD_INGOT, price)) } else { return }
         val addItem = if (shopItem.type == Material.WOOL) {colorWool(shopItem, player.uniqueId)} else {shopItem}
         playerInventory.addItem(addItem)

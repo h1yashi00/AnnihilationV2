@@ -35,6 +35,26 @@ fun Player.team(): GameTeam? {
     return Game.getPlayerData(player.uniqueId).team
 }
 
+fun Player.expLevel(): Int {
+    var i = 0
+    while(true) {
+        when {
+            i <= 16 -> {
+                Bukkit.broadcastMessage("${player.totalExperience}")
+                if (( i*i+(6*i) ) > player.totalExperience) break
+            }
+            i <= 31 -> {
+                if (( ((i*i*2.5) + (-40.5*i) + 360) ) < player.totalExperience) break
+            }
+            else -> {
+                if (( (i*i*4.5) + (-162.5*i) + 2220) < player.totalExperience) break
+            }
+        }
+        i += 1
+    }
+    return i
+}
+
 class Main : JavaPlugin() {
     private val myModule = module {
         single<JavaPlugin> { this@Main }

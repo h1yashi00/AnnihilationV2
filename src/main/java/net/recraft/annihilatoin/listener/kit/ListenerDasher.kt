@@ -5,6 +5,7 @@ import net.recraft.annihilatoin.objects.kit.Dasher
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.util.ParticleEffect
 import org.bukkit.ChatColor
+import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -32,6 +33,9 @@ class ListenerDasher: Listener {
         event.isCancelled = true
         val player = event.player
         if (player.foodLevel < 0) {
+            if (player.gameMode == GameMode.CREATIVE) {
+                player.setFoodLevel(20)
+            }
             player.sendMessage("${ChatColor.RED}eat food!!!!")
             return
         }
