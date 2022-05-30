@@ -103,6 +103,7 @@ class Main : JavaPlugin() {
             add( ListenerScorpio() )
             add( ListenerDasher()  )
             add( ListenerSpy()     )
+            add( ListenerDefender())
 
             // special item
             add (tp!!)

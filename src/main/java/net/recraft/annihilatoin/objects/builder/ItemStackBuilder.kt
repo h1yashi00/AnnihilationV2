@@ -10,9 +10,14 @@ open class ItemStackBuilder(private val material: Material) {
     private var title: String?      = null
     private var lore:  MutableList<String> = ArrayList()
     private var amount = 1
+    private var damage = 0
     private var enchantments: MutableMap<Enchantment, Int> = HashMap()
     fun title(_title: String): ItemStackBuilder {
         title = _title
+        return this
+    }
+    fun damage(_damage: Int): ItemStackBuilder {
+        damage = _damage
         return this
     }
     fun amount(_amount: Int): ItemStackBuilder {
@@ -30,7 +35,7 @@ open class ItemStackBuilder(private val material: Material) {
         return this
     }
     open fun build(): ItemStack {
-        val item = ItemStack(material, amount)
+        val item = if (damage == 0) { ItemStack(material, amount) } else { ItemStack(material, amount, damage.toShort()) }
         val meta = item.itemMeta
         meta.displayName = title
         if (meta is EnchantmentStorageMeta) addStoredEnchantments(meta) else addEnchantments(meta)

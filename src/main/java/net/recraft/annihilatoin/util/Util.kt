@@ -12,6 +12,13 @@ import java.util.*
 
 
 object Util {
+    fun euclideanDistance(from: Location, to: Location): Double {
+        val x1 = from.x
+        val x2 = to.x
+        val y1  = from.z
+        val y2  = to.z
+        return Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))
+    }
     fun fatal(msg: String) {
         Bukkit.broadcastMessage("${ChatColor.RED} fatal error in $msg")
         Exception().printStackTrace()

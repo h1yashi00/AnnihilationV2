@@ -7,6 +7,7 @@ import net.recraft.annihilatoin.objects.SpecialItem
 import net.recraft.annihilatoin.realTeleport
 import net.recraft.annihilatoin.team
 import net.recraft.annihilatoin.util.ParticleEffect
+import net.recraft.annihilatoin.util.Util
 import org.bukkit.*
 import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
@@ -177,12 +178,7 @@ class ListenerTransPortItem: Listener {
     }
 
     private fun isPlaceableDistance(from: Location, to: Location): Boolean {
-        val x1 = from.x
-        val x2 = to.x
-        val y1  = from.z
-        val y2  = to.z
-        val distance = Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))
-        return distance < SpecialItem.maxDisntance
+        return Util.euclideanDistance(from, to) < SpecialItem.maxDisntance
     }
 
     private fun isPlaceableBlock(loc: Location): Boolean {
