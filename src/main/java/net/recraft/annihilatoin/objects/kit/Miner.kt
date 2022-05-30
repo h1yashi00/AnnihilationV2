@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack
 
 class Miner: KitBase(
     KitType.MINER,
-    Material.STONE_PICKAXE,
+    ItemStack(Material.STONE_PICKAXE),
     listOf("取れる鉱石の量が二倍になる")
 ) {
     companion object {

@@ -34,25 +34,21 @@ fun Player.realTeleport(loc: Location){
 fun Player.team(): GameTeam? {
     return Game.getPlayerData(player.uniqueId).team
 }
-
-fun Player.expLevel(): Int {
-    var i = 0
-    while(true) {
-        when {
-            i <= 16 -> {
-                Bukkit.broadcastMessage("${player.totalExperience}")
-                if (( i*i+(6*i) ) > player.totalExperience) break
-            }
-            i <= 31 -> {
-                if (( ((i*i*2.5) + (-40.5*i) + 360) ) < player.totalExperience) break
-            }
-            else -> {
-                if (( (i*i*4.5) + (-162.5*i) + 2220) < player.totalExperience) break
-            }
-        }
-        i += 1
+// hideは非同期でやると動作しないので注意しよう｡
+fun Player.hide() {
+    Bukkit.getOnlinePlayers().forEach {
+        if (it == null) return@forEach
+        if (it.uniqueId == player.uniqueId) return@forEach
+        it.hidePlayer(player)
     }
-    return i
+}
+// showは非同期でやる動作しない
+fun Player.show() {
+    Bukkit.getOnlinePlayers().forEach {
+        if (it == null) return@forEach
+        if (it.uniqueId == player.uniqueId) return@forEach
+        it.showPlayer(player)
+    }
 }
 
 class Main : JavaPlugin() {
@@ -106,6 +102,7 @@ class Main : JavaPlugin() {
             add( ListenerSwapper() )
             add( ListenerScorpio() )
             add( ListenerDasher()  )
+            add( ListenerSpy()     )
 
             // special item
             add (tp!!)

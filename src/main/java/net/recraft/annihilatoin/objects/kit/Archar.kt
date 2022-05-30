@@ -7,7 +7,7 @@ import org.bukkit.inventory.PlayerInventory
 
 class Archar: KitBase(
     KitType.ARCHAR,
-    Material.ARROW,
+    ItemStack(Material.ARROW),
     listOf("you are the archer")
 ){
 

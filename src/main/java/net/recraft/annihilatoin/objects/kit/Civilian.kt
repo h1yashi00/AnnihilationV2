@@ -6,7 +6,7 @@ import org.bukkit.inventory.PlayerInventory
 
 class Civilian: KitBase(
     KitType.CIVILIAN,
-    Material.PORTAL,
+    ItemStack(Material.PORTAL),
     listOf("石ツール一式を持った序盤万能キット!?")
 ) {
     override val axe: ItemStack

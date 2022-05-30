@@ -14,6 +14,7 @@ object KitGenerator {
             KitType.SWAPPER  -> Swapper()
             KitType.SCORPIO  -> Scorpio()
             KitType.DASHER   -> Dasher()
+            KitType.SPY      -> Spy()
         }
     }
 }

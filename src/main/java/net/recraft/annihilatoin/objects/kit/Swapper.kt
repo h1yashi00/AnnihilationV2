@@ -10,7 +10,7 @@ import org.bukkit.inventory.PlayerInventory
 
 class Swapper: KitBase(
     KitType.SWAPPER,
-    Material.GREEN_RECORD,
+    ItemStack(Material.GREEN_RECORD),
     listOf(
         "スキルが発動すると",
         "相手と自分の位置を入れ替える事ができます(最大8ブロック)",

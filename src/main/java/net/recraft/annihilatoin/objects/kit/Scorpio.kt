@@ -9,7 +9,7 @@ import org.bukkit.inventory.PlayerInventory
 
 class Scorpio: KitBase(
     KitType.SCORPIO,
-    Material.NETHER_STAR,
+    ItemStack(Material.NETHER_STAR),
     listOf(
         "ネザースターを持って右クリックをすると投げることができる",
         "それを敵当たると目の前に引き寄せる事ができる｡"

@@ -7,7 +7,7 @@ import org.bukkit.inventory.PlayerInventory
 
 class Acrobat: KitBase(
     KitType.ACROBAT,
-    Material.FEATHER,
+    ItemStack(Material.FEATHER),
     listOf(
         "落下ダメージを受けない",
         "二段ジャンプができる"

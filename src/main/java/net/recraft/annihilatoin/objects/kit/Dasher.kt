@@ -8,7 +8,7 @@ import org.bukkit.inventory.PlayerInventory
 
 class Dasher: KitBase(
     KitType.DASHER,
-    Material.ENDER_PEARL,
+    ItemStack(Material.ENDER_PEARL),
     listOf(
         "DasherItemをクリックすると指定したブロックにテレポートできます｡(半径25)",
         "CoolDown は移動したブロック/2+3です"

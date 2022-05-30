@@ -2,31 +2,33 @@ package net.recraft.annihilatoin.objects.kit
 
 import net.recraft.annihilatoin.listener.Soulbound
 import net.recraft.annihilatoin.objects.GameTeam
-import net.recraft.annihilatoin.objects.builder.KitClassIconCreator
 import net.recraft.annihilatoin.objects.builder.PlayerInventoryImpl
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.PlayerInventory
 import org.bukkit.inventory.meta.LeatherArmorMeta
 
 abstract class
-KitBase(_type: KitType,
-        _icon: Material,
+KitBase(private val _type: KitType,
+        _icon: ItemStack,
         description: List<String>
 )
 {
     init {
         check(description.isNotEmpty() || description.size < 4)
     }
-    open val icon    = KitClassIconCreator(_icon)
-        .title("${ChatColor.AQUA}${_type.name}")
-        .lore(description)
-        .build()
+    private fun setDescription(itemStack: ItemStack, lores: List<String>): ItemStack {
+        val meta = itemStack.itemMeta
+        meta.displayName = "${ChatColor.GOLD}${_type.name.lowercase().capitalize()}"
+        meta.setLore(lores)
+        itemStack.setItemMeta(meta)
+        return itemStack
+    }
+    open val icon    = setDescription(_icon, description)
     open val sword   = ItemStack(Material.WOOD_SWORD)
     open val pickaxe = ItemStack(Material.WOOD_PICKAXE)
     open val axe     = ItemStack(Material.WOOD_AXE)

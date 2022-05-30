@@ -8,7 +8,7 @@ import org.bukkit.inventory.PlayerInventory
 
 class Scout: KitBase(
     KitType.SCOUT,
-    Material.FISHING_ROD,
+    ItemStack(Material.FISHING_ROD),
     listOf("グラップルを使って自由自在にマップを駆け回ろう!")
 ){
     companion object {

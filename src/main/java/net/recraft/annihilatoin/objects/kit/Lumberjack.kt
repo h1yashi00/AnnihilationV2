@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack
 
 class Lumberjack: KitBase(
     KitType.LUMBERJACK,
-    Material.STONE_AXE,
+    ItemStack(Material.STONE_AXE),
     listOf("取れる原木が2倍に!?")
 ) {
     override val axe = ItemStack(Material.STONE_AXE).also {
