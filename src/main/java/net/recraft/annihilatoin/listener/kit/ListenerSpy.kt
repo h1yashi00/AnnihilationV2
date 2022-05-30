@@ -7,33 +7,77 @@ import net.recraft.annihilatoin.show
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Location
+import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
 import org.bukkit.scheduler.BukkitRunnable
 import java.util.*
 
 class ListenerSpy: Listener {
-    private val invisiblePlayers = mutableSetOf<UUID>()
+    private data class InvSavedData(val block: Block) {}
+    private class InvPlayers {
+        private val invisiblePlayers = HashMap<UUID, InvSavedData>()
+        fun add(player: Player) {
+            invisiblePlayers[player.uniqueId] = InvSavedData(player.location.block)
+            player.hide()
+            player.sendMessage("${ChatColor.GRAY}You are currently invisible!")
+        }
+        fun remove(player: Player) {
+            invisiblePlayers.remove(player.uniqueId)
+            player.show()
+            player.sendMessage("${ChatColor.RED}invisible task was canceled!!!!")
+        }
+        fun contains(player: Player): Boolean {
+            return invisiblePlayers.contains(player.uniqueId)
+        }
+        fun keys(): MutableSet<UUID> {
+            return invisiblePlayers.keys
+        }
+
+        fun isMoved(player: Player?): Boolean {
+            if (player == null) return false
+            val data = invisiblePlayers[player.uniqueId] ?: return false
+            if (data.block == player.location.block) return false
+            return true
+        }
+    }
+    private val invPlayersData = InvPlayers()
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
         val player = event.player
-        invisiblePlayers.forEach { val invPlayer = Bukkit.getPlayer(it); player.hidePlayer(invPlayer) }
+        invPlayersData.keys().forEach { val invPlayer = Bukkit.getPlayer(it); player.hidePlayer(invPlayer) }
+    }
+    @EventHandler
+    fun onInvPlayerInteract(event: PlayerInteractEvent) {
+        val player = event.player
+        if (Game.getPlayerData(player.uniqueId).kitType != KitType.SPY) return
+        if (!invPlayersData.contains(player)) return
+        invPlayersData.remove(player)
+    }
+
+    @EventHandler
+    fun onMove(event: PlayerMoveEvent) {
+        val player = event.player
+        if (Game.getPlayerData(player.uniqueId).kitType != KitType.SPY) return
+        if (!invPlayersData.contains(player)) return
+        if (!invPlayersData.isMoved(player)) return
+        invPlayersData.remove(player)
     }
     // ここにスレッドを使うべきか?
     @EventHandler
-    fun onInteract(event: PlayerInteractEvent) {
+    fun onEnemyInteract(event: PlayerInteractEvent) {
         if (!(event.action == Action.LEFT_CLICK_AIR || event.action == Action.LEFT_CLICK_BLOCK || event.action == Action.RIGHT_CLICK_BLOCK)) return
         val player = event.player
         val hitPlayer = threeBlockRangePlayer(player)?: return
-        if (!invisiblePlayers.contains(hitPlayer.uniqueId)) return
+        if (!invPlayersData.contains(hitPlayer)) return
         hitPlayer.sendMessage("You found by ${player.name}")
-        hitPlayer.show()
-        invisiblePlayers.remove(hitPlayer.uniqueId)
+        invPlayersData.remove(hitPlayer)
     }
 
     private fun threeBlockRangePlayer(player: Player): Player? {
@@ -69,13 +113,10 @@ class ListenerSpy: Listener {
             var i = 0
             override fun run() {
                 if (i == 20*3) {
-                    player.hide()
-                    invisiblePlayers.add(player.uniqueId)
-                    player.sendMessage("${ChatColor.GRAY}You are currently invisible!")
+                    invPlayersData.add(player)
                     cancel()
                 }
                 if (!player.isSneaking) {
-                    player.sendMessage("${ChatColor.RED}invisible task was canceled!!!!")
                     cancel()
                 }
                 i += 1
@@ -87,8 +128,7 @@ class ListenerSpy: Listener {
             delayTask.runTaskTimer(Game.plugin, 0, 1)
         }
         else {
-            invisiblePlayers.remove(player.uniqueId)
-            player.show()
+            invPlayersData.remove(player)
         }
     }
 }
