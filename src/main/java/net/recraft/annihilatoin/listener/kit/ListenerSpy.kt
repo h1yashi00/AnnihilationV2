@@ -10,6 +10,7 @@ import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
@@ -23,8 +24,10 @@ class ListenerSpy: Listener {
         val player = event.player
         invisiblePlayers.forEach { val invPlayer = Bukkit.getPlayer(it); player.hidePlayer(invPlayer) }
     }
+    // ここにスレッドを使うべきか?
     @EventHandler
     fun onInteract(event: PlayerInteractEvent) {
+        if (!(event.action == Action.LEFT_CLICK_AIR || event.action == Action.LEFT_CLICK_BLOCK || event.action == Action.RIGHT_CLICK_BLOCK)) return
         val player = event.player
         val hitPlayer = threeBlockRangePlayer(player)?: return
         if (!invisiblePlayers.contains(hitPlayer.uniqueId)) return
@@ -32,6 +35,7 @@ class ListenerSpy: Listener {
         hitPlayer.show()
         invisiblePlayers.remove(hitPlayer.uniqueId)
     }
+
     private fun threeBlockRangePlayer(player: Player): Player? {
         val loc = player.location.clone()
         val dir = loc.direction.clone()
