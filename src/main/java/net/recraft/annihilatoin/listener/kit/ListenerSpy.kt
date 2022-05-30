@@ -12,10 +12,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
-import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.event.player.PlayerJoinEvent
-import org.bukkit.event.player.PlayerMoveEvent
-import org.bukkit.event.player.PlayerToggleSneakEvent
+import org.bukkit.event.player.*
 import org.bukkit.scheduler.BukkitRunnable
 import java.util.*
 
@@ -52,6 +49,11 @@ class ListenerSpy: Listener {
     fun onJoin(event: PlayerJoinEvent) {
         val player = event.player
         invPlayersData.keys().forEach { val invPlayer = Bukkit.getPlayer(it); player.hidePlayer(invPlayer) }
+    }
+    @EventHandler
+    fun onQuit(event: PlayerQuitEvent) {
+        val player = event.player
+        invPlayersData.remove(player)
     }
     @EventHandler
     fun onInvPlayerInteract(event: PlayerInteractEvent) {
