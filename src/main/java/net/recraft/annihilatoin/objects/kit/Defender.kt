@@ -20,7 +20,7 @@ class Defender: KitBase(
         val maxDistance = 80
         fun isItem(item: ItemStack?): Boolean {
             if (item == null) return false
-            val meta = item.itemMeta
+            val meta = item.itemMeta ?: return false
             if (meta.displayName == title) return true
             return false
 //            if (meta.lore == null) return false

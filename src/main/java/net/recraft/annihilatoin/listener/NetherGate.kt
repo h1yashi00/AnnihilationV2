@@ -21,6 +21,9 @@ import org.bukkit.inventory.PlayerInventory
 import org.bukkit.scheduler.BukkitRunnable
 
 class NetherGate(val menu: KitMenu): Listener {
+    companion object {
+        val kitItemTitle = "Kit items"
+    }
     @EventHandler
     fun portal(event: PortalCreateEvent) {
         Bukkit.getOnlinePlayers().forEach { if (it.itemInHand.type == Material.FLINT_AND_STEEL) {if (it.gameMode == GameMode.CREATIVE) {event.isCancelled = false; return} }}
@@ -52,7 +55,7 @@ class NetherGate(val menu: KitMenu): Listener {
         KitType.values().forEach {
             val kit = KitGenerator.get(it)
             if (kit.icon == event.currentItem) {
-                val inventory = Bukkit.createInventory(null, InventoryType.CHEST)
+                val inventory = Bukkit.createInventory(null, InventoryType.CHEST, kitItemTitle)
                 val pd = Game.getPlayerData(player.uniqueId)
                 pd.kitType = it
                 kit.allItems(pd.team!!).forEach { item ->

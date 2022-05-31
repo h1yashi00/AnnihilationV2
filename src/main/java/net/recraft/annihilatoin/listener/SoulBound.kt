@@ -1,6 +1,5 @@
 package net.recraft.annihilatoin.listener
 
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Sound
 import org.bukkit.event.EventHandler
@@ -29,7 +28,8 @@ class SoulBound : Listener {
     }
 
     @EventHandler
-    fun onPlayerIntercept2(event: InventoryClickEvent) {
+    fun onPlayerInventoryClick1(event: InventoryClickEvent) {
+        if (event.inventory.title == NetherGate.kitItemTitle) return
         if (event.click != ClickType.NUMBER_KEY) return
         val player = event.whoClicked
         if (!playerOpeningInventory.contains(player.uniqueId)) return
@@ -43,7 +43,8 @@ class SoulBound : Listener {
     }
 
     @EventHandler
-    fun onPlayerIntercept(event: InventoryClickEvent) {
+    fun onPlayerInventoryClick2(event: InventoryClickEvent) {
+        if (event.inventory.title == NetherGate.kitItemTitle) return
         if (!isSoulbound(event.currentItem)) return
         val player = event.whoClicked
         if (!playerOpeningInventory.contains(player.uniqueId)) return
