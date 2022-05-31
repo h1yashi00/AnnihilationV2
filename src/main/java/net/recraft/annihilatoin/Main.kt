@@ -10,6 +10,7 @@ import net.recraft.annihilatoin.listener.map.*
 import net.recraft.annihilatoin.listener.PlayerInvisible
 import net.recraft.annihilatoin.listener.kit.*
 import net.recraft.annihilatoin.listener.special_item.ListenerTransPortItem
+import net.recraft.annihilatoin.listener.troll.PlayerOpeningWorkingBench
 import net.recraft.annihilatoin.objects.*
 import net.recraft.annihilatoin.objects.menu.KitMenu
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
@@ -73,10 +74,13 @@ class Main : JavaPlugin() {
         val configMap = ConfigMap(dataFolder)
         val playerLeaveUnfairAdvantage  = PlayerLeaveUnfairAdvantage()
         ArrayList<Listener>().apply {
+            // unfair cancel events
             // player game quit
             add( PlayerJoinServer    (playerLeaveUnfairAdvantage) )
             add( PlayerLeaveServer   (playerLeaveUnfairAdvantage) )
             add( ListenerUnfairZombie(playerLeaveUnfairAdvantage) )
+            // playerBreakWorkingBench
+            add( PlayerOpeningWorkingBench() )
             // maps
             add( PlayerAttackNexus()       )
             add( PlayerBreakResourceBlock())
@@ -97,7 +101,7 @@ class Main : JavaPlugin() {
             add( PlayerDeath() )
             // kits
             add( KitScout() )
-            add( Soulbound() )
+            add( SoulBound() )
             add( ListenerAcrobat() )
             add( ListenerSwapper() )
             add( ListenerScorpio() )

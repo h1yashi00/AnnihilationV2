@@ -4,11 +4,49 @@ import org.bukkit.ChatColor
 import org.bukkit.Sound
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.entity.PlayerDeathEvent
+import org.bukkit.event.inventory.*
 import org.bukkit.event.player.PlayerDropItemEvent
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
-class Soulbound : Listener {
+class SoulBound : Listener {
+    private val playerOpeningInventory = HashMap<UUID, Inventory>()
+    @EventHandler
+    fun onOpenInventory(event: InventoryOpenEvent) {
+        val player = event.player
+        playerOpeningInventory[player.uniqueId] = event.inventory
+    }
+    @EventHandler
+    fun onCloseInventory(event: InventoryCloseEvent) {
+        val player = event.player
+        playerOpeningInventory.remove(player.uniqueId)
+    }
+
+    @EventHandler
+    fun onPlayerIntercept(event: InventoryClickEvent) {
+        if (!isSoulbound(event.currentItem)) return
+        val player = event.whoClicked
+        val openedInv = playerOpeningInventory[player.uniqueId]!!
+        if (openedInv.type != InventoryType.CHEST) return
+        event.isCancelled = true
+    }
+
+
+
+    @EventHandler
+    fun onEntityDeath(event: EntityDeathEvent) {
+        val it = event.drops.iterator()
+        while (it.hasNext()) {
+            if (isSoulbound(it.next())) {
+                it.remove()
+            }
+        }
+    }
     @EventHandler
     fun onPlayerDropItem(event: PlayerDropItemEvent) {
         val item = event.itemDrop.itemStack

@@ -1,9 +1,8 @@
 package net.recraft.annihilatoin.objects.kit
 
-import net.recraft.annihilatoin.listener.Soulbound
+import net.recraft.annihilatoin.listener.SoulBound
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.builder.PlayerInventoryImpl
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Color
 import org.bukkit.Material
@@ -46,10 +45,10 @@ KitBase(private val _type: KitType,
         setEquipments(playerInventory, color)
         setItems(playerInventory)
         playerInventory.armorContents.forEach {
-            Soulbound.set(it)
+            SoulBound.set(it)
         }
         playerInventory.forEach {
-            Soulbound.set(it ?: return@forEach)
+            SoulBound.set(it ?: return@forEach)
         }
     }
     open fun setItems(playerInventory: PlayerInventory) {

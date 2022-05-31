@@ -67,7 +67,7 @@ class NetherGate(val menu: KitMenu): Listener {
     private fun removeKitSpecificSoulBound(inventory: PlayerInventory){
         inventory.forEach {
             if (it == null) return@forEach
-            if (!Soulbound.isSoulbound(it)) return@forEach
+            if (!SoulBound.isSoulbound(it)) return@forEach
             if (it.type == Material.WOOD_SWORD || it.type == Material.WOOD_AXE || it.type == Material.WOOD_PICKAXE) return@forEach
             inventory.remove(it)
         }
