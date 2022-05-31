@@ -16,6 +16,7 @@ class Defender: KitBase(
     )
 ) {
     companion object {
+        val coolDownTime: Int = 20
         val title = "${ChatColor.GOLD}Guardian"
         val maxDistance = 80
         fun isItem(item: ItemStack?): Boolean {

@@ -1,8 +1,9 @@
 package net.recraft.annihilatoin.listener.kit
 
+import net.recraft.annihilatoin.listener.CoolDown
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.kit.Acrobat
 import net.recraft.annihilatoin.objects.kit.KitType
-import org.bukkit.Bukkit
 import org.bukkit.GameMode
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -10,30 +11,15 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.player.PlayerToggleFlightEvent
-import org.bukkit.scheduler.BukkitRunnable
-import java.util.*
-import kotlin.collections.HashMap
 
 class ListenerAcrobat: Listener {
-    val cooldownPlayers = HashMap<UUID, Int>()
-    init {
-        object: BukkitRunnable() {
-            override fun run() {
-                if (cooldownPlayers.isEmpty()) return
-                cooldownPlayers.keys.forEach {
-                    val time = cooldownPlayers[it]!!
-                    cooldownPlayers[it] = time -1
-                    if (cooldownPlayers[it]!! < 0) {
-                        cooldownPlayers.remove(it)
-                        val player = Bukkit.getPlayer(it) ?: return
-                        if (Game.getPlayerData(player.uniqueId).kitType == KitType.ACROBAT) {
-                            player.allowFlight = true
-                            player.world.playSound(player.location, Sound.WITHER_SHOOT, 0.03F, 5F)
-                        }
-                    }
-                }
-            }
-        }.runTaskTimer(Game.plugin, 0L, 20L)
+    private val coolDown = CoolDown(
+        Acrobat.coolDownTime,
+    ) {
+        if (Game.getPlayerData(it.uniqueId).kitType == KitType.ACROBAT) {
+            it.allowFlight = true
+            it.world.playSound(it.location, Sound.WITHER_SHOOT, 0.03F, 5F)
+        }
     }
     @EventHandler
     fun onFallDamage(event: EntityDamageEvent){
@@ -53,8 +39,11 @@ class ListenerAcrobat: Listener {
         // Activate Ability
         event.isCancelled = true
         player.playSound(player.location, Sound.ZOMBIE_INFECT, 0.5F, 2.0F)
-        if (cooldownPlayers.containsKey(player.uniqueId)) return
-        cooldownPlayers[player.uniqueId] = 7
+        if (!coolDown.isReady(player)) {
+            coolDown.isNotReadyMsg(player)
+            return
+        }
+        coolDown.add(player)
         player.allowFlight = false
         player.isFlying = false
 

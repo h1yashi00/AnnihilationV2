@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.listener.kit
 
 import net.minecraft.server.v1_8_R3.EnumDirection
+import net.recraft.annihilatoin.listener.CoolDown
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Swapper
@@ -15,27 +16,13 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.scheduler.BukkitRunnable
-import java.util.*
 
 
 class ListenerSwapper: Listener {
-    val swapperCoolDown = mutableMapOf<UUID, Int>()
-    init {
-        object: BukkitRunnable() {
-            override fun run() {
-                swapperCoolDown.keys.forEach {
-                    val coolDown = swapperCoolDown[it]!!
-                    if (coolDown <= 0) {
-                        swapperCoolDown.remove(it)
-                        val player = Bukkit.getPlayer(it) ?: return@forEach
-                        player.sendMessage("${ChatColor.GOLD}Swapper Ability is READY!!")
-                        return@forEach
-                    }
-                    swapperCoolDown[it] = coolDown -1
-                }
-            }
-        }.runTaskTimer(Game.plugin, 0, 20)
-    }
+    val coolDown = CoolDown(
+        Swapper.cooldown,
+    ) {}
+
     @EventHandler
     fun onPlayerInteract(event: PlayerInteractEvent) {
         if (event.action != Action.RIGHT_CLICK_AIR && event.action != Action.RIGHT_CLICK_BLOCK) return
@@ -44,8 +31,8 @@ class ListenerSwapper: Listener {
         val pd = Game.getPlayerData(player.uniqueId)
         if (pd.kitType != KitType.SWAPPER) return
         if (!Swapper.isSwapItem(event.item)) return
-        if (swapperCoolDown.containsKey(player.uniqueId)) {
-            player.sendMessage("${ChatColor.RED}cool down!!!!! time: ${swapperCoolDown[player.uniqueId]}")
+        if (!coolDown.isReady(player)) {
+            coolDown.isNotReadyMsg(player)
             return
         }
         // プレイヤーの正面にブロックがないか確認する
@@ -71,7 +58,7 @@ class ListenerSwapper: Listener {
                 }
             }.runTaskLater(Game.plugin, 20*5)
             targetData.voidCancel = true
-            swapperCoolDown[player.uniqueId] = Swapper.cooldown
+            coolDown.add(player)
             playSound(player, target)
             switchLocation(player, target)
             swappedEffect(target.location)

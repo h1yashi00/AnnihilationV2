@@ -17,6 +17,7 @@ class PlayerData(
         set(value) {
             val player = Bukkit.getPlayer(uuid)
             player.allowFlight = false
+            player.healthScale = 20.0
             field = value
         }
     var invisible: Boolean = _invisible

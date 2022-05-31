@@ -1,5 +1,6 @@
 package net.recraft.annihilatoin.listener.kit
 
+import net.recraft.annihilatoin.listener.CoolDown
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Scorpio
@@ -14,6 +15,9 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.scheduler.BukkitRunnable
 
 class ListenerScorpio: Listener {
+    private val coolDown = CoolDown(
+        Scorpio.coolDownTime
+    ){}
     @EventHandler
     private fun onInteractEventHoldingNetherStar(event: PlayerInteractEvent) {
         if (!(event.action == Action.RIGHT_CLICK_AIR || event.action == Action.RIGHT_CLICK_BLOCK)) return
@@ -23,6 +27,12 @@ class ListenerScorpio: Listener {
         val player = event.player
         val pd = Game.getPlayerData(player.uniqueId)
         if (pd.kitType != KitType.SCORPIO) return
+        if (!coolDown.isReady(player)) {
+            coolDown.isNotReadyMsg(player)
+            return
+        }
+        coolDown.add(player)
+        // Activate Ability!!
         val dropScorpio = player.world.dropItem(player.location.apply {y+=1}, item)
         dropScorpio.pickupDelay = 20 * 5
         val push = player.location.direction

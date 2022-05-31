@@ -2,7 +2,6 @@ package net.recraft.annihilatoin.objects.kit
 
 import org.bukkit.ChatColor
 import org.bukkit.Material
-import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.PlayerInventory
 
@@ -17,6 +16,7 @@ class Scorpio: KitBase(
 ) {
     companion object {
         val displayName = "${ChatColor.YELLOW}Hook"
+        val coolDownTime = 6
         fun isScorpioItem(item: ItemStack): Boolean {
             if (item.type != Material.NETHER_STAR) return false
             if (item.itemMeta.displayName != displayName) return false

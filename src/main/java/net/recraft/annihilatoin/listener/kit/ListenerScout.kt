@@ -1,5 +1,6 @@
 package net.recraft.annihilatoin.listener.kit
 
+import net.recraft.annihilatoin.listener.CoolDown
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Scout
@@ -7,6 +8,7 @@ import org.bukkit.*
 import org.bukkit.block.Block
 import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
@@ -16,6 +18,12 @@ import org.bukkit.projectiles.ProjectileSource
 import org.bukkit.util.Vector
 
 class KitScout : Listener {
+    private val combatTagCoolDown = CoolDown(
+        coolDown = Scout.combatTagCoolDown,
+        readyMsg = "Grappleが使用可能になりました｡",
+        notReadyMsg = "Grapple使用可能まであと"
+    ) {
+    }
     @EventHandler
     fun onRightClickFishingRod(event: PlayerFishEvent) {
         val player = event.player
@@ -28,12 +36,18 @@ class KitScout : Listener {
             player.sendMessage("${ChatColor.RED} Unable to grapple")
             return
         }
+        if (!combatTagCoolDown.isReady(player)) {
+            combatTagCoolDown.isNotReadyMsg(player)
+            return
+        }
+        // activate ability!!
+
         val diff = hookLocation.toVector().subtract(player.location.toVector())
         val vel = Vector()
         val d: Double = hookLocation.distance(player.location)
         vel.x = (1.0 + 0.08 * d) * diff.x / d
         vel.y = (1.0 + 0.04 * d) * diff.y / d + 0.05 * d
-        vel.z = (1.0 + 0.07 * d) * diff.z / d
+        vel.z = (1.0 + 0.08 * d) * diff.z / d
         player.velocity = vel
         player.playSound(player.location, Sound.ZOMBIE_INFECT, 10.0F, 2.0F)
     }
@@ -42,6 +56,13 @@ class KitScout : Listener {
         if (event.cause != EntityDamageEvent.DamageCause.PROJECTILE) return
         if (event.damager.type != EntityType.FISHING_HOOK) return
         event.isCancelled = true
+    }
+    @EventHandler(priority = EventPriority.HIGHEST)
+    fun onDamagePlayer(event: EntityDamageByEntityEvent) {
+        val player: Player= if (event.entity is Player) { event.entity as Player }else return
+        if (Game.getPlayerData(player.uniqueId).kitType != KitType.SCOUT) return
+        player.sendMessage("${ChatColor.GRAY}ダメージを受けました｡${Scout.combatTagCoolDown}秒Grappleが使用できません")
+        combatTagCoolDown.add(player)
     }
 
     @EventHandler

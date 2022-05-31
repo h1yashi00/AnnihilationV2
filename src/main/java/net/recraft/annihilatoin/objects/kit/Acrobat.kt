@@ -13,6 +13,9 @@ class Acrobat: KitBase(
         "二段ジャンプができる"
     )
 ) {
+    companion object {
+        val coolDownTime = 6
+    }
     override fun setInit(player: Player) {
         player.allowFlight = true
         player.isFlying = false

@@ -12,6 +12,7 @@ class Scout: KitBase(
     listOf("グラップルを使って自由自在にマップを駆け回ろう!")
 ){
     companion object {
+        val combatTagCoolDown = 2
         private val scoutFishLore= "${ChatColor.GOLD}Grapple"
         fun isScoutFishingRod(itemStack: ItemStack?): Boolean {
             if (itemStack == null) return false

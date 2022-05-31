@@ -1,17 +1,20 @@
 package net.recraft.annihilatoin
 
+import net.minecraft.server.v1_8_R3.EnumDirection
 import net.recraft.annihilatoin.command.*
 import net.recraft.annihilatoin.config.ConfigManager
 import net.recraft.annihilatoin.config.ConfigMap
 import net.recraft.annihilatoin.listener.*
-import net.recraft.annihilatoin.listener.menu.InventoryIntercept
-import net.recraft.annihilatoin.listener.PlayerLeaveServer
-import net.recraft.annihilatoin.listener.map.*
-import net.recraft.annihilatoin.listener.PlayerInvisible
 import net.recraft.annihilatoin.listener.kit.*
+import net.recraft.annihilatoin.listener.map.*
+import net.recraft.annihilatoin.listener.menu.InventoryIntercept
+import net.recraft.annihilatoin.listener.special_item.ListenerLanchPad
 import net.recraft.annihilatoin.listener.special_item.ListenerTransPortItem
 import net.recraft.annihilatoin.listener.troll.PlayerOpeningWorkingBench
-import net.recraft.annihilatoin.objects.*
+import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.GameTeam
+import net.recraft.annihilatoin.objects.PlayerLeaveUnfairAdvantage
+import net.recraft.annihilatoin.objects.VoteManager
 import net.recraft.annihilatoin.objects.menu.KitMenu
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
@@ -19,13 +22,16 @@ import net.recraft.annihilatoin.scoreboard.ScoreboardVote
 import net.recraft.annihilatoin.scoreboard.scoreboard_team.ScoreboardTeamManager
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
+import sun.audio.AudioPlayer
 import java.io.File
+
 
 // external functions
 fun Player.realTeleport(loc: Location){
@@ -50,6 +56,9 @@ fun Player.show() {
         if (it.uniqueId == player.uniqueId) return@forEach
         it.showPlayer(player)
     }
+}
+fun Player.direction(): EnumDirection {
+    return (player as CraftPlayer).handle.direction
 }
 
 class Main : JavaPlugin() {
@@ -111,6 +120,7 @@ class Main : JavaPlugin() {
 
             // special item
             add (tp!!)
+            add (ListenerLanchPad())
 
             forEach {
                 server.pluginManager.registerEvents(it, this@Main)
