@@ -1,5 +1,6 @@
 package net.recraft.annihilatoin.listener
 
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Sound
 import org.bukkit.event.EventHandler
@@ -28,15 +29,28 @@ class SoulBound : Listener {
     }
 
     @EventHandler
+    fun onPlayerIntercept2(event: InventoryClickEvent) {
+        if (event.click != ClickType.NUMBER_KEY) return
+        val player = event.whoClicked
+        if (!playerOpeningInventory.contains(player.uniqueId)) return
+        val inv = event.clickedInventory
+        if (inv.type != InventoryType.CHEST) return
+
+        val pushedButton = event.hotbarButton
+        val chooseItem = player.inventory.getItem(pushedButton) ?: return
+        if (!isSoulbound(chooseItem)) return
+        event.isCancelled = true
+    }
+
+    @EventHandler
     fun onPlayerIntercept(event: InventoryClickEvent) {
         if (!isSoulbound(event.currentItem)) return
         val player = event.whoClicked
+        if (!playerOpeningInventory.contains(player.uniqueId)) return
         val openedInv = playerOpeningInventory[player.uniqueId]!!
         if (openedInv.type != InventoryType.CHEST) return
         event.isCancelled = true
     }
-
-
 
     @EventHandler
     fun onEntityDeath(event: EntityDeathEvent) {
@@ -67,8 +81,9 @@ class SoulBound : Listener {
     }
 
     companion object {
-        fun isSoulbound(item: ItemStack): Boolean {
-            val meta = item.itemMeta
+        fun isSoulbound(item: ItemStack?): Boolean {
+            if (item == null) return false
+            val meta = item.itemMeta ?: return false
             val lores = meta.lore ?: return false
             for (lore in lores) {
                 if (lore.equals(data)) {
