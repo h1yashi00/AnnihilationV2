@@ -27,7 +27,7 @@ class CoolDown(
                             Bukkit.getPlayer(uuid).sendMessage("${ChatColor.GRAY}$readyMsg")
                         }
                         coolDownPlayers.remove(uuid)
-                        val p = Bukkit.getPlayer(uuid)
+                        val p = Bukkit.getPlayer(uuid) ?: continue
                         readyAction(p)
                         continue
                     }
