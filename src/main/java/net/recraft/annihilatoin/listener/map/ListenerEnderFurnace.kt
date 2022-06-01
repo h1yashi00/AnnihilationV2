@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.listener.map
 
 import net.minecraft.server.v1_8_R3.EntityHuman
 import net.minecraft.server.v1_8_R3.TileEntityFurnace
+import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.builder.ItemStackBuilder
 import org.bukkit.Bukkit
@@ -106,10 +107,13 @@ class ListenerEnderFurnace : Listener, KoinComponent {
             super.a("Ender Furnace")
         }
 
+        override fun a(itemstack: net.minecraft.server.v1_8_R3.ItemStack?): Int {
+             return if (Game.phase.currentPhase == 5) {10} else {100}
+        }
+
         override fun getOwner(): InventoryHolder {
             return InventoryHolder {
-                val craftInventoryFurnace = CraftInventoryFurnace(VirtualFurnace@this)
-                craftInventoryFurnace
+                CraftInventoryFurnace(VirtualFurnace@this)
             }
         }
     }
