@@ -39,9 +39,14 @@ object ScoreboardAnni: ScoreboardUtil() {
             getScore(getNexusHpFormat(GameTeam.GREEN)).score  = AnniSection.GREEN.value
             getScore(" ").score = 9
             getScore("${ChatColor.DARK_PURPLE}${ChatColor.BOLD}Map: ${Game.map.name}").score = 8
-            getScore("${ChatColor.GRAY}Current Phase" + Game.phase.currentPhase.toString()).score = AnniSection.PHASE.value
+            getScore(getCurrentPhaseFormat()).score = AnniSection.PHASE.value
             getScore(nextPhaseTimeFormat()).score = AnniSection.NEXT_PHASE_TIME.value
             getScore("${ChatColor.GRAY}recraft.net").score = 5
+        }
+    }
+    fun currentPhaseUpdate() {
+        Bukkit.getOnlinePlayers().forEach {
+            replaceScore(it?: return@forEach, AnniSection.PHASE.value, getCurrentPhaseFormat())
         }
     }
     fun nextPhaseTimeUpdate() {
@@ -55,6 +60,10 @@ object ScoreboardAnni: ScoreboardUtil() {
             val nexusHp = getNexusHpFormat(team)
             replaceScore(it?: return@forEach, AnniSection.get(team.name)!!.value, nexusHp)
         }
+    }
+
+    private fun getCurrentPhaseFormat(): String {
+        return "${ChatColor.GRAY}Current Phase ${Game.phase.currentPhase}"
     }
 
     private fun nextPhaseTimeFormat(): String {

@@ -3,9 +3,6 @@ package net.recraft.annihilatoin.listener
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.kit.KitGenerator
 import net.recraft.annihilatoin.realTeleport
-import org.bukkit.Bukkit
-import org.bukkit.Location
-import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerRespawnEvent
