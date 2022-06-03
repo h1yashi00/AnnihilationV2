@@ -100,6 +100,7 @@ class Main : JavaPlugin() {
             add( ListenerShop(ShopBrewingMenu(), ShopWeaponMenu()) )
             add( InventoryIntercept(configMap)                     )
             // national events
+            add( SuitableTool() )
             add( PlayerAttackEnemyTeam()  )
             add( PlayerRespawn()          )
             add( PlayerInvisible(scoreboardTeamManager))

@@ -10,6 +10,10 @@ class PlayerData(
     _kitType: KitType = KitType.CIVILIAN,
     _invisible: Boolean = false,
     _voidCancel: Boolean = false,
+    var kills: Int = 0,
+    var deaths: Int = 0,
+    var mined_ores: Int = 0,
+    var gained_exp : Int = 0
 )
 {
     var team: GameTeam? = _team
