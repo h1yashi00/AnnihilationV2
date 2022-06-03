@@ -14,7 +14,6 @@ class Miner: KitBase(
         fun isAffectedOre(material: Material): Boolean
         {
             return when(material) {
-                Material.COAL_ORE -> true
                 Material.GOLD_ORE -> true
                 Material.IRON_ORE -> true
                 else -> false;

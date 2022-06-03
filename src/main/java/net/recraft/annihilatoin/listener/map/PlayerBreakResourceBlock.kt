@@ -9,11 +9,14 @@ import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.inventory.ItemStack
 import org.bukkit.scheduler.BukkitRunnable
 
+// TODO 幸運エンチャントの効果がつくようにアイテムを増やす｡
 class PlayerBreakResourceBlock : Listener {
     @EventHandler
     fun onBreakResource(event: BlockBreakEvent) {
@@ -48,7 +51,12 @@ class PlayerBreakResourceBlock : Listener {
                 player.inventory.addItem(item)
             }
         }
-        player.inventory.addItem(resourceBlock.getItemStack())
+
+        var fortuneAmount = 1
+        if (isAffectedFortune(resourceBlock.type)) {
+            fortuneAmount = isFortune(player.itemInHand)
+        }
+        player.inventory.addItem(resourceBlock.getItemStack().clone().apply { amount = fortuneAmount })
         val exp = if (kit == KitType.ENCHANTER) { resourceBlock.exp * 2 }  else { resourceBlock.exp }
         player.giveExp(exp)
         val scheduler = Bukkit.getScheduler();
@@ -59,5 +67,21 @@ class PlayerBreakResourceBlock : Listener {
             }
         }
         scheduler.runTaskLater(Game.plugin, runnable, resourceBlock.restore.toLong());
+    }
+
+    private fun isAffectedFortune(type: Material): Boolean {
+        return when(type) {
+            Material.DIAMOND_ORE -> true
+            Material.EMERALD_ORE -> true
+            Material.COAL_ORE    -> true
+            else -> false
+        }
+    }
+
+    private fun isFortune(item: ItemStack): Int {
+        item.enchantments.forEach {
+            if (it.key == Enchantment.LOOT_BONUS_BLOCKS) return it.value + 1
+        }
+        return 1
     }
 }
