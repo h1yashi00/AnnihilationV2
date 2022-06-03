@@ -20,13 +20,15 @@ class ShopWeaponMenu: Menu("ShopWeapon") {
     }
 
     override fun createInventory(): Inventory {
+        val phaseItems = ArrayList<ItemStack>()
         if (Game.phase.currentPhase >= 4) {
-            return super.createInventory().apply{
-                addItem(PriceableItemStackBuilder(Material.GOLDEN_APPLE).price(80).damage(1).build())
-            }
+            phaseItems.add(PriceableItemStackBuilder(Material.GOLDEN_APPLE).price(80).damage(1).build())
         }
-        return super.createInventory()
+        val inv = super.createInventory()
+        phaseItems.forEach { inv.addItem(it) }
+        return inv
     }
+
     init {
         items.add(PriceableItemStackBuilder(Material.IRON_HELMET)       .price(20).build())
         items.add(PriceableItemStackBuilder(Material.IRON_CHESTPLATE)   .price(20).build())

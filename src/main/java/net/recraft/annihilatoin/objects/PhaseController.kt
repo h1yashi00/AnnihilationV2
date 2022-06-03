@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.objects
 
 import net.recraft.annihilatoin.scoreboard.ScoreboardAnni
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Sound
 
 
@@ -51,6 +52,7 @@ class PhaseController {
         phase1Called = true
         ScoreboardAnni.currentPhaseUpdate()
         Bukkit.broadcastMessage("phase 1!!!!!!!!!!!!!!!!!").times(5)
+        Bukkit.broadcastMessage("${ChatColor.GRAY}準備期間です!")
         Bukkit.getOnlinePlayers().forEach{ it.playSound(it.location, Sound.AMBIENCE_THUNDER, 1F,1F)}
         thunderSound()
     }
@@ -58,7 +60,8 @@ class PhaseController {
         if (phase2Called) return
         phase2Called = true
         ScoreboardAnni.currentPhaseUpdate()
-        Bukkit.broadcastMessage("phase 2!!!!!!!!!!!!!!!!!").times(5)
+        Bukkit.broadcastMessage("phase 2!!!!!!!!!!!!!!!!!")
+        Bukkit.broadcastMessage("${ChatColor.GRAY}ミッドにダイヤモンドが出現しました!")
         Bukkit.getOnlinePlayers().forEach{ it.playSound(it.location, Sound.AMBIENCE_THUNDER, 1F,1F)}
         thunderSound()
     }
@@ -66,8 +69,9 @@ class PhaseController {
         if (phase3Called) return
         phase3Called = true
         ScoreboardAnni.currentPhaseUpdate()
-        Bukkit.broadcastMessage("phase 3!!!!!!!!!!!!!!!!!").times(5)
-        Bukkit.broadcastMessage("DIAMOND!!!!!!!!!!!").times(5)
+        Bukkit.broadcastMessage("phase 3!!!!!!!!!!!!!!!!!")
+        Bukkit.broadcastMessage("${ChatColor.GRAY}敵チームのネクサスを叩けるようになりました!")
+        Bukkit.broadcastMessage("${ChatColor.GRAY}ブレイズロッドが看板で購入できるよになりました!")
         Bukkit.getOnlinePlayers().forEach{ it.playSound(it.location, Sound.AMBIENCE_THUNDER, 1F,1F)}
         thunderSound()
     }
@@ -75,14 +79,16 @@ class PhaseController {
         if (phase4Called) return
         phase4Called = true
         ScoreboardAnni.currentPhaseUpdate()
-        Bukkit.broadcastMessage("phase 4!!!!!!!!!!!!!!!!!").times(5)
+        Bukkit.broadcastMessage("phase 4!!!!!!!!!!!!!!!!!")
+        Bukkit.broadcastMessage("${ChatColor.GRAY}ガップルがショップで買えるようになりました!")
         thunderSound()
     }
     private fun phase5() {
         if (phase5Called) return
         phase5Called = true
         ScoreboardAnni.currentPhaseUpdate()
-        Bukkit.broadcastMessage("phase 5!!!!!!!!!!!!!!!!!").times(5)
+        Bukkit.broadcastMessage("phase 5!!!!!!!!!!!!!!!!!")
+        Bukkit.broadcastMessage("${ChatColor.GRAY}Nexusへのダメージが2倍になりました!")
         thunderSound()
     }
     private fun thunderSound() {

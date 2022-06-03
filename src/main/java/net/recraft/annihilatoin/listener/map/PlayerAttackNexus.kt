@@ -3,7 +3,6 @@ package net.recraft.annihilatoin.listener.map
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.block.Block
@@ -16,12 +15,11 @@ import org.bukkit.scheduler.BukkitRunnable
 class PlayerAttackNexus: Listener {
     private fun delayRespawn(brokenNexus: Block) {
         brokenNexus.type = Material.BARRIER
-        val runnable = object: BukkitRunnable() {
+        object: BukkitRunnable() {
             override fun run() {
                 brokenNexus.location.block.type = Material.ENDER_STONE
             }
-        }
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Game.plugin, runnable, 3)
+        }.runTaskLater(Game.plugin, 3)
     }
     @EventHandler
     fun onBreakBlock(event: BlockBreakEvent){
