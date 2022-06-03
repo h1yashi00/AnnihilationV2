@@ -4,6 +4,7 @@ import net.minecraft.server.v1_8_R3.NBTTagCompound
 import net.recraft.annihilatoin.objects.*
 import org.bukkit.*
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.generator.ChunkGenerator
@@ -58,6 +59,13 @@ object Util {
         tag.setInt("NoAI", 0)
         nmsEnt.c(tag)
         nmsEnt.f(tag)
+    }
+    fun dontStack(item: ItemStack): ItemStack {
+        val stack = CraftItemStack.asNMSCopy(item)
+        val tag = stack.tag ?: NBTTagCompound()
+        tag.setString("random-id", UUID.randomUUID().toString())
+        stack.setTag(tag)
+        return CraftItemStack.asBukkitCopy(stack)
     }
 
     fun makeWorld(nameWorld: String): World {

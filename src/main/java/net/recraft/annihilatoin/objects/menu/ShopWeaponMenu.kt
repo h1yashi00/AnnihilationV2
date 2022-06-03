@@ -1,9 +1,11 @@
 package net.recraft.annihilatoin.objects.menu
 
+import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.SpecialItem
 import net.recraft.annihilatoin.objects.builder.PriceableItemStackBuilder
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 
 class ShopWeaponMenu: Menu("ShopWeapon") {
@@ -15,6 +17,15 @@ class ShopWeaponMenu: Menu("ShopWeapon") {
             }
             return false
         }
+    }
+
+    override fun createInventory(): Inventory {
+        if (Game.phase.currentPhase >= 4) {
+            return super.createInventory().apply{
+                addItem(PriceableItemStackBuilder(Material.GOLDEN_APPLE).price(80).damage(1).build())
+            }
+        }
+        return super.createInventory()
     }
     init {
         items.add(PriceableItemStackBuilder(Material.IRON_HELMET)       .price(20).build())

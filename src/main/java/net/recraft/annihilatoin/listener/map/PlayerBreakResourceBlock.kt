@@ -7,6 +7,7 @@ import net.recraft.annihilatoin.objects.kit.Miner
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -23,12 +24,12 @@ class PlayerBreakResourceBlock : Listener {
         val savedBlockData = brokenBlock.data
         event.isCancelled = true
         if (ShopWeaponMenu.isSpecialTool(player.itemInHand)) {
-            player.sendMessage("Special Tool cant break ResourceBlocks!!!")
+            player.sendMessage("${ChatColor.RED}ショップアイテムは資源ブロックを採掘できません")
             return
         }
         if (brokenBlock.type == Material.DIAMOND_ORE) {
-            if (Game.phase.currentPhase <= 2) {
-                player.sendMessage("current Phase is ${Game.phase.currentPhase}!! you cannot break Diamond")
+            if (Game.phase.currentPhase <= 1) {
+                player.sendMessage("${ChatColor.RED}フェイズ2移行からダイヤモンドは採掘できます")
                 return
             }
         }

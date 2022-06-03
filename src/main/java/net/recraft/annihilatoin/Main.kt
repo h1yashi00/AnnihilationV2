@@ -41,6 +41,9 @@ fun Player.realTeleport(loc: Location){
 fun Player.team(): GameTeam? {
     return Game.getPlayerData(player.uniqueId).team
 }
+fun Player.invisible(): Boolean {
+    return Game.getPlayerData(player.uniqueId).invisible
+}
 // hideは非同期でやると動作しないので注意しよう｡
 fun Player.hide() {
     Bukkit.getOnlinePlayers().forEach {

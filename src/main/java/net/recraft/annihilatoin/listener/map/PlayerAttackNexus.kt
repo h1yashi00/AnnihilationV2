@@ -4,6 +4,7 @@ import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
@@ -14,7 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable
 
 class PlayerAttackNexus: Listener {
     private fun delayRespawn(brokenNexus: Block) {
-        brokenNexus.type = Material.AIR
+        brokenNexus.type = Material.BARRIER
         val runnable = object: BukkitRunnable() {
             override fun run() {
                 brokenNexus.location.block.type = Material.ENDER_STONE
@@ -31,11 +32,11 @@ class PlayerAttackNexus: Listener {
         event.isCancelled = true
         val player = event.player
         if (ShopWeaponMenu.isSpecialTool(player.itemInHand)) {
-            player.sendMessage("special tool cant break nexus!!")
+            player.sendMessage("${ChatColor.RED}ショップアイテムでは攻撃できません")
             return
         }
         if (Game.phase.currentPhase <= 2) {
-            player.sendMessage("current phase is ${Game.phase.currentPhase}!")
+            player.sendMessage("${ChatColor.RED}フェイズ3移行から攻撃できるようになります｡")
             return
         }
         val playerTeam = Game.getPlayerData(player.uniqueId).team ?: return

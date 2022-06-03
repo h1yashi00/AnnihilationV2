@@ -1,12 +1,15 @@
 package net.recraft.annihilatoin.listener
 
+import net.recraft.annihilatoin.invisible
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.scoreboard.scoreboard_team.ScoreboardTeamManager
+import net.recraft.annihilatoin.team
 import org.bukkit.Bukkit
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.potion.PotionEffect
@@ -40,6 +43,13 @@ class PlayerInvisible(private val scoreboardTeamManager: ScoreboardTeamManager) 
         return false
     }
 
+    @EventHandler
+    fun onBreak(event: BlockBreakEvent) {
+        val player = event.player ?: return
+        if (!player.invisible()) return
+        player.playSound(player.location, Sound.ZOMBIE_REMEDY, 1F, 1F)
+        player.removePotionEffect(PotionEffectType.INVISIBILITY)
+    }
 
     @EventHandler
     fun getDamage(event: EntityDamageEvent) {

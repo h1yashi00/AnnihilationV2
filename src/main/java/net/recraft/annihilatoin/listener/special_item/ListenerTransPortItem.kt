@@ -24,7 +24,7 @@ import java.util.*
 
 class ListenerTransPortItem: Listener {
     private data class SavedBlock(val type: Material, val data: Byte)
-    private data class TransPort(var loc1: Block) {
+    private data class TransPort(val uuid: UUID, var loc1: Block) {
         private val savedBlock1: SavedBlock = SavedBlock(loc1.type, loc1.data)
         private var savedBlock2: SavedBlock? = null
         var loc2: Block? = null
@@ -70,7 +70,7 @@ class ListenerTransPortItem: Listener {
     init {
         object: BukkitRunnable() {
             override fun run() {
-                tps.values.forEach {
+                tps.values().forEach {
                     if (it.loc2 == null) return@forEach
                     showEffect(it.loc1.location);
                     showEffect(it.loc2!!.location) }
@@ -91,9 +91,37 @@ class ListenerTransPortItem: Listener {
             }
         }.runTaskTimerAsynchronously(Game.plugin, 0, 20)
     }
-    private val tps = HashMap<UUID, TransPort>()
+    private val tps = object {
+        val buffer = ArrayList<TransPort>()
+        fun remove(uuid: UUID) {
+            buffer.iterator().forEach { if (it.uuid == uuid) it.remove(); buffer.remove(it) }
+        }
+        fun remove(tp: TransPort) {
+            tp.remove()
+            buffer.remove(tp)
+        }
+        fun add(tp: TransPort) {
+            buffer.add(tp)
+        }
+        operator fun get(uuid: UUID): TransPort? {
+            buffer.forEach { if (it.uuid == uuid) return it }
+            return null
+        }
+        fun clear() {
+            buffer.iterator().forEach {
+                it.remove()
+            }
+            buffer.clear()
+        }
+        fun values(): MutableIterator<TransPort> {
+            return buffer.iterator()
+        }
+        fun contains(uuid: UUID): Boolean {
+            buffer.forEach { if(it.uuid == uuid) return true }
+            return false
+        }
+    }
     fun disable() {
-        tps.values.forEach { it.remove() }
         tps.clear()
     }
     // プレイヤー一人一つ???
@@ -118,7 +146,7 @@ class ListenerTransPortItem: Listener {
         event.isCancelled = true
     }
     private fun checkAbove(loc: Location): Boolean {
-        tps.values.forEach {
+        tps.values().forEach {
             val clonedTp1y1 = it.loc1.location.clone().apply {y+=1}
             val clonedTp1y2 = it.loc1.location.clone().apply {y+=2}
             val clonedTp2y1 = it.loc2?.location?.clone()?.apply{y+=1}
@@ -134,6 +162,7 @@ class ListenerTransPortItem: Listener {
     fun onPlayerInteract(event: PlayerInteractEvent) {
         if (event.action != Action.RIGHT_CLICK_BLOCK) return
         val player = event.player
+        if (!player.isSneaking) return
         val item = player.itemInHand ?: return
         if (!Game.isStart) return
         if (!SpecialItem.isTeleportItem(item)) return
@@ -155,7 +184,7 @@ class ListenerTransPortItem: Listener {
         val block = event.clickedBlock ?: return
         // まだ設置していない
         if (!tps.contains(player.uniqueId)) {
-            tps[player.uniqueId] = TransPort(block)
+            tps.add(TransPort(player.uniqueId, block))
         }
         // 片方設置済み
         else {
@@ -169,6 +198,9 @@ class ListenerTransPortItem: Listener {
             tp.loc2 = block
             if (handicapCapCoolDown.contains(player.uniqueId)) handicapCapCoolDown.remove(player.uniqueId)
             handicapCapCoolDown.add(CoolDown(player.uniqueId))
+            val handItem = player.itemInHand.clone().apply { amount = 1}
+            val inv = player.inventory
+            inv.removeItem(handItem)
             player.sendMessage("${ChatColor.GRAY}利用可能まで${SpecialItem.handicapCapCoolDown}秒かかります")
         }
     }
@@ -193,15 +225,20 @@ class ListenerTransPortItem: Listener {
             if (it.objects.spawn3.location == loc) return false
         }
         if (ResourceBlocks.isResourceBlocks(loc.block.type)) return false
-        if (isTransPortLocation(loc)) return false
+        if (getTransPortLocation(loc) != null) return false
+        if (loc.block.type == Material.OBSIDIAN) return false
+        if (loc.block.type == Material.ANVIL) return false
+        if (loc.block.type == Material.WORKBENCH) return false
+        if (loc.block.type == Material.ENCHANTMENT_TABLE) return false
+        if (loc.block.type == Material.CHEST) return false
         val blockY1 = loc.clone().apply{y+=1}.block
         val blockY2 = loc.clone().apply{y+=2}.block
         if (!(blockY1.type == Material.AIR && blockY2.type == Material.AIR)) return false
         return true
     }
-    private fun isTransPortLocation(loc: Location): Boolean {
-        tps.values.forEach {transPort ->  if (transPort.loc1.location == loc || transPort.loc2?.location == loc) return true}
-        return false
+    private fun getTransPortLocation(loc: Location): TransPort? {
+        tps.values().forEach {transPort ->  if (transPort.loc1.location == loc || transPort.loc2?.location == loc) return transPort}
+        return null
     }
     private fun showEffect(location: Location) {
         val addX = Random().nextDouble()
@@ -216,11 +253,11 @@ class ListenerTransPortItem: Listener {
         if (!event.isSneaking) return
         val player = event.player
         val block = player.location.block.location.apply {y-=1}.block
-        tps.forEach { (uuid, tp) ->
-            if (tp.loc2 == null) return@forEach
-            val loc = if (tp.loc1 == block) {tp.loc2!! } else if (tp.loc2 == block) {tp.loc1} else return@forEach
+        tps.values().forEach {
+            if (it.loc2 == null) return@forEach
+            val loc = if (it.loc1 == block) {it.loc2!! } else if (it.loc2 == block) {it.loc1} else return@forEach
             // tpがplayerが設置したものか検査する
-            if (player.uniqueId == uuid) {
+            if (player.uniqueId == it.uuid) {
                 // cooldown中だったら中止
                 if (handicapCapCoolDown.contains(player.uniqueId)) {
                     player.sendMessage("${ChatColor.RED}利用可能まで${handicapCapCoolDown[player.uniqueId]!!.coolDown}秒")
@@ -234,9 +271,24 @@ class ListenerTransPortItem: Listener {
         }
     }
     @EventHandler
+    fun enemyPlayerInteract(event: PlayerInteractEvent) {
+        if (event.action == Action.RIGHT_CLICK_AIR || event.action == Action.LEFT_CLICK_AIR) return
+        val player = event.player
+        val block  = event.clickedBlock
+        if (block.type != Material.QUARTZ_ORE) return
+        val tp = getTransPortLocation(block.location) ?: return
+        if (player.uniqueId != tp.uuid) {
+            tps.remove(tp)
+        }
+    }
+    @EventHandler
     fun onBreak(event: BlockBreakEvent) {
         if (event.block.type != Material.QUARTZ_ORE) return
-        if (!isTransPortLocation(event.block.location)) return
+        val tp = getTransPortLocation(event.block.location) ?: return
+        val player = event.player
+        // 自分の
+        if (tp.uuid != player.uniqueId) return
+        tps.remove(tp)
         event.isCancelled = true
     }
 }

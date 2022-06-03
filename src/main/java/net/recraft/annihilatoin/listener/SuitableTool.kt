@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.listener
 
 import org.bukkit.Material.*
 import net.recraft.annihilatoin.listener.SuitableTool.Tool.*
+import org.bukkit.GameMode
 import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -33,6 +34,7 @@ class SuitableTool: Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     fun onBreak(event: BlockBreakEvent) {
         val player = event.player
+        if (player.gameMode == GameMode.CREATIVE) return
         val item = player.itemInHand
         val block = event.block
         val tool = Tool.getTool(item)

@@ -11,6 +11,9 @@ import java.util.*
 
 
 class Nexus (location: Location) : Placeable(location, Material.ENDER_STONE) {
+    init {
+        location.clone().apply{y-=1}.block.type = Material.BARRIER
+    }
     private var _hp = 75
     val hp get() = _hp
     fun damage(player: Player) {

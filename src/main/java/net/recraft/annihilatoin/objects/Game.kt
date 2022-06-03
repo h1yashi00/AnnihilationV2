@@ -59,7 +59,7 @@ object Game : KoinComponent {
             override fun run() {
                 phase.pass()
             }
-        }, 0, 20)
+        }, 0, 1)
     }
     fun end() {
     }
