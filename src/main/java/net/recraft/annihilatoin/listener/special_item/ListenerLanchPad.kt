@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.listener.special_item
 
 import net.recraft.annihilatoin.listener.CoolDown
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -29,6 +30,7 @@ class ListenerLanchPad: Listener {
         coolDown.add(player)
         val dir = player.location.direction.clone().multiply(4).apply{setY(0)}
         player.velocity = dir
+        player.playSound(player.location, Sound.WITHER_SHOOT, 1F,3F)
     }
 
     private fun isLanchPad(block: Block): Boolean {
