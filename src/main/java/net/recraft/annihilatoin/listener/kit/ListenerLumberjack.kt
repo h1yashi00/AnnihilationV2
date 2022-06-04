@@ -3,6 +3,7 @@ package net.recraft.annihilatoin.listener.kit
 import net.recraft.annihilatoin.kit
 import net.recraft.annihilatoin.listener.SuitableTool
 import net.recraft.annihilatoin.objects.kit.KitType
+import net.recraft.annihilatoin.objects.kit.Lumberjack
 import net.recraft.annihilatoin.team
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.entity.Player
@@ -23,7 +24,7 @@ class ListenerLumberjack: Listener {
         if (tool != SuitableTool.Tool.AXE) return
         victim.inventory.armorContents.forEach {
             val currentDurability = Util.getItemDurability(it)
-            Util.setItemDurability(it, currentDurability-3)
+            Util.setItemDurability(it, currentDurability-Lumberjack.durabilityDamage)
         }
         victim.updateInventory()
     }
