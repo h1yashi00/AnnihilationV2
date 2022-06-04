@@ -47,6 +47,9 @@ class CoolDown(
             player.sendMessage("${ChatColor.RED}$notReadyMsg${coolDownPlayers[player.uniqueId]}")
         }
     }
+    fun contains(player: Player): Boolean {
+        return coolDownPlayers.containsKey(player.uniqueId)
+    }
 
     fun isReady(player: Player): Boolean {
         return !coolDownPlayers.containsKey(player.uniqueId)

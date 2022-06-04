@@ -15,6 +15,7 @@ import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.PlayerLeaveUnfairAdvantage
 import net.recraft.annihilatoin.objects.VoteManager
+import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.menu.KitMenu
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
@@ -41,6 +42,11 @@ fun Player.realTeleport(loc: Location){
 fun Player.team(): GameTeam? {
     return Game.getPlayerData(player.uniqueId).team
 }
+
+fun Player.kit(): KitType {
+    return Game.getPlayerData(player.uniqueId).kitType
+}
+
 fun Player.invisible(): Boolean {
     return Game.getPlayerData(player.uniqueId).invisible
 }
@@ -113,6 +119,7 @@ class Main : JavaPlugin() {
             add( ListenerFlaggedPlayerVoid() )
             add( PlayerDeath() )
             // kits
+            add( ListenerMiner())
             add( KitScout() )
             add( SoulBound() )
             add( ListenerAcrobat() )
@@ -142,7 +149,7 @@ class Main : JavaPlugin() {
         val voteManager = VoteManager(worldNames)
         Bukkit.getOnlinePlayers().forEach { ScoreboardVote.display(it ?: return@forEach) }
         /* ↑↑↑↑↑↑↑  初期化するために必要なもの   ↑↑↑↑↑↑↑ */
-        val debug = false
+        val debug = true
         // vote初期化
         getCommand("vote").executor = CommandVote(voteManager)
         getCommand("teleport").executor = CommandTeleportSpecificLocation()

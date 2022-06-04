@@ -11,6 +11,7 @@ import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.inventory.ItemStack
@@ -18,7 +19,7 @@ import org.bukkit.scheduler.BukkitRunnable
 
 // TODO 幸運エンチャントの効果がつくようにアイテムを増やす｡
 class PlayerBreakResourceBlock : Listener {
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     fun onBreakResource(event: BlockBreakEvent) {
         val player = event.player
         val brokenBlock = event.block
