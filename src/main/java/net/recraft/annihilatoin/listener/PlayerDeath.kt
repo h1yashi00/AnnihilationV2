@@ -10,6 +10,7 @@ import org.bukkit.scheduler.BukkitRunnable
 class PlayerDeath: Listener {
     @EventHandler
     fun onPlayerDeath(event: PlayerDeathEvent) {
+        event.deathMessage = ""
         object:BukkitRunnable() {
             override fun run() {
                 event.entity.spigot().respawn()
