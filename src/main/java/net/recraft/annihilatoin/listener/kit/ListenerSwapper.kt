@@ -39,7 +39,7 @@ class ListenerSwapper: Listener {
         val type = getPlayerFaceBlock(player)
         if (type != Material.AIR) return
         var loc = player.location.apply {y += 1}
-        for (i in 0..9) {
+        for (i in 0..16) {
             val direction = loc.direction
             // 0,1,2は 正面下のブロックも反応してしまうのでとばす
             if (!(i == 0 || i == 1 || i == 2)) { // 0,1,2じゃないとき検知
