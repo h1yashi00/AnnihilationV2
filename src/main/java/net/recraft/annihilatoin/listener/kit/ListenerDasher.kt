@@ -42,7 +42,7 @@ class ListenerDasher: Listener {
         activeAbility(player)
     }
 
-    private fun oneBlockTeleport(player: Player, firstDir: Vector): Boolean {
+    private fun oneBlockTeleport(player: Player, firstDir: Vector, food: Boolean): Boolean {
         val foodLevel = player.foodLevel
         if (foodLevel < 0) return false
         val location = player.location
@@ -55,7 +55,9 @@ class ListenerDasher: Listener {
         if(added.clone().apply{y+=1}.block.type != Material.AIR) return false
         if(added.clone().apply{y+=2}.block.type != Material.AIR) return false
         ParticleEffect.FIREWORKS_SPARK.display(0F, 0F, 0F, 0F, 1, added, 256.0)
-        player.setFoodLevel(foodLevel -1)
+        if (food) {
+            player.setFoodLevel(foodLevel -1)
+        }
         player.teleport(added.apply{pitch = pitchNew; yaw = yawNew})
         return true
     }
@@ -65,7 +67,8 @@ class ListenerDasher: Listener {
         object: BukkitRunnable() {
             var count = 0
             override fun run() {
-                if (!oneBlockTeleport(player,firstDir)) {
+                val food = count % 2 == 0
+                if (!oneBlockTeleport(player,firstDir, food)) {
                     cancel()
                 }
                 if (5 < count) {

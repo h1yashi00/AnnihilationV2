@@ -25,6 +25,6 @@ class Dasher: KitBase(
 
     override fun setItems(playerInventory: PlayerInventory) {
         super.setItems(playerInventory)
-        playerInventory.setItem(3, ItemStackBuilder(Material.INK_SACK).title(title).build())
+        playerInventory.setItem(3, ItemStackBuilder(Material.INK_SACK).damage(10).title(title).build())
     }
 }
