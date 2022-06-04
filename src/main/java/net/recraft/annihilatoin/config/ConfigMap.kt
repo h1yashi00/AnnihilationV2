@@ -26,7 +26,7 @@ class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
     }
     fun write(world: World, saveObject: String, team: GameTeam, value: String) {
         val section = fileConfig.getConfigurationSection(world.name)
-        section.set("$saveObject.${team.name}", value)
+        section.set("$saveObject.${team.name.toLowerCase()}", value)
         fileConfig.save(file)
     }
     fun getTeamGenerator(worldName: String): GameGenerator {

@@ -142,7 +142,7 @@ class Main : JavaPlugin() {
         val voteManager = VoteManager(worldNames)
         Bukkit.getOnlinePlayers().forEach { ScoreboardVote.display(it ?: return@forEach) }
         /* ↑↑↑↑↑↑↑  初期化するために必要なもの   ↑↑↑↑↑↑↑ */
-        val debug = true
+        val debug = false
         // vote初期化
         getCommand("vote").executor = CommandVote(voteManager)
         getCommand("teleport").executor = CommandTeleportSpecificLocation()
@@ -170,7 +170,7 @@ class Main : JavaPlugin() {
                 if (Bukkit.getOnlinePlayers().isNotEmpty()) {
                     cancel()
                     // プレイヤーがやってくるまで止まっている 一人でも入れば↓が動き出し､2分後にGameが始まる
-                    delayVoting.runTaskLater(this@Main, 20 * 60 * 2)
+                    delayVoting.runTaskLater(this@Main, 10 * 20)//20 * 60 * 2)
                 }
             }
 

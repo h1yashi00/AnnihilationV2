@@ -5,6 +5,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
+// TODO VOTEの時間を調整する
 class VoteManager(mapList: List<String>) {
     private val _candidateMaps: ArrayList<Candidate>
     init {
@@ -17,7 +18,7 @@ class VoteManager(mapList: List<String>) {
     companion object {
         var section: Int = 0
     }
-    private fun getCandidate(name: String): Candidate {
+    private fun setCandidate(name: String): Candidate {
         val c = Candidate(name, section)
         section += 1
         return c
@@ -30,7 +31,7 @@ class VoteManager(mapList: List<String>) {
     }
 
     fun vote(uuid: UUID, worldName: String) :Boolean {
-        val c = candidate(worldName) ?: return false
+        val c = getCandidate(worldName) ?: return false
         votedPlayers[uuid] = c.apply{
             amount += 1
         }
@@ -60,7 +61,7 @@ class VoteManager(mapList: List<String>) {
         return "world_${resultCandidate.worldName}"
     }
 
-    private fun candidate(worldName: String): Candidate? {
+    private fun getCandidate(worldName: String): Candidate? {
         for (candidate in _candidateMaps) {
             if (candidate.worldName == worldName) return candidate
         }
@@ -68,6 +69,6 @@ class VoteManager(mapList: List<String>) {
     }
 
     private fun addCandidate(name: String) {
-        _candidateMaps.add(getCandidate(name))
+        _candidateMaps.add(setCandidate(name))
     }
 }

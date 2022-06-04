@@ -1,5 +1,6 @@
 package net.recraft.annihilatoin.listener
 
+import com.sun.org.apache.xpath.internal.axes.AxesWalker
 import org.bukkit.Material.*
 import net.recraft.annihilatoin.listener.SuitableTool.Tool.*
 import org.bukkit.GameMode
@@ -26,6 +27,7 @@ class SuitableTool: Listener {
                     tool.type.name.contains("spade", true)    -> SPADE
                     tool.type.name.contains("shears", true)   -> SHEARS
                     tool.type.name.contains("sword", true)    -> SWORD
+                    tool.type.name.contains("axe", true)      -> AXE
                     else -> NO_TOOL
                 }
             }

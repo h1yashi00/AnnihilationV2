@@ -38,7 +38,7 @@ class ShopWeaponMenu: Menu("ShopWeapon") {
         items.add(PriceableItemStackBuilder(Material.BOW)               .price(5).build())
         items.add(PriceableItemStackBuilder(Material.ARROW)             .price(5).amount(32).build())
         items.add(PriceableItemStackBuilder(Material.EXP_BOTTLE)        .price(5).amount(16).build())
-        items.add(PriceableItemStackBuilder(Material.COOKED_BEEF)       .price(20).amount(16).build())
+        items.add(PriceableItemStackBuilder(Material.COOKED_BEEF)       .price(4).amount(16).build())
         items.add(PriceableItemStackBuilder(Material.DIAMOND_PICKAXE)   .price(20).enchantment(Enchantment.DIG_SPEED, 5).lore(listOf("Special Tool", "special diamond pickaxe that can't mine ores")).build())
         items.add(PriceableItemStackBuilder(Material.DIAMOND_AXE)       .price(20).enchantment(Enchantment.DIG_SPEED, 5).lore(listOf("Special Tool", "special diamond axe that can't mine Logs")).build())
         items.add(PriceableItemStackBuilder(Material.DIAMOND_SPADE)     .price(20).enchantment(Enchantment.DIG_SPEED, 5).lore(listOf("Special Tool", "special diamond spade")).build())

@@ -171,8 +171,9 @@ class ListenerTransPortItem: Listener {
             player.sendMessage("${ChatColor.RED}最大${SpecialItem.maxHight}までしか設置できません!")
             return
         }
-        if (!isPlaceableDistance(event.clickedBlock.location, team.objects.nexus.location)) {
-            player.sendMessage("${ChatColor.RED}自軍から離れすぎています!")
+        val ownTeamNexusPlacedTpDistance = Util.euclideanDistance(event.clickedBlock.location, team.objects.nexus.location)
+        if (ownTeamNexusPlacedTpDistance >= SpecialItem.maxDisntance) {
+            player.sendMessage("${ChatColor.RED}自軍から離れすぎています! 距離:$ownTeamNexusPlacedTpDistance 最高${SpecialItem.maxDisntance}まで")
             return
         }
         if (!isPlaceableBlock(event.clickedBlock.location)) {
@@ -207,10 +208,6 @@ class ListenerTransPortItem: Listener {
 
     private fun isPlaceableHeight(location: Location): Boolean {
         return location.y < SpecialItem.maxHight
-    }
-
-    private fun isPlaceableDistance(from: Location, to: Location): Boolean {
-        return Util.euclideanDistance(from, to) < SpecialItem.maxDisntance
     }
 
     private fun isPlaceableBlock(loc: Location): Boolean {

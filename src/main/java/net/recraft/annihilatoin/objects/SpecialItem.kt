@@ -17,7 +17,7 @@ class SpecialItem {
             return true
         }
         // 設置できる最大の距離
-        const val maxDisntance = 80
+        const val maxDisntance = 180
         const val maxHight     = 80
         val item = createItem()
         private fun createItem(): ItemStack {
