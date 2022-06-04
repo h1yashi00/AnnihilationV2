@@ -43,7 +43,12 @@ object Util {
         return "${team.chatColor}${player.name}${ChatColor.WHITE}"
     }
 
-
+    fun getItemDurability(item: ItemStack): Int {
+        return (item.type.maxDurability - item.durability)
+    }
+    fun setItemDurability(item: ItemStack, num: Int) {
+        item.durability = (item.type.maxDurability - num).toShort()
+    }
 
     fun isLog(material: Material):Boolean {
         return material == Material.LOG || material == Material.LOG_2;

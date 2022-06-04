@@ -26,36 +26,36 @@ import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
+import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
-import sun.audio.AudioPlayer
 import java.io.File
 
 
 // external functions
 fun Player.realTeleport(loc: Location){
     val cloneLoc = loc.clone()
-    player.teleport(cloneLoc.apply{x+=0.5; z+=0.5})
+    teleport(cloneLoc.apply{x+=0.5; z+=0.5})
 }
 fun Player.team(): GameTeam? {
-    return Game.getPlayerData(player.uniqueId).team
+    return Game.getPlayerData(uniqueId).team
 }
 
 fun Player.kit(): KitType {
-    return Game.getPlayerData(player.uniqueId).kitType
+    return Game.getPlayerData(uniqueId).kitType
 }
 
 fun Player.invisible(): Boolean {
-    return Game.getPlayerData(player.uniqueId).invisible
+    return Game.getPlayerData(uniqueId).invisible
 }
 // hideは非同期でやると動作しないので注意しよう｡
 fun Player.hide() {
     Bukkit.getOnlinePlayers().forEach {
         if (it == null) return@forEach
-        if (it.uniqueId == player.uniqueId) return@forEach
-        it.hidePlayer(player)
+        if (it.uniqueId == uniqueId) return@forEach
+        it.hidePlayer(this)
     }
 }
 // showは非同期でやる動作しない
@@ -120,6 +120,7 @@ class Main : JavaPlugin() {
             add( PlayerDeath() )
             // kits
             add( ListenerMiner())
+            add( ListenerLumberjack() )
             add( KitScout() )
             add( SoulBound() )
             add( ListenerAcrobat() )
