@@ -158,19 +158,25 @@ class Main : JavaPlugin() {
         }
 
         val delayVoting = object: BukkitRunnable() {
+            var currentWaitTime = VoteManager.waitTime
+            // いい秒毎実行される
             override fun run() {
+                currentWaitTime -= 1
+                ScoreboardVote.timeUpdate(currentWaitTime)
+                // currentWaitTime が 0になるまで実行されない
+                if (currentWaitTime >= 0) return
                 val mapName = voteManager.result()
                 val generator = configMap.getTeamGenerator(mapName)
                 Game.init(generator)
                 Game.start()
+                cancel()
             }
         }
         val waitPlayerJoin = object: BukkitRunnable() {
             override fun run() {
                 if (Bukkit.getOnlinePlayers().isNotEmpty()) {
                     cancel()
-                    // プレイヤーがやってくるまで止まっている 一人でも入れば↓が動き出し､2分後にGameが始まる
-                    delayVoting.runTaskLater(this@Main, 10 * 20)//20 * 60 * 2)
+                    delayVoting.runTaskTimer(this@Main, 20, 20)
                 }
             }
 

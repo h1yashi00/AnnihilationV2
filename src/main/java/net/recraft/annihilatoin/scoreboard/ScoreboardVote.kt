@@ -18,6 +18,7 @@ object ScoreboardVote: ScoreboardUtil() {
             displayName = "${ChatColor.YELLOW}${ChatColor.BOLD}VoteMap"
             displaySlot = DisplaySlot.SIDEBAR
             candidates.forEach { getScore(candidateFormat(it)).score = it.section}
+            getScore(remainingTime(VoteManager.waitTime)).score = VoteManager.timeSection
         }
     }
     fun voteUpdate(candidate: VoteManager.Candidate) {
@@ -25,7 +26,15 @@ object ScoreboardVote: ScoreboardUtil() {
             replaceScore(it, candidate.section, candidateFormat(candidate))
         }
     }
+    fun timeUpdate(currentTime: Int) {
+        Bukkit.getOnlinePlayers().forEach {
+            replaceScore(it, VoteManager.timeSection, remainingTime(currentTime))
+        }
+    }
     private fun candidateFormat(candidate: VoteManager.Candidate): String {
-        return "${candidate.worldName} ${ChatColor.AQUA}${candidate.amount}"
+        return "${ChatColor.BOLD}${ChatColor.DARK_AQUA}${candidate.worldName} ${ChatColor.AQUA}${candidate.amount}"
+    }
+    private fun remainingTime(time: Int): String {
+        return "${ChatColor.GRAY}マップ選択残り時間: ${ChatColor.AQUA}${time}秒"
     }
 }

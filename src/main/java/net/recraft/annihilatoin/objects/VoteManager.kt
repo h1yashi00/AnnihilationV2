@@ -16,11 +16,13 @@ class VoteManager(mapList: List<String>) {
         ScoreboardVote.registerCandidates(_candidateMaps.clone() as ArrayList<Candidate>)
     }
     companion object {
-        var section: Int = 0
+        var section: Int = -1
+        val timeSection = section -2
+        const val waitTime = 20
     }
     private fun setCandidate(name: String): Candidate {
         val c = Candidate(name, section)
-        section += 1
+        section -= 1
         return c
     }
     data class Candidate(val worldName: String, val section: Int, var amount: Int = 0)
