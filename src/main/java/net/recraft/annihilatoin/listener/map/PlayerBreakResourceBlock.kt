@@ -51,8 +51,8 @@ class PlayerBreakResourceBlock : Listener {
                 player.inventory.addItem(item)
             }
         }
-
-        var fortuneAmount = 1
+        // 幸運エンチャント
+        var fortuneAmount = resourceBlock.getItemStack().amount
         if (isAffectedFortune(resourceBlock.type)) {
             fortuneAmount = isFortune(player.itemInHand)
         }

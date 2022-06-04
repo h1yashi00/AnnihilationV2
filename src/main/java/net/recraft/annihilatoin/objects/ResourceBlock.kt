@@ -44,7 +44,7 @@ enum class ResourceBlocks(val type: Material, val item: Material, val exp: Int =
             JUNGLE -> ItemStack(item, 1, 3);
             ACACIA -> ItemStack(item, 1, 0);
             DARK_OAK -> ItemStack(item, 1, 1);
-            MELON -> ItemStack(item, randomAmount() + 2);
+            MELON -> ItemStack(item, randomAmount() + 4);
             GRAVEL -> ItemStack(gravelRandomItem(), randomAmount());
             else -> ItemStack(item, 1);
         }
