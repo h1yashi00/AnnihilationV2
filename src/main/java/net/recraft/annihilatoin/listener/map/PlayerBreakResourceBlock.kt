@@ -17,7 +17,6 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.scheduler.BukkitRunnable
 
-// TODO 幸運エンチャントの効果がつくようにアイテムを増やす｡
 class PlayerBreakResourceBlock : Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onBreakResource(event: BlockBreakEvent) {
