@@ -107,11 +107,7 @@ class KitScout : Listener {
         val worldUid = location.world.uid
         val upper = Bukkit.getWorld(worldUid).getBlockAt(hook_X, hook_Y + 1, hook_Z)
         val below = Bukkit.getWorld(worldUid).getBlockAt(hook_X, hook_Y - 1, hook_Z)
-        val north = Bukkit.getWorld(worldUid).getBlockAt(hook_X + 1, hook_Y, hook_Z)
-        val south = Bukkit.getWorld(worldUid).getBlockAt(hook_X - 1, hook_Y, hook_Z)
-        val east = Bukkit.getWorld(worldUid).getBlockAt(hook_X, hook_Y, hook_Z + 1)
-        val west = Bukkit.getWorld(worldUid).getBlockAt(hook_X, hook_Y, hook_Z - 1)
-        return !isAir(upper) || !isAir(below) || !isAir(north) || !isAir(south) || !isAir(east) || !isAir(west)
+        return !isAir(upper) || !isAir(below)
     }
 
 
