@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.listener
 
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.Game.invisible
+import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.scoreboard.scoreboard_team.ScoreboardTeamManager
 import org.bukkit.Bukkit
 import org.bukkit.Sound
@@ -60,6 +61,6 @@ class PlayerInvisible : Listener {
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
         val player = event.player
-        ScoreboardTeamManager.joinPacket(player)
+        ScoreboardTeamManager.joinPacket(player, player.team() ?: return)
     }
 }

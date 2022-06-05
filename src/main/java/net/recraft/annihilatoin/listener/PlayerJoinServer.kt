@@ -24,7 +24,6 @@ class PlayerJoinServer(
         val scoreboard: ScoreboardUtil = ScoreboardAnni
         scoreboard.display(event.player)
         val player = event.player
-        val uuid = player.uniqueId
         player.inventory.apply {
             setHelmet       (ItemStack(Material.AIR))
             setChestplate   (ItemStack(Material.AIR))

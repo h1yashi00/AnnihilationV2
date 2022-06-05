@@ -116,7 +116,8 @@ object Game : KoinComponent {
         }, 0, 20)
     }
     private fun randomTeamJoin(player: Player) {
-        getPlayerData(player.uniqueId).team = getLowestTeam()
+        player.setTeam(getLowestTeam())
+//        getPlayerData(player.uniqueId).team = getLowestTeam()
     }
     private fun getLowestTeam(): GameTeam {
         var lowestTeamCount = 9999

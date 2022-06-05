@@ -26,9 +26,8 @@ object ScoreboardTeamManager {
     private fun getInvPacket(team: GameTeam): ScoreboardTeamPacket {
         return invTeamsScoreboard[team]!!
     }
-    fun joinPacket(player: Player) {
+    fun joinPacket(player: Player, team: GameTeam) {
         // playerに対して送られる｡
-        val team = player.team() ?: return
         GameTeam.values().forEach {
             if (team == it) {
                 getPacket(it).joinPacket(player)
@@ -42,11 +41,10 @@ object ScoreboardTeamManager {
         }
         val nonTeamPlayers = Game.getNonPlayers(team)
         nonTeamPlayers.forEach { nonPlayer ->
-//            val pd = Game.getPlayerData(nonPlayer.uniqueId)
-            val tam = nonPlayer.team()
+            val nonTeam = nonPlayer.team() ?: return@forEach
             if (!nonPlayer.invisible()) return@forEach
-            getPacket(team).fakeRemovePlayer(nonPlayer, listOf(player))
-            getInvPacket(team).fakeAddPlayer(nonPlayer, listOf(player))
+            getPacket(nonTeam).fakeRemovePlayer(nonPlayer, listOf(player))
+            getInvPacket(nonTeam).fakeAddPlayer(nonPlayer, listOf(player))
         }
     }
 
@@ -57,7 +55,7 @@ object ScoreboardTeamManager {
     fun addTeam(player: Player,team: GameTeam) {
 //      playerがすでに､他のチームに入っていて､ScoreboardTeamManagerのaddTeamのパケットを送信していた場合､removeTeam(player)をする必要がある｡
         val bound = Bukkit.getOnlinePlayers().toList()
-        joinPacket(player)
+        joinPacket(player,team)
         getPacket(team).addPlayer(player, bound)
     }
     fun setPlayerInv(player: Player): Boolean {
