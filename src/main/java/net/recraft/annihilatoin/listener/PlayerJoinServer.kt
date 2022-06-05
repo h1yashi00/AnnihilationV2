@@ -1,6 +1,8 @@
 package net.recraft.annihilatoin.listener
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.kitType
+import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.PlayerLeaveUnfairAdvantage
 import net.recraft.annihilatoin.objects.kit.KitGenerator
 import net.recraft.annihilatoin.realTeleport
@@ -31,11 +33,10 @@ class PlayerJoinServer(
         }
         player.inventory.clear()
         if (!Game.isStart) player.realTeleport(Game.lobby.spawnLocation)
-        val pd = Game.getPlayerData(uuid)
-        val kitType = pd.kitType
+        val kitType = player.kitType()
         val kit = KitGenerator.get(kitType)
         kit.setInit(player)
-        val team = pd.team
+        val team = player.team()
         if (team == null) {player.realTeleport(Game.lobby.spawnLocation)}
         else playerLeaveUnfairAdvantage.respawn(player, team)
     }

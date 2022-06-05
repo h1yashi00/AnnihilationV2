@@ -36,6 +36,10 @@ object Util {
         return Location(world, x.toDouble(),y.toDouble(),z.toDouble())
     }
 
+    fun broadcast(msg: String) {
+        Bukkit.getOnlinePlayers().forEach { it.sendMessage(msg) }
+    }
+
     fun getColoredTeamName(team: GameTeam): String {
         return "${team.chatColor}${team.name.capitalize()}${ChatColor.WHITE}"
     }

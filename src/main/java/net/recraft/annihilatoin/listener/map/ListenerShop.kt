@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.listener.map
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.builder.Priceable
 import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
@@ -9,6 +10,7 @@ import net.recraft.annihilatoin.util.Util
 import org.bukkit.Color
 import org.bukkit.GameMode
 import org.bukkit.Material
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
@@ -43,15 +45,15 @@ class ListenerShop(private val shopBrewingMenu: ShopBrewingMenu, private val sho
         if (Util.isAir(shopItem)) return
         event.isCancelled = true
         val price = Priceable.getPrice(shopItem)
-        val player = event.whoClicked
+        val player = if (event.whoClicked is Player) {event.whoClicked as Player} else {return}
         val playerInventory = player.inventory
         if (player.gameMode == GameMode.CREATIVE) playerInventory.addItem(shopItem)
         if (playerInventory.contains(Material.GOLD_INGOT, price)) { playerInventory.removeItem(ItemStack(Material.GOLD_INGOT, price)) } else { return }
-        val addItem = if (shopItem.type == Material.WOOL) {colorWool(shopItem, player.uniqueId)} else {shopItem}
+        val addItem = if (shopItem.type == Material.WOOL) {colorWool(shopItem, player)} else {shopItem}
         playerInventory.addItem(addItem)
     }
-    private fun colorWool(whiteWool: ItemStack, uuid: UUID): ItemStack {
-        val color = Game.getPlayerData(uuid).team?.color ?: Color.WHITE
+    private fun colorWool(whiteWool: ItemStack, player: Player): ItemStack {
+        val color = player.team()?.color ?: Color.WHITE
         val amount = whiteWool.amount
         return when(color) {
             Color.RED    -> ItemStack(Material.WOOL, amount, 14)

@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.listener.kit
 
 import net.recraft.annihilatoin.listener.CoolDown
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.kitType
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Scout
 import org.bukkit.*
@@ -27,7 +28,7 @@ class KitScout : Listener {
     @EventHandler
     fun onRightClickFishingRod(event: PlayerFishEvent) {
         val player = event.player
-        if (Game.getPlayerData(player.uniqueId).kitType != KitType.SCOUT) return
+        if (player.kitType() != KitType.SCOUT) return
         if (event.state == PlayerFishEvent.State.FISHING) return
         val handItem = event.player.itemInHand
         if (!Scout.isScoutFishingRod(handItem)) return
@@ -60,7 +61,7 @@ class KitScout : Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onDamagePlayer(event: EntityDamageByEntityEvent) {
         val player: Player= if (event.entity is Player) { event.entity as Player }else return
-        if (Game.getPlayerData(player.uniqueId).kitType != KitType.SCOUT) return
+        if (player.kitType() != KitType.SCOUT) return
         player.sendMessage("${ChatColor.GRAY}ダメージを受けました｡${Scout.combatTagCoolDown}秒Grappleが使用できません")
         combatTagCoolDown.add(player)
     }
@@ -68,8 +69,7 @@ class KitScout : Listener {
     @EventHandler
     fun onPlayerSelectInventory(event: PlayerItemHeldEvent) {
         val player = event.player
-        val pd = Game.getPlayerData(player.uniqueId)
-        if (pd.kitType != KitType.SCOUT) return
+        if (player.kitType() != KitType.SCOUT) return
         val currentItem = player.inventory.getItem(event.newSlot)
         val prevItem    = player.inventory.getItem(event.previousSlot)
         if (Scout.isScoutFishingRod(currentItem) || Scout.isScoutFishingRod(prevItem)) {
@@ -82,8 +82,7 @@ class KitScout : Listener {
     fun onDamage(event: EntityDamageEvent) {
         if (event.cause != EntityDamageEvent.DamageCause.FALL) return
         val player: Player = if (event.entity is Player)  {event.entity as Player} else {return}
-        val pd = Game.getPlayerData(player.uniqueId)
-        if (pd.kitType != KitType.SCOUT) return
+        if (player.kitType() != KitType.SCOUT) return
         if (!Scout.isScoutFishingRod(player.itemInHand)) return
         player.sendMessage("${ChatColor.GRAY}fall damage was reduced")
         val damage = event.damage

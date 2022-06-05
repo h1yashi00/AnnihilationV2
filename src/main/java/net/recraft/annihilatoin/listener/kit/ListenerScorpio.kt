@@ -2,6 +2,9 @@ package net.recraft.annihilatoin.listener.kit
 
 import net.recraft.annihilatoin.listener.CoolDown
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.kitType
+import net.recraft.annihilatoin.objects.Game.setVoidCancel
+import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Scorpio
 import net.recraft.annihilatoin.util.ParticleEffect
@@ -25,8 +28,7 @@ class ListenerScorpio: Listener {
         if (item.type != Material.NETHER_STAR) return
         if (!Scorpio.isScorpioItem(item)) return
         val player = event.player
-        val pd = Game.getPlayerData(player.uniqueId)
-        if (pd.kitType != KitType.SCORPIO) return
+        if (player.kitType() != KitType.SCORPIO) return
         if (!coolDown.isReady(player)) {
             coolDown.isNotReadyMsg(player)
             return
@@ -43,8 +45,8 @@ class ListenerScorpio: Listener {
                 ParticleEffect.FIREWORKS_SPARK.display(0F, 0F, 0F, 0F, 1, dropScorpio.location, 256.0)
                 val hitted = getPlayerByLocation(dropScorpio.location, 1.0F)?: return
                 if (hitted.displayName == player.displayName) return
-                val hittedData  = Game.getPlayerData(hitted.uniqueId)
-                if (pd.team == hittedData.team) return
+                val hittedTeam = hitted.team()
+                if (player.team() == hittedTeam) return
                 if (Util.isUnderVoid(player.location)) {
                     player.sendMessage("${ChatColor.RED}奈良スコピは許可されていません")
                     return
@@ -53,10 +55,10 @@ class ListenerScorpio: Listener {
                 object: BukkitRunnable() {
                     override fun run() {
                         // 5秒間Voidに行けない
-                        hittedData.voidCancel = false
+                        hitted.setVoidCancel(false)
                     }
                 }.runTaskLater(Game.plugin, 20*5)
-                hittedData.voidCancel = true
+                hitted.setVoidCancel(true)
                 player.playSound(player.location, Sound.DOOR_CLOSE, 1F,0.2F)
                 hitted.playSound(player.location, Sound.DOOR_CLOSE, 1F,0.2F)
                 playEffect(hitted.location.apply {y+=1})

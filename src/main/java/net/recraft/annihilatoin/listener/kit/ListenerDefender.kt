@@ -2,6 +2,8 @@ package net.recraft.annihilatoin.listener.kit
 
 import net.recraft.annihilatoin.listener.CoolDown
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.kitType
+import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.kit.Defender
 import net.recraft.annihilatoin.objects.kit.KitType
@@ -25,11 +27,10 @@ class ListenerDefender: Listener {
         object: BukkitRunnable() {
             override fun run() {
                 Bukkit.getOnlinePlayers().forEach {
-                    val pd = Game.getPlayerData(it.uniqueId)
-                    if (pd.kitType != KitType.DEFENDER) return@forEach
-                    if (pd.team == null) return@forEach
-                    if (!isAbilityActiveDistance(pd.team!!.objects.nexus.location, it.location)) return@forEach
-                    val updateHealth = 20 + getAbilityHealth(pd.team!!)
+                    if (it.kitType() != KitType.DEFENDER) return@forEach
+                    val team = it.team() ?: return@forEach
+                    if (!isAbilityActiveDistance(team.objects.nexus.location, it.location)) return@forEach
+                    val updateHealth = 20 + getAbilityHealth(team)
                     it.healthScale = updateHealth.toDouble()
                     it.addPotionEffect(PotionEffect(PotionEffectType.REGENERATION, 20 * 10, 1))
                 }
@@ -56,17 +57,16 @@ class ListenerDefender: Listener {
     @EventHandler
     fun onRightClick(event: PlayerInteractEvent) {
         val player = event.player
-        val pd = Game.getPlayerData(player.uniqueId)
-        if (pd.kitType != KitType.DEFENDER) return
+        if (player.kitType() != KitType.DEFENDER) return
         val item = player.itemInHand
         if (!Defender.isItem(item)) return
-        if (pd.team == null) return
+        val team = player.team() ?: return
         if (!coolDown.isReady(player)) {
             coolDown.isNotReadyMsg(player)
             return
         }
         coolDown.add(player)
-        player.realTeleport(pd.team!!.objects.nexus.location)
+        player.realTeleport(team.objects.nexus.location)
         player.sendMessage("${ChatColor.GOLD}自軍ネクサスまで移動しました｡")
     }
 }

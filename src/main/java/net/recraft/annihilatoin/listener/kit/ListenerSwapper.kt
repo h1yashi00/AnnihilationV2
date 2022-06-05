@@ -3,6 +3,9 @@ package net.recraft.annihilatoin.listener.kit
 import net.minecraft.server.v1_8_R3.EnumDirection
 import net.recraft.annihilatoin.listener.CoolDown
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.kitType
+import net.recraft.annihilatoin.objects.Game.setVoidCancel
+import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Swapper
 import org.bukkit.*
@@ -28,8 +31,7 @@ class ListenerSwapper: Listener {
         if (event.action != Action.RIGHT_CLICK_AIR && event.action != Action.RIGHT_CLICK_BLOCK) return
         if (event.item == null) return
         val player = event.player
-        val pd = Game.getPlayerData(player.uniqueId)
-        if (pd.kitType != KitType.SWAPPER) return
+        if (player.kitType() != KitType.SWAPPER) return
         if (!Swapper.isSwapItem(event.item)) return
         if (!coolDown.isReady(player)) {
             coolDown.isNotReadyMsg(player)
@@ -48,16 +50,15 @@ class ListenerSwapper: Listener {
             loc = loc.add(direction.x, direction.y, direction.z)
             val target = getPlayerByLocation(loc, 1.5F)?: continue
             if (target == player) continue
-            val targetData = Game.getPlayerData(target.uniqueId)
-            if (pd.team == targetData.team) continue
+            if (player.team() == target.team()) continue
             // swap target from player!!!
             object: BukkitRunnable() {
                 override fun run() {
                     // 5秒間Voidに行けない
-                    targetData.voidCancel = false
+                    target.setVoidCancel(false)
                 }
             }.runTaskLater(Game.plugin, 20*5)
-            targetData.voidCancel = true
+            target.setVoidCancel(true)
             coolDown.add(player)
             playSound(player, target)
             switchLocation(player, target)

@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.listener
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.voidCancel
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.Location
 import org.bukkit.Material
@@ -13,8 +14,8 @@ class ListenerFlaggedPlayerVoid: Listener {
     @EventHandler
     fun onPlayerMove(event: PlayerMoveEvent) {
         val player = event.player
-        val pd = Game.getPlayerData(player.uniqueId)
-        if (!pd.voidCancel) return
+//        val pd = Game.getPlayerData(player.uniqueId)
+        if (!player.voidCancel()) return
         if (!Util.isUnderVoid(event.to)) return
         val changeLocation = a(player.location.apply { y -= 1 })
         changeLocation.removeIf { (!Util.isUnderVoid(it)) }

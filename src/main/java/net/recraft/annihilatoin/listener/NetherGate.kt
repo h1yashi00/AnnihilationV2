@@ -1,6 +1,8 @@
 package net.recraft.annihilatoin.listener
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.setKitType
+import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.kit.KitGenerator
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.menu.KitMenu
@@ -33,7 +35,7 @@ class NetherGate(val menu: KitMenu): Listener {
     fun portal(event: PlayerPortalEvent) {
         if (event.cause != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) return
         val player = event.player
-        val team = Game.getPlayerData(player.uniqueId).team ?: return
+        val team = player.team() ?: return
         player.realTeleport(team.objects.randomSpawn)
         openKitMenu(player)
     }
@@ -56,9 +58,9 @@ class NetherGate(val menu: KitMenu): Listener {
             val kit = KitGenerator.get(it)
             if (kit.icon == event.currentItem) {
                 val inventory = Bukkit.createInventory(null, InventoryType.CHEST, kitItemTitle)
-                val pd = Game.getPlayerData(player.uniqueId)
-                pd.kitType = it
-                kit.allItems(pd.team!!).forEach { item ->
+                player.setKitType(it)
+                val team = player.team()
+                kit.allItems(team!!).forEach { item ->
                     inventory.addItem(item)
                 }
                 kit.setInit(player)

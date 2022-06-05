@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.listener.kit
 
 import net.recraft.annihilatoin.listener.CoolDown
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.kitType
 import net.recraft.annihilatoin.objects.kit.Acrobat
 import net.recraft.annihilatoin.objects.kit.KitType
 import org.bukkit.GameMode
@@ -16,7 +17,7 @@ class ListenerAcrobat: Listener {
     private val coolDown = CoolDown(
         Acrobat.coolDownTime,
     ) {
-        if (Game.getPlayerData(it.uniqueId).kitType == KitType.ACROBAT) {
+        if (it.kitType() == KitType.ACROBAT) {
             it.allowFlight = true
             it.world.playSound(it.location, Sound.WITHER_SHOOT, 0.03F, 5F)
         }
@@ -25,8 +26,7 @@ class ListenerAcrobat: Listener {
     fun onFallDamage(event: EntityDamageEvent){
         if (event.cause != EntityDamageEvent.DamageCause.FALL) return
         val player = if (event.entity is Player) { event.entity as Player } else return
-        val pd = Game.getPlayerData(player.uniqueId)
-        if (pd.kitType != KitType.ACROBAT) return
+        if (player.kitType() != KitType.ACROBAT) return
         event.isCancelled = true
     }
 
@@ -34,8 +34,7 @@ class ListenerAcrobat: Listener {
     fun onPlayerScout(event: PlayerToggleFlightEvent){
         val player = event.player
         if (player.gameMode == GameMode.CREATIVE || player.gameMode == GameMode.SPECTATOR || player.isFlying) { return }
-        val pd = Game.getPlayerData(player.uniqueId)
-        if (pd.kitType != KitType.ACROBAT) return
+        if (player.kitType() != KitType.ACROBAT) return
         // Activate Ability
         event.isCancelled = true
         player.playSound(player.location, Sound.ZOMBIE_INFECT, 0.5F, 2.0F)

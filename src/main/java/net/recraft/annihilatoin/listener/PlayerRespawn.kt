@@ -1,6 +1,8 @@
 package net.recraft.annihilatoin.listener
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.kitType
+import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.kit.KitGenerator
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -15,10 +17,10 @@ class PlayerRespawn: Listener {
             return
         }
         // kit 取得
-        val kitType = Game.getPlayerData(player.uniqueId).kitType // default CIVILIAN
+        val kitType = player.kitType() // default CIVILIAN
         val kit = KitGenerator.get(kitType)
         // プレイヤーにkit装備を渡す
-        val team   = Game.getPlayerData(player.uniqueId).team
+        val team   = player.team()
         team?.let {kit.equip(player.inventory, it.color)}
         val loc = team?.objects?.randomSpawn ?: Game.lobby.spawnLocation
         event.respawnLocation = loc

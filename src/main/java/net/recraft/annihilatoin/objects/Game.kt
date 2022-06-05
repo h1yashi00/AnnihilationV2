@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.objects
 
 import com.comphenix.protocol.ProtocolLibrary
 import net.recraft.annihilatoin.objects.kit.KitGenerator
+import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.scoreboard.ScoreboardAnni
 import net.recraft.annihilatoin.util.GameGenerator
 import net.recraft.annihilatoin.util.Util
@@ -13,21 +14,73 @@ import org.bukkit.scheduler.BukkitRunnable
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
 // playerのデータはここで管理している ex..kit, team
 object Game : KoinComponent {
+    fun Player.setTeam(team: GameTeam) {
+        getPlayerData(uniqueId).team = team
+    }
+    fun Player.team(): GameTeam? {
+        return getPlayerData(uniqueId).team
+    }
+
+    fun Player.setKitType(type: KitType) {
+        getPlayerData(uniqueId).kitType = type
+    }
+
+    fun Player.kitType(): KitType {
+        return getPlayerData(uniqueId).kitType
+    }
+
+    fun Player.setInvisible(boolean: Boolean) {
+        getPlayerData(uniqueId).invisible = boolean
+    }
+
+    fun Player.invisible(): Boolean {
+        return getPlayerData(uniqueId).invisible
+    }
+
+    fun Player.voidCancel(): Boolean {
+        return getPlayerData(uniqueId).voidCancel
+    }
+
+    fun Player.setVoidCancel(boolean: Boolean) {
+        getPlayerData(uniqueId).voidCancel = boolean
+    }
+
     val plugin: JavaPlugin by inject()
     val protocolManager = ProtocolLibrary.getProtocolManager()!!
     val lobby: World = Util.makeWorld("world_lobby").apply {setSpawnLocation(0,2,0)}
     private lateinit var _map: World
     private val playerDatas: MutableMap<UUID, PlayerData> = HashMap()
-    fun getPlayerData(uuid: UUID): PlayerData {
+    private fun getPlayerData(uuid: UUID): PlayerData {
         if (!playerDatas.containsKey(uuid))  {
             playerDatas[uuid] = PlayerData(uuid)
         }
         return playerDatas[uuid]!!
+    }
+    private fun getTeamTotal(): List<Pair<GameTeam, Int>> {
+        var redCount    = 0
+        var blueCount   = 0
+        var yellowCount = 0
+        var greenCount  = 0
+        Bukkit.getOnlinePlayers().forEach {
+            when(it.team()) {
+                GameTeam.RED    -> redCount +=1
+                GameTeam.BLUE   -> blueCount +=1
+                GameTeam.YELLOW -> yellowCount +=1
+                GameTeam.GREEN  -> greenCount +=1
+            }
+        }
+        return listOf(
+            Pair(GameTeam.RED, redCount),
+            Pair(GameTeam.BLUE, blueCount),
+            Pair(GameTeam.YELLOW, yellowCount),
+            Pair(GameTeam.GREEN, greenCount),
+        )
     }
     val map: World get() = _map
     val phase : PhaseController = PhaseController()
@@ -46,6 +99,7 @@ object Game : KoinComponent {
         GameTeam.values().forEach { it.objects.place() }
         Bukkit.getOnlinePlayers().forEach {
             ScoreboardAnni.display(it)
+            randomTeamJoin(it)
             val pd = getPlayerData(it.uniqueId)
             val team = pd.team
             if (team == null) {
@@ -60,6 +114,21 @@ object Game : KoinComponent {
                 phase.pass()
             }
         }, 0, 20)
+    }
+    private fun randomTeamJoin(player: Player) {
+        getPlayerData(player.uniqueId).team = getLowestTeam()
+    }
+    private fun getLowestTeam(): GameTeam {
+        var lowestTeamCount = 9999
+        var lowestTeam: GameTeam = GameTeam.RED // 仮
+        getTeamTotal().forEach {
+            val team = it.first
+            val count = it.second
+            if ( count > lowestTeamCount) {return@forEach}
+            lowestTeamCount = count
+            lowestTeam = team
+        }
+        return lowestTeam
     }
     fun end() {
     }

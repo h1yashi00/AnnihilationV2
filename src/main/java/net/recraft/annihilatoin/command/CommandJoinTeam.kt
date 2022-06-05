@@ -1,10 +1,12 @@
 package net.recraft.annihilatoin.command
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.kitType
+import net.recraft.annihilatoin.objects.Game.setTeam
+import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.kit.KitGenerator
 import net.recraft.annihilatoin.realTeleport
-import net.recraft.annihilatoin.scoreboard.scoreboard_team.ScoreboardTeamManager
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
@@ -13,7 +15,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 
-class CommandJoinTeam(private val scorePacket: ScoreboardTeamManager): CommandExecutor {
+class CommandJoinTeam: CommandExecutor {
     override fun onCommand(sender: CommandSender?, command: Command?, label: String?, args: Array<String?>?): Boolean {
         val player = if (sender is Player) { sender.player ?: return false } else { return false }
         if (!player.isOp) return false
@@ -23,11 +25,10 @@ class CommandJoinTeam(private val scorePacket: ScoreboardTeamManager): CommandEx
         val uuid = player.uniqueId
         // command の引数がred blue yellow green 以外
         val team = GameTeam.getTeam(teamColor) ?: return false
-        scorePacket.addTeam(player, team)
+        player.setTeam(team)
         if (Game.isStart) {
             player.inventory.clear()
-            val pd = Game.getPlayerData(uuid)
-            KitGenerator.get(pd.kitType).equip(player.inventory, team.color)
+            KitGenerator.get(player.kitType()).equip(player.inventory, team.color)
             player.realTeleport(team.objects.randomSpawn)
             return true
         }
@@ -35,7 +36,7 @@ class CommandJoinTeam(private val scorePacket: ScoreboardTeamManager): CommandEx
         return true
     }
     private fun showPlayerTeamColor(player: Player) {
-        val msg = Game.getPlayerData(player.uniqueId).team
+        val msg = player.team()
             ?.let {"you current team is ${Util.getColoredTeamName(it)}"}
             ?: "you have not chosen a team"
         player.sendMessage(msg)

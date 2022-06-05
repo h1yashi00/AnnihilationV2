@@ -1,13 +1,11 @@
 package net.recraft.annihilatoin.listener.kit
 
-import net.recraft.annihilatoin.kit
 import net.recraft.annihilatoin.listener.CoolDown
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.kitType
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Miner
 import net.recraft.annihilatoin.util.ParticleEffect
-import org.bukkit.Bukkit
-import org.bukkit.Sound
 import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -70,7 +68,7 @@ class ListenerMiner: Listener {
             coolDown.isNotReadyMsg(player)
             return
         }
-        if (player.kit() != KitType.MINER) return
+        if (player.kitType() != KitType.MINER) return
         val item = player.itemInHand
         if (!Miner.isItem(item)) return
         coolDown.add(player)

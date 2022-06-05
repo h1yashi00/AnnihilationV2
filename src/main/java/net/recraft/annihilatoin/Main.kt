@@ -39,17 +39,6 @@ fun Player.realTeleport(loc: Location){
     val cloneLoc = loc.clone()
     teleport(cloneLoc.apply{x+=0.5; z+=0.5})
 }
-fun Player.team(): GameTeam? {
-    return Game.getPlayerData(uniqueId).team
-}
-
-fun Player.kit(): KitType {
-    return Game.getPlayerData(uniqueId).kitType
-}
-
-fun Player.invisible(): Boolean {
-    return Game.getPlayerData(uniqueId).invisible
-}
 // hideは非同期でやると動作しないので注意しよう｡
 fun Player.hide() {
     Bukkit.getOnlinePlayers().forEach {
@@ -83,12 +72,12 @@ class Main : JavaPlugin() {
         }
     }
 
-    private val scoreboardTeamManager = ScoreboardTeamManager()
+//    private val scoreboardTeamManager = ScoreboardTeamManager()
     private var tp: ListenerTransPortItem? = null
     override fun onEnable() {
         setupKoin()
         tp = ListenerTransPortItem()
-        scoreboardTeamManager.enable()
+        ScoreboardTeamManager.enable()
         val configMap = ConfigMap(dataFolder)
         val playerLeaveUnfairAdvantage  = PlayerLeaveUnfairAdvantage()
         ArrayList<Listener>().apply {
@@ -112,7 +101,7 @@ class Main : JavaPlugin() {
             add( SuitableTool() )
             add( PlayerAttackEnemyTeam()  )
             add( PlayerRespawn()          )
-            add( PlayerInvisible(scoreboardTeamManager))
+            add( PlayerInvisible())
             add( NetherGate(KitMenu()) )
             add( PlayerOpenEnchantTable() )
             add( ListenerGapple() )
@@ -154,7 +143,7 @@ class Main : JavaPlugin() {
         // vote初期化
         getCommand("vote").executor = CommandVote(voteManager)
         getCommand("teleport").executor = CommandTeleportSpecificLocation()
-        getCommand("team").executor = CommandJoinTeam(scoreboardTeamManager)
+        getCommand("team").executor = CommandJoinTeam()
         getCommand("anniconfig").executor = CommandAnniConfig()
         getCommand("kit").executor = CommandKit()
         if (debug) {
@@ -193,7 +182,7 @@ class Main : JavaPlugin() {
     }
 
     override fun onDisable() {
-        scoreboardTeamManager.disable()
+        ScoreboardTeamManager.disable()
         tp!!.disable()
     }
 }

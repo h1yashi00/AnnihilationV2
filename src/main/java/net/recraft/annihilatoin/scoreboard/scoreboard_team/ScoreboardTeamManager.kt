@@ -1,12 +1,15 @@
 package net.recraft.annihilatoin.scoreboard.scoreboard_team
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.invisible
+import net.recraft.annihilatoin.objects.Game.setInvisible
+import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.GameTeam
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 
-class ScoreboardTeamManager {
+object ScoreboardTeamManager {
     private val teamsScoreboard: EnumMap<GameTeam, ScoreboardTeamPacket> = EnumMap<GameTeam,ScoreboardTeamPacket>(GameTeam::class.java).apply {
         GameTeam.values().forEach {
             put(it, ScoreboardTeamPacket(it.name))
@@ -25,10 +28,9 @@ class ScoreboardTeamManager {
     }
     fun joinPacket(player: Player) {
         // playerに対して送られる｡
-        val playerData = Game.getPlayerData(player.uniqueId)
-        if (playerData.team == null) return
+        val team = player.team() ?: return
         GameTeam.values().forEach {
-            if (playerData.team == it) {
+            if (team == it) {
                 getPacket(it).joinPacket(player)
                 return@forEach
             }
@@ -38,34 +40,29 @@ class ScoreboardTeamManager {
                 getInvPacket(it).fakeJoinPacket(player)
             }
         }
-        val nonTeamPlayers = Game.getNonPlayers(playerData.team!!)
+        val nonTeamPlayers = Game.getNonPlayers(team)
         nonTeamPlayers.forEach { nonPlayer ->
-            val pd = Game.getPlayerData(nonPlayer.uniqueId)
-            if (!pd.invisible) return@forEach
-            getPacket(pd.team!!).fakeRemovePlayer(nonPlayer, listOf(player))
-            getInvPacket(pd.team!!).fakeAddPlayer(nonPlayer, listOf(player))
+//            val pd = Game.getPlayerData(nonPlayer.uniqueId)
+            val tam = nonPlayer.team()
+            if (!nonPlayer.invisible()) return@forEach
+            getPacket(team).fakeRemovePlayer(nonPlayer, listOf(player))
+            getInvPacket(team).fakeAddPlayer(nonPlayer, listOf(player))
         }
     }
 
     fun removeTeam(player: Player) {
         val bound = Bukkit.getOnlinePlayers().toList()
-        val playerData = Game.getPlayerData(player.uniqueId)
-        getPacket(playerData.team!!).removePlayer(player, bound)
-        playerData.team = null
+        getPacket(player.team()!!).removePlayer(player, bound)
     }
     fun addTeam(player: Player,team: GameTeam) {
-        val playerData = Game.getPlayerData(player.uniqueId)
-        if (playerData.team != null) {
-            removeTeam(player)
-        }
+//      playerがすでに､他のチームに入っていて､ScoreboardTeamManagerのaddTeamのパケットを送信していた場合､removeTeam(player)をする必要がある｡
         val bound = Bukkit.getOnlinePlayers().toList()
-        Game.getPlayerData(player.uniqueId).team = team
         joinPacket(player)
         getPacket(team).addPlayer(player, bound)
     }
     fun setPlayerInv(player: Player): Boolean {
-        val team = Game.getPlayerData(player.uniqueId).team ?: return false
-        Game.getPlayerData(player.uniqueId).invisible = true
+        val team = player.team() ?: return false
+        player.setInvisible(true)
         val scorePacket = getPacket(team)
         val invPacket = getInvPacket(team)
         val bound = Game.getNonPlayers(team)
@@ -74,8 +71,8 @@ class ScoreboardTeamManager {
         return true
     }
     fun releasePlayerInv(player: Player) {
-        Game.getPlayerData(player.uniqueId).invisible = false
-        val team = Game.getPlayerData(player.uniqueId).team!!
+        player.setInvisible(false)
+        val team = player.team()!!
         val scorePacket = getPacket(team)
         val invPacket = getInvPacket(team)
         val bound = Game.getNonPlayers(team)

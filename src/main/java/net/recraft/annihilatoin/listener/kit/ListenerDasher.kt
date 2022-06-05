@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.listener.kit
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.kitType
 import net.recraft.annihilatoin.objects.kit.Dasher
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.util.ParticleEffect
@@ -21,7 +22,7 @@ class ListenerDasher: Listener {
     @EventHandler
     fun onConsume(event: PlayerItemConsumeEvent) {
         val player = event.player
-        if (Game.getPlayerData(player.uniqueId).kitType != KitType.DASHER) return
+        if (player.kitType() != KitType.DASHER) return
         val foodLevel = player.foodLevel
         player.setFoodLevel(foodLevel +3)
     }

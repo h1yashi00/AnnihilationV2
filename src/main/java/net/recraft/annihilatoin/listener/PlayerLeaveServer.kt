@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.listener
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.PlayerLeaveUnfairAdvantage
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
@@ -17,7 +18,7 @@ class PlayerLeaveServer(
         val player = event.player
         if (!Game.isStart) return
         // ゲームが始まっていてチームに所属している
-        val team = Game.getPlayerData(player.uniqueId).team ?: return
+        val team = player.team() ?: return
         val leaveLocation = player.location
         val hp =  player.health
         val inventory = player.inventory

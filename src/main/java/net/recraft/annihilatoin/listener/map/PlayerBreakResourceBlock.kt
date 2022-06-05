@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.listener.map
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.kitType
 import net.recraft.annihilatoin.objects.ResourceBlocks
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Miner
@@ -37,7 +38,7 @@ class PlayerBreakResourceBlock : Listener {
             }
         }
         brokenBlock.type = if (resourceBlock.setCobble) { Material.COBBLESTONE } else {Material.AIR}
-        val kit = Game.getPlayerData(player.uniqueId).kitType
+        val kit = player.kitType()
         if (kit == KitType.MINER) {
             if (Miner.isAffectedOre(resourceBlock.type)) {
                 val item = resourceBlock.getItemStack()

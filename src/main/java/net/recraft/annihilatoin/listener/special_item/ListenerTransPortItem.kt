@@ -1,11 +1,11 @@
 package net.recraft.annihilatoin.listener.special_item
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.ResourceBlocks
 import net.recraft.annihilatoin.objects.SpecialItem
 import net.recraft.annihilatoin.realTeleport
-import net.recraft.annihilatoin.team
 import net.recraft.annihilatoin.util.ParticleEffect
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.*

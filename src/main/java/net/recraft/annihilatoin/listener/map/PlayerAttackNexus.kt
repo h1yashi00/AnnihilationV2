@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.listener.map
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
 import org.bukkit.ChatColor
@@ -37,7 +38,7 @@ class PlayerAttackNexus: Listener {
             player.sendMessage("${ChatColor.RED}フェイズ3移行から攻撃できるようになります｡")
             return
         }
-        val playerTeam = Game.getPlayerData(player.uniqueId).team ?: return
+        val playerTeam = player.team() ?: return
         if (playerTeam.objects.nexus == damagedNexus) return
         damagedNexus.damage(player)
         if (damagedNexus.isAlive()) { delayRespawn(brokenBlock); return;}

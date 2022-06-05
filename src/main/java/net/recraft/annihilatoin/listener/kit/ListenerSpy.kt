@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.listener.kit
 
 import net.recraft.annihilatoin.hide
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.kitType
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.show
 import org.bukkit.Bukkit
@@ -58,7 +59,7 @@ class ListenerSpy: Listener {
     @EventHandler
     fun onInvPlayerInteract(event: PlayerInteractEvent) {
         val player = event.player
-        if (Game.getPlayerData(player.uniqueId).kitType != KitType.SPY) return
+        if (player.kitType() != KitType.SPY) return
         if (!invPlayersData.contains(player)) return
         invPlayersData.remove(player)
     }
@@ -66,7 +67,7 @@ class ListenerSpy: Listener {
     @EventHandler
     fun onMove(event: PlayerMoveEvent) {
         val player = event.player
-        if (Game.getPlayerData(player.uniqueId).kitType != KitType.SPY) return
+        if (player.kitType() != KitType.SPY) return
         if (!invPlayersData.contains(player)) return
         if (!invPlayersData.isMoved(player)) return
         invPlayersData.remove(player)
@@ -110,7 +111,7 @@ class ListenerSpy: Listener {
     @EventHandler
     fun onSneak(event: PlayerToggleSneakEvent) {
         val player = event.player
-        if (Game.getPlayerData(player.uniqueId).kitType != KitType.SPY) return
+        if (player.kitType() != KitType.SPY) return
         val delayTask = object: BukkitRunnable() {
             var i = 0
             override fun run() {
