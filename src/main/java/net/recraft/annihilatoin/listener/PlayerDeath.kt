@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.listener
 
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.kitType
 import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.ChatColor
@@ -26,8 +27,9 @@ class PlayerDeath: Listener {
         val victim = if (event.entity is Player) { event.entity as Player } else return
         val killer = if (victim.killer is Player) { victim.killer as Player } else return
         event.deathMessage =
-            "${Util.getColoredPlayersName(victim, victim.team() ?: return)}は" +
-            "${Util.getColoredPlayersName(killer, killer.team() ?: return)}に倒された｡${sword(killer)}${getEffectColored(killer)}"
+            "${Util.getColoredPlayersName(victim, victim.team() ?: return)}${victim.team()!!.chatColor}(${victim.kitType().shortName})${ChatColor.GRAY}は" +
+            "${Util.getColoredPlayersName(killer, killer.team() ?: return)}${killer.team()!!.chatColor}(${killer.kitType().shortName})${ChatColor.GRAY}に倒された｡" +
+            "${sword(killer)}${getEffectColored(killer)}"
 
     }
     private fun getItemColored(item: ItemStack): String {

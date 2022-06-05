@@ -13,6 +13,7 @@ enum class KitType {
     DASHER,
     SPY,
     DEFENDER;
+    val shortName: String = "${name[0]}${name[1]}${name[2]}"
 
     companion object {
         fun getKitByName(name: String): KitType? {
