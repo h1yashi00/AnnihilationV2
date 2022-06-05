@@ -98,16 +98,9 @@ object Game : KoinComponent {
         phase.pass()
         GameTeam.values().forEach { it.objects.place() }
         Bukkit.getOnlinePlayers().forEach {
+            it.setTeam(randomTeamJoin())
             ScoreboardAnni.display(it)
-            randomTeamJoin(it)
-            val pd = getPlayerData(it.uniqueId)
-            val team = pd.team
-            if (team == null) {
-                it.teleport(lobby.spawnLocation)
-                return@forEach
-            }
-            KitGenerator.get(pd.kitType).equip(it.inventory, team.color)
-            it.teleport(team.objects.randomSpawn)
+            it.health = 0.0
         }
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, object: BukkitRunnable() {
             override fun run() {
@@ -115,9 +108,8 @@ object Game : KoinComponent {
             }
         }, 0, 20)
     }
-    private fun randomTeamJoin(player: Player) {
-        player.setTeam(getLowestTeam())
-//        getPlayerData(player.uniqueId).team = getLowestTeam()
+    private fun randomTeamJoin(): GameTeam {
+        return getLowestTeam()
     }
     private fun getLowestTeam(): GameTeam {
         var lowestTeamCount = 9999
