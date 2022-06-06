@@ -23,7 +23,7 @@ class ListenerShop(private val shopBrewingMenu: ShopBrewingMenu, private val sho
     @EventHandler
     fun onSignBreak(event: BlockBreakEvent) {
         val location = event.block.location
-        if (GameTeam.isShopBrewing(location) || GameTeam.isShopBrewing(location))
+        if (GameTeam.isShopBrewing(location) || GameTeam.isShopWeapon(location))
             event.isCancelled = true
     }
 
