@@ -1,6 +1,5 @@
 package net.recraft.annihilatoin.listener.map
 
-import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.builder.Priceable
@@ -17,7 +16,6 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
-import java.util.*
 
 class ListenerShop(private val shopBrewingMenu: ShopBrewingMenu, private val shopWeaponMenu: ShopWeaponMenu): Listener {
     @EventHandler

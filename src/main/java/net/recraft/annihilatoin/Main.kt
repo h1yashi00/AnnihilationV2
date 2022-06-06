@@ -105,6 +105,7 @@ class Main : JavaPlugin() {
             add( ListenerGapple() )
             add( ListenerFlaggedPlayerVoid() )
             add( PlayerDeath() )
+            add( BlockFallEvent()         )
             // kits
             add( ListenerMiner())
             add( ListenerLumberjack() )
