@@ -20,6 +20,7 @@ class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
         val spawn3      = "spawn3"
         val enderFurnace = "enderfurnace"
         val enderChest   = "enderchest"
+        val defender     ="defender"
     }
     fun update() {
         fileConfig = YamlConfiguration.loadConfiguration(file)
@@ -47,6 +48,7 @@ class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
         fileConfig.createSection("$mapName.$spawn3")
         fileConfig.createSection("$mapName.$enderChest")
         fileConfig.createSection("$mapName.$enderFurnace")
+        fileConfig.createSection("$mapName.$defender")
         val teams = ArrayList<String>() .apply { add("red"); add("blue"); add("yellow"); add("green") }
         teams.forEach {
             var section = fileConfig.getConfigurationSection("$mapName.$shopWeapon")
@@ -64,6 +66,8 @@ class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
             section = fileConfig.getConfigurationSection("$mapName.$enderChest")
             section.addDefault(it, "0,0,0")
             section = fileConfig.getConfigurationSection("$mapName.$enderFurnace")
+            section.addDefault(it, "0,0,0")
+            section = fileConfig.getConfigurationSection("$mapName.$defender")
             section.addDefault(it, "0,0,0")
         }
         return fileConfig.getConfigurationSection(mapName)

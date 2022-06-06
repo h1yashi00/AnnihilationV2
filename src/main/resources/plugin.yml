@@ -24,3 +24,7 @@ commands:
     description: kitを設定できる
     usage: /<command>
     permission: yourplugin.yourcommandpermission
+  statics:
+    description: 統計を見れる
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission

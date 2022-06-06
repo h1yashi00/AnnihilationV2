@@ -1,5 +1,7 @@
 package net.recraft.annihilatoin.objects.map
 
+import org.bukkit.Location
+
 class GameTeamObjects (
                    val shopWeapon:ShopWeapon,
                    val shopBrewing: ShopBrewing,
@@ -8,7 +10,9 @@ class GameTeamObjects (
                    val spawn2: Spawn,
                    val spawn3: Spawn,
                    val enderChest: EnderChest,
-                   val enderFurnace: EnderFurnace)
+                   val enderFurnace: EnderFurnace,
+                   val defender: Location
+)
 {
     val randomSpawn get() = listOf(spawn1, spawn2, spawn3).shuffled().first().location.clone().apply {y += 1}
     fun place() {

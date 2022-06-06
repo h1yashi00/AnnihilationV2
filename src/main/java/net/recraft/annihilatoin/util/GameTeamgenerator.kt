@@ -35,7 +35,12 @@ class GameGenerator(private val map: World, private val section: ConfigurationSe
         val spawn3 = spawn3(name)
         val enderChest   = enderChest(name)
         val enderFurnace = enderFurnace(name)
-        return GameTeamObjects(shopWeapon, shopBrewing, nexus, spawn1, spawn2, spawn3, enderChest, enderFurnace)
+        val defender     = defender(name)
+        return GameTeamObjects(shopWeapon, shopBrewing, nexus, spawn1, spawn2, spawn3, enderChest, enderFurnace, defender)
+    }
+
+    private fun defender(team: String): Location {
+        return loadLoc(team, ConfigMap.defender)
     }
 
     private fun shopWeapon(team: String) : ShopWeapon {

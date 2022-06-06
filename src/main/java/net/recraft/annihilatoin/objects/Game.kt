@@ -1,6 +1,7 @@
 package net.recraft.annihilatoin.objects
 
 import com.comphenix.protocol.ProtocolLibrary
+import net.recraft.annihilatoin.objects.Game.statics
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.scoreboard.ScoreboardAnni
 import net.recraft.annihilatoin.util.GameGenerator
@@ -48,6 +49,10 @@ object Game : KoinComponent {
 
     fun Player.setVoidCancel(boolean: Boolean) {
         getPlayerData(uniqueId).voidCancel = boolean
+    }
+
+    fun Player.statics(): PlayerStatics {
+        return getPlayerData(uniqueId).statics
     }
 
     val plugin: JavaPlugin by inject()

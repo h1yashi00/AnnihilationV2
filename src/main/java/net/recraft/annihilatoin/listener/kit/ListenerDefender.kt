@@ -66,7 +66,7 @@ class ListenerDefender: Listener {
             return
         }
         coolDown.add(player)
-        player.realTeleport(team.objects.nexus.location)
+        player.realTeleport(team.objects.defender)
         player.sendMessage("${ChatColor.GOLD}自軍ネクサスまで移動しました｡")
     }
 }

@@ -5,18 +5,18 @@ import net.recraft.annihilatoin.scoreboard.scoreboard_team.ScoreboardTeamManager
 import org.bukkit.Bukkit
 import java.util.*
 
+data class PlayerStatics(var kills: Int = 0, var deaths: Int = 0, var mined_ores: Int = 0, var gained_exp: Int = 0) {
+}
+
 class PlayerData(
     private val uuid: UUID,
     _team: GameTeam? = null,
     _kitType: KitType = KitType.CIVILIAN,
     _invisible: Boolean = false,
     _voidCancel: Boolean = false,
-    var kills: Int = 0,
-    var deaths: Int = 0,
-    var mined_ores: Int = 0,
-    var gained_exp : Int = 0
 )
 {
+    val statics = PlayerStatics()
     var team: GameTeam? = _team
         set(value) {
             require(value != null)

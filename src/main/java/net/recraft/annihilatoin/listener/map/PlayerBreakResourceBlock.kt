@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.listener.map
 
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.Game.kitType
+import net.recraft.annihilatoin.objects.Game.statics
 import net.recraft.annihilatoin.objects.ResourceBlocks
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Miner
@@ -59,6 +60,11 @@ class PlayerBreakResourceBlock : Listener {
         }
         player.inventory.addItem(resourceBlock.getItemStack().clone().apply { amount = fortuneAmount })
         val exp = if (kit == KitType.ENCHANTER) { resourceBlock.exp * 2 }  else { resourceBlock.exp }
+
+        // statics
+        player.statics().mined_ores += 1
+        player.statics().gained_exp += exp
+
         player.giveExp(exp)
         val scheduler = Bukkit.getScheduler();
         val runnable = object : BukkitRunnable() {

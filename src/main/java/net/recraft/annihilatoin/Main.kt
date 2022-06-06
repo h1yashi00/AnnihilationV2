@@ -145,6 +145,7 @@ class Main : JavaPlugin() {
         getCommand("team").executor = CommandJoinTeam()
         getCommand("anniconfig").executor = CommandAnniConfig()
         getCommand("kit").executor = CommandKit()
+        getCommand("statics").executor = CommandStatics()
         if (debug) {
             val mapName = "world_test"
             val generator = configMap.getTeamGenerator(mapName)

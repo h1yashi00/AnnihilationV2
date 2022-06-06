@@ -108,7 +108,7 @@ class ListenerEnderFurnace : Listener, KoinComponent {
         }
 
         override fun a(itemstack: net.minecraft.server.v1_8_R3.ItemStack?): Int {
-             return if (Game.phase.currentPhase == 5) {10} else {100}
+             return if (Game.phase.currentPhase == 5) {10} else {200/4}
         }
 
         override fun getOwner(): InventoryHolder {
