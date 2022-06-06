@@ -1,7 +1,6 @@
 package net.recraft.annihilatoin.objects
 
 import com.comphenix.protocol.ProtocolLibrary
-import net.recraft.annihilatoin.objects.kit.KitGenerator
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.scoreboard.ScoreboardAnni
 import net.recraft.annihilatoin.util.GameGenerator

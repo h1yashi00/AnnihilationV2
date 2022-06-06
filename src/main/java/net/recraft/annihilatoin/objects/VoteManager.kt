@@ -18,7 +18,7 @@ class VoteManager(mapList: List<String>) {
     companion object {
         var section: Int = -1
         val timeSection = section -2
-        const val waitTime = 20
+        const val waitTime = 5
     }
     private fun setCandidate(name: String): Candidate {
         val c = Candidate(name, section)

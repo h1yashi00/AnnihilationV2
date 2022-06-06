@@ -19,6 +19,7 @@ import net.recraft.annihilatoin.objects.menu.ShopBrewingMenu
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
 import net.recraft.annihilatoin.scoreboard.ScoreboardVote
 import net.recraft.annihilatoin.scoreboard.scoreboard_team.ScoreboardTeamManager
+import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
@@ -136,7 +137,7 @@ class Main : JavaPlugin() {
         val voteManager = VoteManager(worldNames)
         Bukkit.getOnlinePlayers().forEach { ScoreboardVote.display(it ?: return@forEach) }
         /* ↑↑↑↑↑↑↑  初期化するために必要なもの   ↑↑↑↑↑↑↑ */
-        val debug = true
+        val debug = false
         // vote初期化
         getCommand("vote").executor = CommandVote(voteManager)
         getCommand("teleport").executor = CommandTeleportSpecificLocation()
@@ -160,6 +161,8 @@ class Main : JavaPlugin() {
                 // currentWaitTime が 0になるまで実行されない
                 if (currentWaitTime >= 0) return
                 val mapName = voteManager.result()
+                // TODO worldSaveの自動化をするためのプログラムを作成する｡
+                Util.copyWorld(mapName)
                 val generator = configMap.getTeamGenerator(mapName)
                 Game.init(generator)
                 Game.start()
@@ -179,7 +182,11 @@ class Main : JavaPlugin() {
     }
 
     override fun onDisable() {
+        Bukkit.getOnlinePlayers().forEach {
+            it.realTeleport(Game.lobby.spawnLocation)
+        }
         ScoreboardTeamManager.disable()
+        Bukkit.unloadWorld(Game.map, false)
         tp!!.disable()
     }
 }

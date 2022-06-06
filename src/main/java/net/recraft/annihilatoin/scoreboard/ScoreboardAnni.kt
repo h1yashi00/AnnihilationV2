@@ -6,6 +6,7 @@ import net.recraft.annihilatoin.util.ScoreboardUtil
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.World
 import org.bukkit.scoreboard.DisplaySlot
 import org.bukkit.scoreboard.Objective
 import java.time.LocalDate
@@ -38,11 +39,14 @@ object ScoreboardAnni: ScoreboardUtil() {
             getScore(getNexusHpFormat(GameTeam.YELLOW)).score = AnniSection.YELLOW.value
             getScore(getNexusHpFormat(GameTeam.GREEN)).score  = AnniSection.GREEN.value
             getScore(" ").score = 9
-            getScore("${ChatColor.DARK_PURPLE}${ChatColor.BOLD}Map: ${Game.map.name}").score = 8
+            getScore("${ChatColor.DARK_PURPLE}${ChatColor.BOLD}Map: ${subtractWorld(Game.map)}").score = 8
             getScore(getCurrentPhaseFormat()).score = AnniSection.PHASE.value
             getScore(nextPhaseTimeFormat()).score = AnniSection.NEXT_PHASE_TIME.value
             getScore("${ChatColor.GRAY}recraft.net").score = 5
         }
+    }
+    private fun subtractWorld(map: World): String {
+        return map.name.split("_")[1]
     }
     fun currentPhaseUpdate() {
         Bukkit.getOnlinePlayers().forEach {

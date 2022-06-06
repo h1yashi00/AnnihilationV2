@@ -9,7 +9,9 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.generator.ChunkGenerator
 import org.bukkit.inventory.ItemStack
+import java.nio.file.Paths
 import java.util.*
+import kotlin.io.path.absolutePathString
 
 
 object Util {
@@ -75,6 +77,17 @@ object Util {
         tag.setString("random-id", UUID.randomUUID().toString())
         stack.setTag(tag)
         return CraftItemStack.asBukkitCopy(stack)
+    }
+
+    fun copyWorld(worldName: String) {
+        val serverMapFile = Paths.get(getServerPath()+"/$worldName")
+        val savedMapFile= Paths.get(Game.plugin.dataFolder.path + "/worlds/"+worldName)
+        serverMapFile.toFile().deleteRecursively()
+        broadcast(savedMapFile.toFile().copyRecursively(serverMapFile.toFile()).toString())
+    }
+
+    private fun getServerPath(): String {
+        return Paths.get(Game.plugin.dataFolder.absolutePath).parent.parent.absolutePathString()
     }
 
     fun makeWorld(nameWorld: String): World {
