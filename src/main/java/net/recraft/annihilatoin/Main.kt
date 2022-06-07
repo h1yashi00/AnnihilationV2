@@ -33,6 +33,9 @@ import java.io.File
 
 
 // external functions
+fun Location.accurate(): Location {
+    return clone().apply{x+=0.5; z+=0.5}
+}
 fun Player.realTeleport(loc: Location){
     val cloneLoc = loc.clone()
     teleport(cloneLoc.apply{x+=0.5; z+=0.5})

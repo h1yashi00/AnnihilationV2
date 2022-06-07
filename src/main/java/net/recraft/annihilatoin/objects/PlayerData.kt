@@ -3,6 +3,7 @@ package net.recraft.annihilatoin.objects
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.scoreboard.scoreboard_team.ScoreboardTeamManager
 import org.bukkit.Bukkit
+import org.bukkit.GameMode
 import java.util.*
 
 data class PlayerStatics(var kills: Int = 0, var deaths: Int = 0, var mined_ores: Int = 0, var gained_exp: Int = 0) {
@@ -30,7 +31,7 @@ class PlayerData(
     var kitType: KitType = _kitType
         set(value) {
             val player = Bukkit.getPlayer(uuid)
-            player.allowFlight = false
+            player.allowFlight = player.gameMode == GameMode.CREATIVE
             player.healthScale = 20.0
             field = value
         }
