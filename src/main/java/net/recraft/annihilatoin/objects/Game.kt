@@ -1,7 +1,7 @@
 package net.recraft.annihilatoin.objects
 
 import com.comphenix.protocol.ProtocolLibrary
-import net.recraft.annihilatoin.objects.Game.statics
+import com.sk89q.worldedit.bukkit.WorldEditPlugin
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.scoreboard.ScoreboardAnni
 import net.recraft.annihilatoin.util.GameGenerator
@@ -53,6 +53,12 @@ object Game : KoinComponent {
 
     fun Player.statics(): PlayerStatics {
         return getPlayerData(uniqueId).statics
+    }
+
+    fun getWorldEdit(): WorldEditPlugin? {
+        val p = plugin.server.pluginManager.getPlugin("WorldEdit")
+        if (p is WorldEditPlugin) return p as WorldEditPlugin
+        return null
     }
 
     val plugin: JavaPlugin by inject()

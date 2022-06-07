@@ -1,5 +1,6 @@
 package net.recraft.annihilatoin.objects.map
 
+import com.sk89q.worldedit.bukkit.selections.Selection
 import org.bukkit.Location
 
 class GameTeamObjects (
@@ -11,7 +12,8 @@ class GameTeamObjects (
                    val spawn3: Spawn,
                    val enderChest: EnderChest,
                    val enderFurnace: EnderFurnace,
-                   val defender: Location
+                   val defender: Location,
+                   val base: Selection
 )
 {
     val randomSpawn get() = listOf(spawn1, spawn2, spawn3).shuffled().first().location.clone().apply {y += 1}

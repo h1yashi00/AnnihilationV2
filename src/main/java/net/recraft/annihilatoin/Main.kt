@@ -7,7 +7,7 @@ import net.recraft.annihilatoin.config.ConfigMap
 import net.recraft.annihilatoin.listener.*
 import net.recraft.annihilatoin.listener.kit.*
 import net.recraft.annihilatoin.listener.map.*
-import net.recraft.annihilatoin.listener.menu.InventoryIntercept
+import net.recraft.annihilatoin.admin.ListenerAnniConfigMenu
 import net.recraft.annihilatoin.listener.special_item.ListenerLanchPad
 import net.recraft.annihilatoin.listener.special_item.ListenerTransPortItem
 import net.recraft.annihilatoin.listener.troll.PlayerOpeningWorkingBench
@@ -77,6 +77,7 @@ class Main : JavaPlugin() {
         tp = ListenerTransPortItem()
         ScoreboardTeamManager.enable()
         val configMap = ConfigMap(dataFolder)
+        val anniConfigMenu = ListenerAnniConfigMenu(configMap)
         val playerLeaveUnfairAdvantage  = PlayerLeaveUnfairAdvantage()
         ArrayList<Listener>().apply {
             // unfair cancel events
@@ -87,6 +88,7 @@ class Main : JavaPlugin() {
             // playerBreakWorkingBench
             add( PlayerOpeningWorkingBench() )
             // maps
+            add( ProtectBase() )
             add( PlayerAttackNexus()       )
             add( PlayerBreakResourceBlock())
             add( ListenerEnderChest()      )
@@ -94,7 +96,7 @@ class Main : JavaPlugin() {
             add( PlayerPlaceBlock()        )
             // menu
             add( ListenerShop(ShopBrewingMenu(), ShopWeaponMenu()) )
-            add( InventoryIntercept(configMap)                     )
+            add( anniConfigMenu            )
             // national events
             add( SuitableTool() )
             add( PlayerAttackEnemyTeam()  )
@@ -138,16 +140,17 @@ class Main : JavaPlugin() {
         val voteManager = VoteManager(worldNames)
         Bukkit.getOnlinePlayers().forEach { ScoreboardVote.display(it ?: return@forEach) }
         /* ↑↑↑↑↑↑↑  初期化するために必要なもの   ↑↑↑↑↑↑↑ */
-        val debug = false
+        val debug = true
         // vote初期化
         getCommand("vote").executor = CommandVote(voteManager)
         getCommand("teleport").executor = CommandTeleportSpecificLocation()
         getCommand("team").executor = CommandJoinTeam()
-        getCommand("anniconfig").executor = CommandAnniConfig()
+        getCommand("anniconfig").executor = anniConfigMenu
         getCommand("kit").executor = CommandKit()
         getCommand("statics").executor = CommandStatics()
         if (debug) {
             val mapName = "world_test"
+            Util.copyWorld(mapName) // 遅延入れる
             val generator = configMap.getTeamGenerator(mapName)
             Game.init(generator)
             Game.start()
@@ -163,7 +166,7 @@ class Main : JavaPlugin() {
                 // currentWaitTime が 0になるまで実行されない
                 if (currentWaitTime >= 0) return
                 val mapName = voteManager.result()
-                // TODO worldSaveの自動化をするためのプログラムを作成する｡
+                // worldsファイルからワールドをコピーして使用する｡ファイルが既に有った場合消す
                 Util.copyWorld(mapName)
                 val generator = configMap.getTeamGenerator(mapName)
                 Game.init(generator)

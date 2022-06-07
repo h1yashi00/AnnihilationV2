@@ -12,6 +12,11 @@
       <option name="url" value="https://repo.codemc.org/repository/maven-public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="enginehub-maven" />
+      <option name="name" value="enginehub-maven" />
+      <option name="url" value="https://maven.enginehub.org/repo/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="inventive-repo" />
       <option name="name" value="inventive-repo" />
       <option name="url" value="https://repo.inventivetalent.org/content/groups/public/" />

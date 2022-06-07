@@ -14,6 +14,9 @@ enum class GameTeam(
     BLUE    (Color.BLUE, ChatColor.BLUE),
     YELLOW  (Color.YELLOW, ChatColor.YELLOW),
     GREEN   (Color.GREEN, ChatColor.GREEN);
+    override fun toString(): String {
+        return name.lowercase()
+    }
     companion object {
         fun isShopBrewing(location: Location): Boolean {
             if (!Game.isStart) return false
@@ -57,7 +60,7 @@ enum class GameTeam(
         }
         fun getTeam(color: String): GameTeam? {
             values().forEach {
-                if (it.name.lowercase() == color) return it
+                if (it.toString() == color) return it
             }
             return null
         }

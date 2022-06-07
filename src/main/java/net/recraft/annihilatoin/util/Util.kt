@@ -9,6 +9,7 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.generator.ChunkGenerator
 import org.bukkit.inventory.ItemStack
+import org.bukkit.scheduler.BukkitRunnable
 import java.nio.file.Paths
 import java.util.*
 import kotlin.io.path.absolutePathString
@@ -83,7 +84,7 @@ object Util {
         val serverMapFile = Paths.get(getServerPath()+"/$worldName")
         val savedMapFile= Paths.get(Game.plugin.dataFolder.path + "/worlds/"+worldName)
         serverMapFile.toFile().deleteRecursively()
-        broadcast(savedMapFile.toFile().copyRecursively(serverMapFile.toFile()).toString())
+        savedMapFile.toFile().copyRecursively(serverMapFile.toFile())
     }
 
     private fun getServerPath(): String {
@@ -97,8 +98,7 @@ object Util {
                 return ByteArray(32768) //Empty byte array
             }
         })
-        Bukkit.createWorld(wc)
-        return Bukkit.getWorld(nameWorld)
+        return Bukkit.createWorld(wc)
     }
     fun isUnderVoid(location: Location): Boolean {
         val world = location.world

@@ -3,9 +3,11 @@ package net.recraft.annihilatoin.listener.map
 import net.minecraft.server.v1_8_R3.EntityHuman
 import net.minecraft.server.v1_8_R3.TileEntityFurnace
 import net.recraft.annihilatoin.objects.Game
+import net.recraft.annihilatoin.objects.Game.statics
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.builder.ItemStackBuilder
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftInventoryFurnace
@@ -68,8 +70,12 @@ class ListenerEnderFurnace : Listener, KoinComponent {
             val inv = Bukkit.createInventory(null, 9, title)
             inv.addItem(furnaceItems[0])
             inv.addItem(furnaceItems[1])
-            inv.addItem(furnaceItems[2])
-            inv.addItem(furnaceItems[3])
+            val item3 = if (player.statics().mined_ores >= 30) { furnaceItems[2] }
+            else {ItemStackBuilder(Material.STAINED_GLASS).title("${ChatColor.GREEN}鉱石を30回採掘することで開放").damage(14).build()}
+            inv.addItem(item3)
+            val item4 = if (player.statics().mined_ores >= 100) {furnaceItems[3]}
+            else {ItemStackBuilder(Material.STAINED_GLASS).title("${ChatColor.GREEN}鉱石を100回採掘することで開放").damage(14).build()}
+            inv.addItem(item4)
             player.openInventory(inv)
         }
         val furnaces: MutableMap<UUID, Array<VirtualFurnace>> = HashMap()

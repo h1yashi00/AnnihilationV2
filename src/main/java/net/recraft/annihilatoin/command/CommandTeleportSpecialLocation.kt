@@ -23,14 +23,14 @@ class CommandTeleportSpecificLocation : CommandExecutor {
 
     private fun getTeleportLocation(team: GameTeam, location: String?): Location? {
         return when (location) {
-            ConfigMap.shopWeapon    -> team.objects.shopWeapon.location
-            ConfigMap.shopBrewing   -> team.objects.shopBrewing.location
-            ConfigMap.nexus         -> team.objects.nexus.location
-            ConfigMap.spawn1        -> team.objects.spawn1.location
-            ConfigMap.spawn2        -> team.objects.spawn2.location
-            ConfigMap.spawn3        -> team.objects.spawn3.location
-            ConfigMap.enderChest    -> team.objects.enderChest.location
-            ConfigMap.enderFurnace  -> team.objects.enderFurnace.location
+            ConfigMap.Objective.SHOP_BREWING .toString() -> team.objects.shopWeapon.location
+            ConfigMap.Objective.SHOP_WEAPON  .toString() -> team.objects.shopBrewing.location
+            ConfigMap.Objective.NEXUS        .toString() -> team.objects.nexus.location
+            ConfigMap.Objective.SPAWN1       .toString() -> team.objects.spawn1.location
+            ConfigMap.Objective.SPAWN2       .toString() -> team.objects.spawn2.location
+            ConfigMap.Objective.SPAWN3       .toString() -> team.objects.spawn3.location
+            ConfigMap.Objective.ENDER_CHEST  .toString() -> team.objects.enderChest.location
+            ConfigMap.Objective.ENDER_FURNACE.toString() -> team.objects.enderFurnace.location
             else -> null
         }
     }

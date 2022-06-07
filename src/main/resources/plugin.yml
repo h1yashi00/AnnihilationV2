@@ -28,3 +28,7 @@ commands:
     description: 統計を見れる
     usage: /<command>
     permission: yourplugin.yourcommandpermission
+  protectBase:
+    description: 統計を見れる
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission

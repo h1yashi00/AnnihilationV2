@@ -94,7 +94,9 @@ class ListenerTransPortItem: Listener {
     private val tps = object {
         val buffer = ArrayList<TransPort>()
         fun remove(uuid: UUID) {
-            buffer.iterator().forEach { if (it.uuid == uuid) it.remove(); buffer.remove(it) }
+            val toRemove = arrayListOf<TransPort>()
+            buffer.iterator().forEach { if (it.uuid == uuid) it.remove(); toRemove.add(it) }
+            buffer.removeAll(toRemove)
         }
         fun remove(tp: TransPort) {
             tp.remove()
