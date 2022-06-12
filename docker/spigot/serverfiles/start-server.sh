@@ -3,6 +3,7 @@ set -e
 cp -Rf /spigot-files/* /spigot/
 mkdir -p /spigot/plugins
 
+
 java -Xmx4g -Xms256m -jar /spigot/spigot*.jar nogui
 
 echo "eula=true" >> eula.txt
