@@ -1,16 +1,16 @@
 package net.recraft.annihilatoin.listener.map
 
-import net.recraft.annihilatoin.listener.PlayerPlaceBlock
 import net.recraft.annihilatoin.objects.GameTeam
 import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
 
 class ProtectBase: Listener {
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onPlaceBlock(event: BlockPlaceEvent) {
         val block = event.block
         val player = event.player
@@ -22,7 +22,7 @@ class ProtectBase: Listener {
             }
         }
     }
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onBreak(event: BlockBreakEvent) {
         val block = event.block
         val player = event.player
