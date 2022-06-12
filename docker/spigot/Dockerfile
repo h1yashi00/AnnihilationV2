@@ -9,6 +9,6 @@ RUN cp -rf /artifact/ /spigot-files/
 
 COPY docker/spigot/serverfiles/ /spigot-files/
 COPY localDependencies/ /spigot-files/plugins/
-COPY target/build /spigot-files/plugins/
+COPY build/libs/ /spigot-files/plugins/
 
 CMD bash /spigot-files/start-server.sh

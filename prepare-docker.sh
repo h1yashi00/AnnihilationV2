@@ -8,6 +8,7 @@ build_image() {
   ## ソースコードからSeichiAssist.jarをビルド
   # ./sbt assembly
   # grandleを追加する(予定)
+  gradle jar
 
   ## dockerイメージのビルド（初回は数十分かかります）
   docker-compose build -m 2g
