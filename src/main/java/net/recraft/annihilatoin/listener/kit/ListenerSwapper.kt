@@ -23,7 +23,7 @@ import org.bukkit.scheduler.BukkitRunnable
 
 class ListenerSwapper: Listener {
     val coolDown = CoolDown(
-        Swapper.cooldown,
+        Swapper.cooldown
     ) {}
 
     @EventHandler

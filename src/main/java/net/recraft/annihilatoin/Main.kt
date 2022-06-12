@@ -27,9 +27,6 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
-import org.koin.core.context.startKoin
-import org.koin.dsl.module
-import java.io.File
 
 
 // external functions
@@ -61,22 +58,10 @@ fun Player.direction(): EnumDirection {
 }
 
 class Main : JavaPlugin() {
-    private val myModule = module {
-        single<JavaPlugin> { this@Main }
-        single { server }
-        single<File> {dataFolder}
-    }
-
-    private fun setupKoin() {
-        startKoin {
-            modules(listOf(myModule))
-        }
-    }
-
 //    private val scoreboardTeamManager = ScoreboardTeamManager()
     private var tp: ListenerTransPortItem? = null
     override fun onEnable() {
-        setupKoin()
+        Game.plugin = this
         tp = ListenerTransPortItem()
         ScoreboardTeamManager.enable()
         val configMap = ConfigMap(dataFolder)

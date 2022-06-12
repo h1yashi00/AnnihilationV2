@@ -17,7 +17,7 @@ enum class KitType {
 
     companion object {
         fun getKitByName(name: String): KitType? {
-            values().forEach { if (it.name.toLowerCase() == name.toLowerCase()) return it }
+            values().forEach { if (it.name.equals(name, ignoreCase = true)) return it }
             return null
         }
     }

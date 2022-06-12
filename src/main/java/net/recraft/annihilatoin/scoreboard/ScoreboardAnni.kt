@@ -22,7 +22,7 @@ object ScoreboardAnni: ScoreboardUtil() {
         NEXT_PHASE_TIME(6);
         companion object {
             fun get(name: String): AnniSection? {
-                values().forEach { if(name.lowercase() == it.name.lowercase()) return it}
+                values().forEach { if(name.equals(it.name, ignoreCase = true)) return it}
                 return null
             }
         }

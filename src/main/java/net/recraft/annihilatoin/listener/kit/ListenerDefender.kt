@@ -21,7 +21,7 @@ import org.bukkit.scheduler.BukkitRunnable
 
 class ListenerDefender: Listener {
     private val coolDown = CoolDown(
-        Defender.coolDownTime,
+        Defender.coolDownTime
     ) {}
     init {
         object: BukkitRunnable() {

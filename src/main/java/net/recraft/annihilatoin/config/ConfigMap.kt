@@ -31,7 +31,7 @@ class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
         PROTECT_BASE(AnniConfigItemStackBuilder(Material.STAINED_GLASS).damage(14).lore(listOf("protectbase")).build());
 
         override fun toString(): String {
-            return name.lowercase()
+            return name.toLowerCase()
         }
 
         companion object {
@@ -76,7 +76,7 @@ class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
     }
     private fun write(world: World, saveObject: String, team: GameTeam, value: String) {
         val section = fileConfig.getConfigurationSection(world.name)
-        section.set("${saveObject.lowercase()}.$team", value)
+        section.set("${saveObject.toLowerCase()}.$team", value)
         fileConfig.save(file)
     }
     fun getTeamGenerator(worldName: String): GameGenerator {

@@ -12,7 +12,7 @@ class CoolDown(
     private val coolDown: Int,
     private val readyMsg: String = "使用可能になりました｡",
     private val notReadyMsg: String = "スキル使用できるまであと",
-    private val readyAction: (Player) -> Unit,
+    private val readyAction: (Player) -> Unit
 ) {
     init {
         object: BukkitRunnable() {

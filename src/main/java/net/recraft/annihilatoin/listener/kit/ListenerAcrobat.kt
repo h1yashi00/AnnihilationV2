@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerToggleFlightEvent
 
 class ListenerAcrobat: Listener {
     private val coolDown = CoolDown(
-        Acrobat.coolDownTime,
+        Acrobat.coolDownTime
     ) {
         if (it.kitType() == KitType.ACROBAT) {
             it.allowFlight = true

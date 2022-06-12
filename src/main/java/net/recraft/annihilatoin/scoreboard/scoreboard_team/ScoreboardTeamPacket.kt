@@ -16,7 +16,7 @@ class ScoreboardTeamPacket(_teamName: String) {
             REMOVE_PLAYER (4);
             companion object {
                 fun getMode(mode: String): MODE? {
-                    return when (mode.lowercase()) {
+                    return when (mode.toLowerCase()) {
                         "create" -> {
                             CREATE_TEAM
                         }

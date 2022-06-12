@@ -21,12 +21,10 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.util.*
 
-class ListenerEnderFurnace : Listener, KoinComponent {
-    private val plugin: JavaPlugin by inject()
+class ListenerEnderFurnace : Listener {
+    private val plugin: JavaPlugin = Game.plugin
     private val menu = Menu()
     init {
         Bukkit.getScheduler().runTaskTimer(plugin, {
@@ -87,7 +85,7 @@ class ListenerEnderFurnace : Listener, KoinComponent {
                     VirtualFurnace(handler),
                     VirtualFurnace(handler),
                     VirtualFurnace(handler),
-                    VirtualFurnace(handler),
+                    VirtualFurnace(handler)
                 )
             }
             val arrayFurnace = furnaces[uuid]!!

@@ -3,13 +3,11 @@ package net.recraft.annihilatoin.config
 import net.recraft.annihilatoin.objects.Game
 import org.bukkit.configuration.InvalidConfigurationException
 import org.bukkit.configuration.file.YamlConfiguration
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.io.*
 import java.util.*
 
-class ConfigManager() : KoinComponent {
-    private val configFolder: File by inject()
+class ConfigManager() {
+    private val configFolder: File = Game.plugin.dataFolder
     init {
         configFolder.mkdirs()
     }

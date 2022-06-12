@@ -22,7 +22,7 @@ KitBase(private val _type: KitType,
     }
     private fun setDescription(itemStack: ItemStack, lores: List<String>): ItemStack {
         val meta = itemStack.itemMeta
-        meta.displayName = "${ChatColor.GOLD}${_type.name.lowercase().capitalize()}"
+        meta.displayName = "${ChatColor.GOLD}${_type.name.toLowerCase().capitalize()}"
         meta.setLore(lores)
         itemStack.setItemMeta(meta)
         return itemStack

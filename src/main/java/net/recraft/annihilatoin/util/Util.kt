@@ -9,10 +9,8 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.generator.ChunkGenerator
 import org.bukkit.inventory.ItemStack
-import org.bukkit.scheduler.BukkitRunnable
 import java.nio.file.Paths
 import java.util.*
-import kotlin.io.path.absolutePathString
 
 
 object Util {
@@ -88,7 +86,7 @@ object Util {
     }
 
     private fun getServerPath(): String {
-        return Paths.get(Game.plugin.dataFolder.absolutePath).parent.parent.absolutePathString()
+        return Paths.get(Game.plugin.dataFolder.absolutePath).parent.parent.toAbsolutePath().toString()
     }
 
     fun makeWorld(nameWorld: String): World {

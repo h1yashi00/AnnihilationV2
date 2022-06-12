@@ -11,15 +11,13 @@ import org.bukkit.World
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
 // playerのデータはここで管理している ex..kit, team
-object Game : KoinComponent {
+object Game {
     fun Player.setTeam(team: GameTeam) {
         getPlayerData(uniqueId).team = team
     }
@@ -61,7 +59,7 @@ object Game : KoinComponent {
         return null
     }
 
-    val plugin: JavaPlugin by inject()
+    lateinit var plugin: JavaPlugin
     val protocolManager = ProtocolLibrary.getProtocolManager()!!
     val lobby: World = Util.makeWorld("world_lobby").apply {setSpawnLocation(0,2,0)}
     private lateinit var _map: World
@@ -89,7 +87,7 @@ object Game : KoinComponent {
             Pair(GameTeam.RED, redCount),
             Pair(GameTeam.BLUE, blueCount),
             Pair(GameTeam.YELLOW, yellowCount),
-            Pair(GameTeam.GREEN, greenCount),
+            Pair(GameTeam.GREEN, greenCount)
         )
     }
     val map: World get() = _map

@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.inventory.ItemStack
 
 class PlayerJoinServer(
-    private val playerLeaveUnfairAdvantage: PlayerLeaveUnfairAdvantage,
+    private val playerLeaveUnfairAdvantage: PlayerLeaveUnfairAdvantage
 ): Listener {
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {

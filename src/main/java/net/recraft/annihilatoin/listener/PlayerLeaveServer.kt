@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.scheduler.BukkitRunnable
 
 class PlayerLeaveServer(
-    private val playerLeaveUnfairAdvantage: PlayerLeaveUnfairAdvantage,
+    private val playerLeaveUnfairAdvantage: PlayerLeaveUnfairAdvantage
 ): Listener {
     @EventHandler
     fun onPlayerLeave(event: PlayerQuitEvent) {

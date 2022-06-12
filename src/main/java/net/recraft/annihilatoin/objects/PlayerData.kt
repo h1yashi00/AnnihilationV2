@@ -14,7 +14,7 @@ class PlayerData(
     _team: GameTeam? = null,
     _kitType: KitType = KitType.CIVILIAN,
     _invisible: Boolean = false,
-    _voidCancel: Boolean = false,
+    _voidCancel: Boolean = false
 )
 {
     val statics = PlayerStatics()
