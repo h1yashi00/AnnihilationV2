@@ -1,0 +1,122 @@
+world_canyon:
+  shop_weapon:
+    red: -122,81,251
+    blue: -126,81,-122
+    yellow: 251,81,247
+    green: 247,81,-126
+  shop_brewing:
+    red: -126,81,247
+    blue: -122,81,-126
+    yellow: 247,81,251
+    green: 251,81,-122
+  nexus:
+    red: -114,70,238
+    blue: -113,70,-114
+    yellow: 238,70,239
+    green: 239,70,-113
+  spawn1:
+    red: -112,73,247
+    blue: -122,73,-111
+    yellow: 246,73,237
+    green: 236,73,-121
+  spawn2:
+    red: -112,73,238
+    blue: -111,73,-113
+    yellow: 236,73,238
+    green: 238,73,-111
+  spawn3:
+    red: -122,73,237
+    blue: -111,73,-122
+    yellow: 237,73,246
+    green: 246,73,-111
+  ender_chest:
+    red: -118,74,238
+    blue: -113,74,-118
+    yellow: 238,74,243
+    green: 243,74,-113
+  ender_furnace:
+    red: -119,74,238
+    blue: -113,74,-119
+    yellow: 238,74,244
+    green: 244,74,-113
+  defender:
+    red: -123,68,247
+    blue: -122,68,-123
+    yellow: 247,68,248
+    green: 248,68,-122
+  protect_base:
+    red: 0,0,0
+    blue: 0,0,0
+    yellow: 0,0,0
+    green: 0,0,0
+  min_protect_base:
+    red: -128,45,235
+    blue: -128,45,-128
+    yellow: 235,45,234
+    green: 233,45,-128
+  max_protect_base:
+    red: -108,81,253
+    blue: -110,128,-109
+    yellow: 253,128,253
+    green: 253,128,-110
+world_test:
+  shop_weapon:
+    red: 4,2,6
+    blue: -6,2,4
+    yellow: -5,2,-6
+    green: 6,2,-4
+  shop_brewing:
+    red: 3,2,6
+    blue: -6,2,3
+    yellow: -4,2,-6
+    green: 6,2,-3
+  nexus:
+    red: 0,3,7
+    blue: -7,3,0
+    yellow: -1,3,-7
+    green: 7,3,0
+  spawn1:
+    red: -1,1,7
+    blue: -7,1,-1
+    yellow: 0,1,-7
+    green: 7,1,1
+  spawn2:
+    red: -2,1,7
+    blue: -7,1,-2
+    yellow: 1,1,-7
+    green: 7,1,2
+  spawn3:
+    red: -3,1,7
+    blue: -7,1,-3
+    yellow: 2,1,-7
+    green: 7,1,3
+  ender_chest:
+    red: 2,2,7
+    blue: -7,2,2
+    yellow: -3,2,-7
+    green: 7,2,-2
+  ender_furnace:
+    red: 0,0,0
+    blue: -7,2,1
+    yellow: -2,2,-7
+    green: 7,2,-1
+  defender:
+    red: 0,1,6
+    blue: -6,1,0
+    yellow: -1,1,-6
+    green: 6,1,0
+  protect_base:
+    red: -8,6,9
+    blue: 0,0,0
+    yellow: 0,0,0
+    green: 0,0,0
+  min_protect_base:
+    red: -8,1,6
+    blue: -7,1,-8
+    yellow: -6,1,-7
+    green: 7,1,-5
+  max_protect_base:
+    red: 4,6,8
+    blue: -7,6,5
+    yellow: 7,6,-7
+    green: 7,6,8

@@ -1,0 +1,63 @@
+# ワールドファイルはworld_$worldNameの形式で保存されているのでそれに従ってmaps.yamlも同じようにその形式を利用する
+world_test:
+  shop:
+    red: -24,66,-25
+    yellow: -24,65,25
+    green: 26,65,25
+    blue: 26,65,-25
+  spawn1:
+    red: -25,65,-25
+    yellow: -25,65,25
+    green: 25,65,25
+    blue: 25,65,-25
+  spawn2:
+    red: -25,65,-25
+    yellow: -25,65,25
+    green: 25,65,25
+    blue: 25,65,-25
+  spawn3:
+    red: -25,65,-25
+    yellow: -25,65,25
+    green: 25,65,25
+    blue: 25,65,-25
+  nexus:
+    red: -27,66,-27
+    yellow: -27,66,27
+    green: 27,66,27
+    blue: 27,66,-27
+  enderfurnace:
+    red: -22,65,-22
+    yellow: -22,65,22
+    green: 22,65,22
+    blue: 22,65,-22
+  enderchest:
+    red: -21,65,-21
+    yellow: -21,65,21
+    green: 21,65,21
+    blue: 21,65,-21
+  boss:
+    boss1:
+      name: '&bCelariel'
+      spawn: 0,63,-21
+      chest: 0,63,-23
+      hearts: 100
+    boss2:
+      name: '&cFirwen'
+      spawn: 0,63,22
+      chest: 0,63,24
+      hearts: 100
+world_lobby:
+  spawn: 0,32,0
+  signs:
+    red:
+    - -2,23,-2
+    - -3,65,-4
+    yellow:
+    - 2,23,-2
+    - -3,65,4
+    green:
+    - 2,23,2
+    - 3,65,4
+    blue:
+    - -2,23,2
+    - 3,65,-4

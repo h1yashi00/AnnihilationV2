@@ -1,0 +1,72 @@
+world:
+  shop:
+    red: 0,0,0
+    blue: 0,0,0
+    yellow: 0,0,0
+    green: 0,0,0
+  nexus:
+    red: 0,0,0
+    blue: 0,0,0
+    yellow: 0,0,0
+    green: 0,0,0
+  spawn1:
+    red: 0,0,0
+    blue: 0,0,0
+    yellow: 0,0,0
+    green: 0,0,0
+  spawn2:
+    red: 0,0,0
+    blue: 0,0,0
+    yellow: 0,0,0
+    green: 0,0,0
+  spawn3:
+    red: 0,0,0
+    blue: 0,0,0
+    yellow: 0,0,0
+    green: 0,0,0
+  enderfurnace:
+    red: 0,0,0
+    blue: 0,0,0
+    yellow: 0,0,0
+    green: 0,0,0
+  enderchest:
+    red: 0,0,0
+    blue: 0,0,0
+    yellow: 0,0,0
+    green: 0,0,0
+world_test:
+  shop:
+    red: -7,2,-3
+    blue: -1,2,-6
+    yellow: 6,2,0
+    green: 0,2,6
+  nexus:
+    red: -7,3,0
+    blue: -1,3,-7
+    yellow: 7,3,0
+    green: 0,3,7
+  spawn1:
+    red: -7,1,-1
+    blue: 0,1,-7
+    yellow: 7,1,1
+    green: -1,1,7
+  spawn2:
+    red: -7,1,-2
+    blue: 1,1,-7
+    yellow: 7,1,2
+    green: -2,1,7
+  spawn3:
+    red: -7,1,-3
+    blue: 2,1,-7
+    yellow: 7,1,3
+    green: -3,1,7
+  enderfurnace:
+    red: -7,2,1
+    blue: -2,2,-7
+    yellow: 7,2,-1
+    green: 1,2,7
+  enderchest:
+    red: -7,2,2
+    blue: -3,2,-7
+    yellow: 7,2,-2
+    green: 2,2,7
