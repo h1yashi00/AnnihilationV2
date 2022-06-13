@@ -5,9 +5,7 @@ build_image() {
 
   rm -r target/build || true
 
-  ## ソースコードからSeichiAssist.jarをビルド
-  # ./sbt assembly
-  # grandleを追加する(予定)
+  ## ソースコードからAnnihilationをビルド
   gradle jar
 
   ## dockerイメージのビルド（初回は数十分かかります）
