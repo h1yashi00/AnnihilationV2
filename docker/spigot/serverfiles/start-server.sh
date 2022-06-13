@@ -11,4 +11,5 @@ echo "eula=true" >> eula.txt
 # ディレクトリを移動しないと､/spigot/plugins/が読み込まれない
 cd /spigot
 
-java -Xmx4g -Xms256m -jar spigot*.jar nogui
+touch input
+java -Xmx4g -Xms256m -jar spigot*.jar nogui < input
