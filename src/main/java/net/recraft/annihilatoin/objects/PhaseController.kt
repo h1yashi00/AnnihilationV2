@@ -1,10 +1,12 @@
 package net.recraft.annihilatoin.objects
 
+import net.recraft.annihilatoin.event.BossSpawnEvent
+import net.recraft.annihilatoin.objects.builder.WitherBoss
 import net.recraft.annihilatoin.scoreboard.ScoreboardAnni
+import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Sound
-
 
 class PhaseController {
     private var currentTime: Int = 0
@@ -50,6 +52,9 @@ class PhaseController {
     private fun phase1() {
         if (phase1Called) return
         phase1Called = true
+        val boss = WitherBoss()
+        val bossEntity = boss.spawn()
+        Bukkit.getPluginManager().callEvent(BossSpawnEvent(bossEntity))
         ScoreboardAnni.currentPhaseUpdate()
         Bukkit.broadcastMessage("phase 1!!!!!!!!!!!!!!!!!").times(5)
         Bukkit.broadcastMessage("${ChatColor.GRAY}準備期間です!")
@@ -80,6 +85,7 @@ class PhaseController {
         phase4Called = true
         ScoreboardAnni.currentPhaseUpdate()
         Bukkit.broadcastMessage("phase 4!!!!!!!!!!!!!!!!!")
+        Util.broadcast("${ChatColor.DARK_GRAY} ボスが出現しました｡")
         Bukkit.broadcastMessage("${ChatColor.GRAY}ガップルがショップで買えるようになりました!")
         thunderSound()
     }

@@ -1,4 +1,4 @@
-gradle jar
+# gradle jar
 
 # spigot_spigot_1はコンテナ名
 docker cp ./build/libs/* spigot_spigot_1:/spigot/plugins

@@ -15,6 +15,8 @@ class ListenerGapple: Listener {
     fun onConsume(event: PlayerItemConsumeEvent) {
         val item = event.item
         if (item.type != Material.GOLDEN_APPLE) return
+        val gappleDurability = 1
+        if (item.durability != gappleDurability.toShort()) return
         val player = event.player
         player.addPotionEffect(PotionEffect(PotionEffectType.SLOW_DIGGING, 20 * 5, 3))
         player.addPotionEffect(PotionEffect(PotionEffectType.WEAKNESS, 20 * 10, 3))

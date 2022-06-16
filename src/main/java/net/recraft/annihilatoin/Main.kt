@@ -8,6 +8,8 @@ import net.recraft.annihilatoin.listener.*
 import net.recraft.annihilatoin.listener.kit.*
 import net.recraft.annihilatoin.listener.map.*
 import net.recraft.annihilatoin.admin.ListenerAnniConfigMenu
+import net.recraft.annihilatoin.listener.boss.BossBuffListener
+import net.recraft.annihilatoin.listener.boss.BossListener
 import net.recraft.annihilatoin.listener.special_item.ListenerLanchPad
 import net.recraft.annihilatoin.listener.special_item.ListenerTransPortItem
 import net.recraft.annihilatoin.listener.troll.PlayerOpeningWorkingBench
@@ -25,6 +27,7 @@ import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
+import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
 
@@ -57,6 +60,20 @@ fun Player.direction(): EnumDirection {
     return (player as CraftPlayer).handle.direction
 }
 
+fun ItemStack.isSame(item: ItemStack?): Boolean {
+    if (item == null) return false
+    if (type != item.type) return false
+    val meta1 = if (itemMeta == null) {
+        if (item.itemMeta == null) return true
+        return false
+    } else { itemMeta }
+    val meta2 = if (item.itemMeta == null) return false else { item.itemMeta }
+    // itemMetaどっちもあり
+    if (meta1.displayName != meta2.displayName) return false
+    if (meta1.lore != meta2.lore) return false
+    return true
+}
+
 class Main : JavaPlugin() {
 //    private val scoreboardTeamManager = ScoreboardTeamManager()
     private var tp: ListenerTransPortItem? = null
@@ -82,6 +99,10 @@ class Main : JavaPlugin() {
             add( ListenerEnderChest()      )
             add( ListenerEnderFurnace()    )
             add( PlayerPlaceBlock()        )
+            // boss
+            add ( BossListener() )
+            add ( EndPortal()    )
+            add ( BossBuffListener() )
             // menu
             add( ListenerShop(ShopBrewingMenu(), ShopWeaponMenu()) )
             add( anniConfigMenu            )

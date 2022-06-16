@@ -64,8 +64,6 @@ task processResourcesa(type: Copy) {
     duplicatesStrategy = 'include'
 }
 
-
-
 jar {
     from {
         configurations.compile.collect {
