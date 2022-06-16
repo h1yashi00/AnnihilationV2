@@ -128,7 +128,7 @@ class Main : JavaPlugin() {
         val voteManager = VoteManager(worldNames)
         Bukkit.getOnlinePlayers().forEach { ScoreboardVote.display(it ?: return@forEach) }
         /* ↑↑↑↑↑↑↑  初期化するために必要なもの   ↑↑↑↑↑↑↑ */
-        val debug = false
+        val debug = true
         Bukkit.broadcastMessage("aaaaaaaa")
         // vote初期化
         getCommand("vote").executor = CommandVote(voteManager)

@@ -30,6 +30,13 @@ class PlayerAttackNexus: Listener {
         val damagedNexus = GameTeam.getNexus(brokenBlock.location) ?: return
         event.isCancelled = true
         val player = event.player
+        val playerY = player.location.blockY +1
+        val blockY = brokenBlock.y
+        // ネクサスの位置がプレイヤーの頭の位置から+-1の範囲でしか受け付けない
+        if ( !(playerY == blockY || playerY == blockY +1 || playerY == blockY) ) {
+            player.sendMessage("${ChatColor.RED}プレイヤーの位置が高すぎるか低すぎます｡ civBreak?")
+            return
+        }
         if (ShopWeaponMenu.isSpecialTool(player.itemInHand)) {
             player.sendMessage("${ChatColor.RED}ショップアイテムでは攻撃できません")
             return
