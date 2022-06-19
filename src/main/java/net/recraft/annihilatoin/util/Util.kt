@@ -4,6 +4,7 @@ import com.sk89q.worldedit.bukkit.selections.Selection
 import net.minecraft.server.v1_8_R3.NBTTagCompound
 import net.recraft.annihilatoin.objects.*
 import org.bukkit.*
+import org.bukkit.block.Block
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack
 import org.bukkit.entity.Entity
@@ -60,6 +61,10 @@ object Util {
         return material == Material.LOG || material == Material.LOG_2;
     }
 
+    fun isAir(block: Block): Boolean {
+        return block.type == Material.AIR
+    }
+
     fun isAir(item: ItemStack): Boolean {
         return item.type == Material.AIR
     }
@@ -99,14 +104,18 @@ object Util {
         })
         return Bukkit.createWorld(wc)
     }
-    fun isUnderVoid(location: Location): Boolean {
-        val world = location.world
-        var y = location.y
-        while(0 <= y) {
-            val checkLoc = Location(world, location.x, y, location.z)
-            if (checkLoc.block.type != Material.AIR) return false
-            y -= 1
+    fun isVoidEdge(location: Location): Boolean {
+        val loc = location.clone()
+        val check = arrayListOf<Location>()
+        check.add(loc.clone().apply{x+=1})
+        check.add(loc.clone().apply{x-=1})
+        check.add(loc.clone().apply{z+=1})
+        check.add(loc.clone().apply{z-=1})
+        check.forEach {
+            if (!Game.mapObject.mapRange.contains(it)) {
+                return true
+            }
         }
-        return true
+        return false
     }
 }

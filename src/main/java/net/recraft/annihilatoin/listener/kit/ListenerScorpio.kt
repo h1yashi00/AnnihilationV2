@@ -29,6 +29,10 @@ class ListenerScorpio: Listener {
         if (!Scorpio.isScorpioItem(item)) return
         val player = event.player
         if (player.kitType() != KitType.SCORPIO) return
+        if (Util.isVoidEdge(player.location)) {
+            player.sendMessage("${ChatColor.RED}奈落際での使用は許可されていません")
+            return
+        }
         if (!coolDown.isReady(player)) {
             coolDown.isNotReadyMsg(player)
             return
@@ -47,7 +51,7 @@ class ListenerScorpio: Listener {
                 if (hitted.displayName == player.displayName) return
                 val hittedTeam = hitted.team()
                 if (player.team() == hittedTeam) return
-                if (Util.isUnderVoid(player.location)) {
+                if (Util.isVoidEdge(player.location)) {
                     player.sendMessage("${ChatColor.RED}奈良スコピは許可されていません")
                     return
                 }

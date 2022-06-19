@@ -8,6 +8,7 @@ import net.recraft.annihilatoin.objects.Game.setVoidCancel
 import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Swapper
+import net.recraft.annihilatoin.util.Util
 import org.bukkit.*
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.entity.Firework
@@ -33,6 +34,10 @@ class ListenerSwapper: Listener {
         val player = event.player
         if (player.kitType() != KitType.SWAPPER) return
         if (!Swapper.isSwapItem(event.item)) return
+        if (Util.isVoidEdge(player.location)) {
+            player.sendMessage("${ChatColor.RED}奈落際で能力を使用することはできません")
+            return
+        }
         if (!coolDown.isReady(player)) {
             coolDown.isNotReadyMsg(player)
             return
