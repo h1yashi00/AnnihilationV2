@@ -10,6 +10,7 @@ import net.recraft.annihilatoin.listener.map.*
 import net.recraft.annihilatoin.admin.ListenerAnniConfigMenu
 import net.recraft.annihilatoin.listener.boss.BossBuffListener
 import net.recraft.annihilatoin.listener.boss.BossListener
+import net.recraft.annihilatoin.listener.boss.EndPortal
 import net.recraft.annihilatoin.listener.special_item.ListenerLanchPad
 import net.recraft.annihilatoin.listener.special_item.ListenerTransPortItem
 import net.recraft.annihilatoin.listener.troll.PlayerOpeningWorkingBench
@@ -98,8 +99,9 @@ class Main : JavaPlugin() {
             add( PlayerBreakResourceBlock())
             add( ListenerEnderChest()      )
             add( ListenerEnderFurnace()    )
-            add( PlayerPlaceBlock()        )
+            add( GameWorld()        )
             // boss
+            add ( TheEnd()       )
             add ( BossListener() )
             add ( EndPortal()    )
             add ( BossBuffListener() )
@@ -149,8 +151,7 @@ class Main : JavaPlugin() {
         val voteManager = VoteManager(worldNames)
         Bukkit.getOnlinePlayers().forEach { ScoreboardVote.display(it ?: return@forEach) }
         /* ↑↑↑↑↑↑↑  初期化するために必要なもの   ↑↑↑↑↑↑↑ */
-        val debug = true
-        Bukkit.broadcastMessage("aaaaaaaa")
+        val debug = false
         // vote初期化
         getCommand("vote").executor = CommandVote(voteManager)
         getCommand("teleport").executor = CommandTeleportSpecificLocation()

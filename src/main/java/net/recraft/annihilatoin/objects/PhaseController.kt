@@ -1,7 +1,7 @@
 package net.recraft.annihilatoin.objects
 
 import net.recraft.annihilatoin.event.BossSpawnEvent
-import net.recraft.annihilatoin.objects.builder.WitherBoss
+import net.recraft.annihilatoin.objects.boss.WitherBoss
 import net.recraft.annihilatoin.scoreboard.ScoreboardAnni
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
@@ -30,10 +30,10 @@ class PhaseController {
         ScoreboardAnni.nextPhaseTimeUpdate()
         currentTime+= 1
         when (currentPhase) {
-            1 -> phase1()
+            1 -> phase4()
             2 -> phase2()
             3 -> phase3()
-            4 -> phase4()
+            4 -> phase1()
             5 -> phase5()
         }
     }
@@ -52,9 +52,6 @@ class PhaseController {
     private fun phase1() {
         if (phase1Called) return
         phase1Called = true
-        val boss = WitherBoss()
-        val bossEntity = boss.spawn()
-        Bukkit.getPluginManager().callEvent(BossSpawnEvent(bossEntity))
         ScoreboardAnni.currentPhaseUpdate()
         Bukkit.broadcastMessage("phase 1!!!!!!!!!!!!!!!!!").times(5)
         Bukkit.broadcastMessage("${ChatColor.GRAY}準備期間です!")
@@ -83,6 +80,8 @@ class PhaseController {
     private fun phase4() {
         if (phase4Called) return
         phase4Called = true
+        val w = WitherBoss().apply{spawn()}
+        Bukkit.getPluginManager().callEvent(BossSpawnEvent(w))
         ScoreboardAnni.currentPhaseUpdate()
         Bukkit.broadcastMessage("phase 4!!!!!!!!!!!!!!!!!")
         Util.broadcast("${ChatColor.DARK_GRAY} ボスが出現しました｡")

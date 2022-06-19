@@ -3,12 +3,12 @@ package net.recraft.annihilatoin.objects
 import com.comphenix.protocol.ProtocolLibrary
 import com.sk89q.worldedit.bukkit.WorldEditPlugin
 import net.recraft.annihilatoin.objects.kit.KitType
+import net.recraft.annihilatoin.objects.map.MapObject
 import net.recraft.annihilatoin.scoreboard.ScoreboardAnni
 import net.recraft.annihilatoin.util.GameGenerator
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
 import org.bukkit.World
-import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
@@ -61,9 +61,10 @@ object Game {
     }
 
     lateinit var plugin: JavaPlugin
+    private lateinit var _map: World
+    lateinit var mapObject: MapObject
     val protocolManager = ProtocolLibrary.getProtocolManager()!!
     val lobby: World = Util.makeWorld("world_lobby").apply {setSpawnLocation(0,2,0)}
-    private lateinit var _map: World
     private val playerDatas: MutableMap<UUID, PlayerData> = HashMap()
     private fun getPlayerData(uuid: UUID): PlayerData {
         if (!playerDatas.containsKey(uuid))  {
@@ -115,7 +116,7 @@ object Game {
             override fun run() {
                 phase.pass()
             }
-        }, 0, 20)
+        }, 0, 1)
     }
     private fun randomTeamJoin(): GameTeam {
         return getLowestTeam()
@@ -141,5 +142,6 @@ object Game {
         GameTeam.BLUE.objects   = generator.getBlue()
         GameTeam.YELLOW.objects = generator.getYellow()
         GameTeam.GREEN.objects  = generator.getGreen()
+        mapObject = generator.getMapObject()
     }
 }

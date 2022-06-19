@@ -59,6 +59,15 @@ world_canyon:
     blue: -110,128,-109
     yellow: 253,128,253
     green: 253,128,-110
+  boss_gate1:
+    min: 61,14,-49
+    max: 63,14,-47
+  boss_gate2:
+    min: 62,14,174
+    max: 64,14,176
+  map_range:
+    min: -128,8,-128
+    max: 253,128,253
 world_test:
   shop_weapon:
     red: 4,2,6

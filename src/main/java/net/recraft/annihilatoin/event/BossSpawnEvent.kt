@@ -1,10 +1,10 @@
 package net.recraft.annihilatoin.event
 
-import org.bukkit.entity.Entity
+import net.recraft.annihilatoin.objects.boss.WitherBoss
 import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 
-class BossSpawnEvent(val entity: Entity) : Event() {
+class BossSpawnEvent(val boss: WitherBoss) : Event() {
     companion object {
         private val HANDLERS = HandlerList()
 

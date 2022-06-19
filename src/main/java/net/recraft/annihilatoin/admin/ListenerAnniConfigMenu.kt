@@ -34,7 +34,7 @@ class ListenerAnniConfigMenu(private val configMap: ConfigMap): Listener, Comman
         if (event.clickedInventory?.title != menu.title) return
         val player = if (event.whoClicked is Player) {Bukkit.getPlayer(event.whoClicked.name)} else { return }
         val colorWool = if (isSpecialWool(event.currentItem)) {event.currentItem} else return
-        ConfigMap.Objective.giveSpecificItems(colorWool, player)
+        ConfigMap.TeamObjective.giveSpecificItems(colorWool, player)
         event.isCancelled = true
     }
 
@@ -57,7 +57,7 @@ class ListenerAnniConfigMenu(private val configMap: ConfigMap): Listener, Comman
         val world = event.player.world
         val location = event.block.location
         player.sendMessage("aaaaaa")
-        val objective = ConfigMap.Objective.getObject(holdingItem) ?: return
+        val objective = ConfigMap.TeamObjective.getObject(holdingItem) ?: return
         configMap.writeLocation(world, objective, team, location)
         event.player.sendMessage("保存しました")
     }
@@ -74,7 +74,7 @@ class ListenerAnniConfigMenu(private val configMap: ConfigMap): Listener, Comman
         }
 
         // protectbaseだったとき登録する保護する範囲を登録する
-        if (item != ConfigMap.Objective.PROTECT_BASE.item) return
+        if (item != ConfigMap.TeamObjective.PROTECT_BASE.item) return
         val player = if (event.whoClicked is Player) {event.whoClicked as Player} else {return}
         val slotItem = player.inventory.getItem(0) ?: return
         val specialWool = if (isSpecialWool(slotItem)) { slotItem } else { return }

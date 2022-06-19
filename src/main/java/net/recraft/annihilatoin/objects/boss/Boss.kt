@@ -1,23 +1,21 @@
 package net.recraft.annihilatoin.objects.boss
 
-import net.recraft.annihilatoin.objects.Game
-import net.recraft.annihilatoin.objects.GameTeam
+import net.recraft.annihilatoin.util.Util
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
-import org.bukkit.scheduler.BukkitRunnable
+import org.bukkit.entity.LivingEntity
 
 abstract class Boss(private val type: EntityType) {
     private val theEnd = Bukkit.getWorld("world_the_end")
-//    val location = Location(theEnd, 100.0,100.0,100.0)
-    fun spawn(): Entity {
-        val entity = GameTeam.GREEN.objects.nexus.location.world.spawnEntity(GameTeam.GREEN.objects.nexus.location, type)
-        val later = object: BukkitRunnable() {
-            override fun run() {
-                entity.teleport(GameTeam.GREEN.objects.nexus.location)
-            }
-        }
-        later.runTaskTimer(Game.plugin, 0, 1)
-        return entity
+    val spawnLocation = Location(theEnd, 0.0,65.0, 0.0)
+    lateinit var livingEntity: LivingEntity
+    fun isBoss(_entity: Entity): Boolean {
+        return _entity.uniqueId == livingEntity.uniqueId
+    }
+    fun spawn() {
+        val entity = theEnd.spawnEntity(spawnLocation, type)
+        livingEntity = entity as LivingEntity
     }
 }

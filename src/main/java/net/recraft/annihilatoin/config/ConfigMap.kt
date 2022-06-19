@@ -18,7 +18,7 @@ class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
             return super.build()
         }
     }
-    enum class Objective(val item: ItemStack) {
+    enum class TeamObjective(val item: ItemStack) {
         SHOP_WEAPON(AnniConfigItemStackBuilder(Material.SIGN).lore(listOf("shopweapon")).build()),
         SHOP_BREWING(AnniConfigItemStackBuilder(Material.SIGN).lore(listOf("shopbrewing")).build()),
         NEXUS(AnniConfigItemStackBuilder(Material.ENDER_STONE).lore(listOf("nexus")).build()),
@@ -35,7 +35,7 @@ class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
         }
 
         companion object {
-            fun getObject(item: ItemStack?): Objective? {
+            fun getObject(item: ItemStack?): TeamObjective? {
                 values().forEach {
                     if (it.item == item) return it
                 }
@@ -50,6 +50,24 @@ class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
             }
         }
     }
+    enum class MapObjective(val item: ItemStack) {
+        BOSS_GATE1(AnniConfigItemStackBuilder(Material.ENDER_PORTAL).lore(listOf("bossgate1")).build()),
+        BOSS_GATE2(AnniConfigItemStackBuilder(Material.ENDER_PORTAL).lore(listOf("bossgate2")).build()),
+        MAP_RANGE(AnniConfigItemStackBuilder(Material.GLASS).lore(listOf("maprange")).build());
+
+        override fun toString(): String {
+            return name.toLowerCase()
+        }
+
+        enum class POS {
+            MAX,
+            MIN;
+            override fun toString(): String {
+                return name.toLowerCase()
+            }
+        }
+    }
+
     fun update() {
         fileConfig = YamlConfiguration.loadConfiguration(file)
     }
@@ -70,9 +88,9 @@ class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
         val z = location.z.toInt()
         return "$x,$y,$z"
     }
-    fun writeLocation(world: World, objective: Objective, team: GameTeam, value: Location) {
+    fun writeLocation(world: World, teamObjective: TeamObjective, team: GameTeam, value: Location) {
         val locString = toLocString(value)
-        write(world, objective.toString(), team, locString)
+        write(world, teamObjective.toString(), team, locString)
     }
     private fun write(world: World, saveObject: String, team: GameTeam, value: String) {
         val section = fileConfig.getConfigurationSection(world.name)
@@ -90,18 +108,19 @@ class ConfigMap(_file: File): ConfigBase(_file, "maps.yaml") {
 
     private fun addDefaultConfigValues(mapName: String): ConfigurationSection? {
         GameTeam.values().forEach { team ->
-            Objective.values().forEach {
+            TeamObjective.values().forEach {
                 fileConfig.createSection("$mapName.$it")
                 val section = fileConfig.getConfigurationSection("$mapName.${it}")
                 section.addDefault(team.toString(), "0,0,0")
             }
             fileConfig.createSection("$mapName.$minProtectBase")
-            val min = fileConfig.getConfigurationSection("$mapName.$minProtectBase")
-            min.addDefault(team.toString(), "0,0,0")
+            val minProtectbase = fileConfig.getConfigurationSection("$mapName.$minProtectBase")
+            minProtectbase.addDefault(team.toString(), "0,0,0")
 
             fileConfig.createSection("$mapName.$maxProtectBase")
-            val max = fileConfig.getConfigurationSection("$mapName.$maxProtectBase")
-            max.addDefault(team.toString(),"0,0,0")
+            val maxProtectbase = fileConfig.getConfigurationSection("$mapName.$maxProtectBase")
+            maxProtectbase.addDefault(team.toString(),"0,0,0")
+
         }
         return fileConfig.getConfigurationSection(mapName)
     }

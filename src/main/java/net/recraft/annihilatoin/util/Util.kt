@@ -1,5 +1,6 @@
 package net.recraft.annihilatoin.util
 
+import com.sk89q.worldedit.bukkit.selections.Selection
 import net.minecraft.server.v1_8_R3.NBTTagCompound
 import net.recraft.annihilatoin.objects.*
 import org.bukkit.*
@@ -66,8 +67,8 @@ object Util {
     fun removeAI(entity: Entity) {
         val nmsEnt: net.minecraft.server.v1_8_R3.Entity   = (entity as CraftEntity).handle
         val tag: NBTTagCompound = nmsEnt.nbtTag ?:NBTTagCompound()
-        tag.setInt("NoAI", 0)
         nmsEnt.c(tag)
+        tag.setInt("NoAI", 1)
         nmsEnt.f(tag)
     }
     fun dontStack(item: ItemStack): ItemStack {

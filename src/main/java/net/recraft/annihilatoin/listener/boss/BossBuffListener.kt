@@ -47,6 +47,10 @@ object BossBuffListener: Listener {
     fun rightClickBossBuff(event: PlayerInteractEvent) {
         val player = event.player
         if (!player.itemInHand.isSame(itemBossBuff)) return
+        if (player.itemInHand.amount != 1) {
+            player.sendMessage("${ChatColor.RED}ボスバフをスタックした状態で右クリックしないでください")
+            return
+        }
         player.openInventory(itemBossBuffInv)
     }
 
@@ -59,7 +63,11 @@ object BossBuffListener: Listener {
         if (!allItem().contains(item)) return
         val player = event.whoClicked
         player.closeInventory()
-        player.inventory.remove(itemBossBuff)
+        if (!player.inventory.contains(itemBossBuff)) {
+            player.sendMessage("${ChatColor.RED}ボスバフが見つかりません")
+            return
+        }
+        player.inventory.removeItem(itemBossBuff)
         player.inventory.addItem(item)
     }
 
