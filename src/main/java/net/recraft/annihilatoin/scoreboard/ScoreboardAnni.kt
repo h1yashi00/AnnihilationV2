@@ -79,6 +79,9 @@ object ScoreboardAnni: ScoreboardUtil() {
     }
 
     private fun getNexusHpFormat(team: GameTeam): String {
+        if (team.objects.nexus.hp <= 0) {
+            return "${ChatColor.BOLD}${Util.getColoredTeamName(team)} ${ChatColor.AQUA}Destroyed!"
+        }
         return "${ChatColor.BOLD}${Util.getColoredTeamName(team)} ${ChatColor.AQUA}${team.objects.nexus.hp}"
     }
 }

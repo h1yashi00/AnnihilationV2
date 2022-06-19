@@ -33,7 +33,7 @@ class PlayerAttackNexus: Listener {
         val playerY = player.location.blockY +1
         val blockY = brokenBlock.y
         // ネクサスの位置がプレイヤーの頭の位置から+-1の範囲でしか受け付けない
-        if ( !(playerY == blockY || playerY == blockY +1 || playerY == blockY) ) {
+        if ( !(playerY == blockY || playerY == blockY +1 || playerY == blockY -1) ) {
             player.sendMessage("${ChatColor.RED}プレイヤーの位置が高すぎるか低すぎます｡ civBreak?")
             return
         }

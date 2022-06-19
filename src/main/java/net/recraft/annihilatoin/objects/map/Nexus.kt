@@ -20,7 +20,6 @@ class Nexus (location: Location) : Placeable(location, Material.ENDER_STONE) {
     fun damage(player: Player) {
         val damage = if (Game.phase.currentPhase == 5) {2} else {1}
         _hp -= damage
-        if (hp < 0) return
         val team = GameTeam.getTeam(this)!!
         val playerTeam = player.team() ?: return
         ScoreboardAnni.breakNexusUpdate(team)
