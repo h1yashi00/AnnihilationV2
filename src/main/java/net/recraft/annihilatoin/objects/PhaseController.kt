@@ -30,10 +30,10 @@ class PhaseController {
         ScoreboardAnni.nextPhaseTimeUpdate()
         currentTime+= 1
         when (currentPhase) {
-            1 -> phase4()
+            1 -> phase1()
             2 -> phase2()
             3 -> phase3()
-            4 -> phase1()
+            4 -> phase4()
             5 -> phase5()
         }
     }
@@ -80,7 +80,7 @@ class PhaseController {
     private fun phase4() {
         if (phase4Called) return
         phase4Called = true
-        val w = WitherBoss().apply{spawn()}
+        val w = WitherBoss()
         Bukkit.getPluginManager().callEvent(BossSpawnEvent(w))
         ScoreboardAnni.currentPhaseUpdate()
         Bukkit.broadcastMessage("phase 4!!!!!!!!!!!!!!!!!")
