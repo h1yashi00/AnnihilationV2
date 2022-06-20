@@ -76,6 +76,12 @@ class BossListener: Listener {
             it.playSound(it.location, Sound.WITHER_SPAWN, 1F, 1F)
         }
         val theEnd = event.boss.theEnd
+        if (theEnd.entities.isNotEmpty())
+            theEnd.entities.forEach {
+                if (it is Player) {
+                    boss!!.spawn()
+                }
+        }
         object: BukkitRunnable() {
             override fun run() {
                 if (event.boss.livingEntity == null) return
