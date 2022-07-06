@@ -13,7 +13,7 @@
 config-version: 8
 settings:
   debug: false
-  bungeecord: false
+  bungeecord: true
   late-bind: false
   timeout-time: 60
   restart-on-crash: true

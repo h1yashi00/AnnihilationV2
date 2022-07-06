@@ -6,6 +6,8 @@ networks:
 
 volumes:
   spigot:
+  bungee:
+
 
 services:
   spigot:
@@ -18,5 +20,21 @@ services:
     volumes:
       - spigot:/spigot
     ports:
-      - "25565:25565"
+      - "25566:25566"
     stdin_open: true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  bungee:
+    build:
+      context: .
+      dockerfile: ./docker/bungee/Dockerfile
+    image: bungee
+    networks:
+      - recraft
+    volumes:
+      - bungee:/bungee
+    ports:
+      - "25570:25570"
+    stdin_open: true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
