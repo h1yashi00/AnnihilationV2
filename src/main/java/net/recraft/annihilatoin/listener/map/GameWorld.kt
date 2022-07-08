@@ -43,10 +43,14 @@ class GameWorld: Listener {
     @EventHandler
     fun onLiquidFlow(event: BlockFromToEvent) {
         val to = event.toBlock.location
-        if (!Game.mapObject.mapRange.contains(to)) {
-            event.isCancelled = true
-            event.block.type = Material.GLASS
-            to.block.type = Material.AIR
+        try {
+            if (!Game.mapObject.mapRange.contains(to)) {
+                event.isCancelled = true
+                event.block.type = Material.GLASS
+                to.block.type = Material.AIR
+            }
+        } catch (ex: UninitializedPropertyAccessException) {
+            return
         }
     }
     @EventHandler

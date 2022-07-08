@@ -5,25 +5,23 @@ networks:
     external: false
 
 volumes:
-  spigot:
   bungee:
+  db-data:
 
 
 services:
   spigot:
     build:
       context: .
-      dockerfile: ./docker/spigot/Dockerfile
+      dockerfile: docker/spigot/Dockerfile
     image: spigot
     networks:
       - recraft
-    volumes:
-      - spigot:/spigot
     ports:
-      - "25566:25566"
+      - "25566:25565"
     stdin_open: true
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    depends_on:
+      - bungee
   bungee:
     build:
       context: .
@@ -36,5 +34,37 @@ services:
     ports:
       - "25570:25570"
     stdin_open: true
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+# you can connect the database following the command
+# docker exec -it spigot_db_1 mariadb -u root -pnarikakeisgod
+  db:
+    image: mariadb:latest
+    networks:
+      - recraft
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - TZ=Asia/Tokyo
+      - MYSQL_ROOT_PASSWORD=narikakeisgod
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./docker/config/mysql:/etc/mysql/conf.d
+
+  phpmyadmin:
+    networks:
+      - recraft
+    depends_on:
+      - db
+    image: phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      - TZ=Asia/Tokyo
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+      - PMA_PORT=3306
+      - PMA_USER=root
+      - PMA_PASSWORD=narikakeisgod
