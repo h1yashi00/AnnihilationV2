@@ -75,13 +75,7 @@ object Game {
         return playerDatas.containsKey(uuid)
     }
     private fun getPlayerData(uuid: UUID): PlayerData {
-        val pd = try {
-            playerDatas[uuid]!!
-        } catch (ex: IllegalArgumentException) {
-            Bukkit.getPlayer(uuid).kickPlayer("Database error? Can't find your annihilation stats")
-            PlayerData(UUID.fromString("00000000-0000-0000-0000-00000000"), TotalStats(0,0,0,0,0,0,0,0, 0,0,0,0,0,0))
-        }
-        return pd
+        return playerDatas[uuid]!!
     }
     private fun getTeamTotal(): List<Pair<GameTeam, Int>> {
         var redCount    = 0

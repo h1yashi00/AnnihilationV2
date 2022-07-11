@@ -8,6 +8,7 @@ internal class DatabaseTest {
     private val user = "root"
     private val password = "narikakeisgod"
 
+    // Narikakeのデータがすでに保存されている状態でテストする必要がある
     @Test
     fun getPlayerStatsTest() {
         Database.connect(url, user, password)

@@ -139,7 +139,7 @@ class Main : JavaPlugin() {
             add( ListenerFlaggedPlayerVoid() )
             add( PlayerDeath() )
             add( BlockFallEvent()         )
-            add( PlayerJoin() )
+            add( PlayerLoginListener() )
             // kits
             add( ListenerMiner())
             add( ListenerLumberjack() )
