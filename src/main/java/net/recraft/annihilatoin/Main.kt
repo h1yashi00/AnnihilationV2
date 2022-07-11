@@ -8,6 +8,7 @@ import net.recraft.annihilatoin.listener.*
 import net.recraft.annihilatoin.listener.kit.*
 import net.recraft.annihilatoin.listener.map.*
 import net.recraft.annihilatoin.admin.ListenerAnniConfigMenu
+import net.recraft.annihilatoin.database.Database
 import net.recraft.annihilatoin.listener.boss.BossBuffListener
 import net.recraft.annihilatoin.listener.boss.BossListener
 import net.recraft.annihilatoin.listener.boss.EndPortal
@@ -31,6 +32,8 @@ import org.bukkit.event.Listener
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
+import java.sql.SQLException
+import kotlin.system.exitProcess
 
 
 // external functions
@@ -78,7 +81,24 @@ fun ItemStack.isSame(item: ItemStack?): Boolean {
 class Main : JavaPlugin() {
 //    private val scoreboardTeamManager = ScoreboardTeamManager()
     private var tp: ListenerTransPortItem? = null
+
+    private val url = "jdbc:mysql://host.docker.internal/recraft?useSSL=false"
+    private val user = "root"
+    private val password = "narikakeisgod"
+
     override fun onEnable() {
+
+        try {
+            Database.connect(url, user, password)
+        } catch (ex: SQLException) {
+            logger.severe("cannot connect the database !!!")
+            logger.severe("$url $user $password")
+            logger.severe("${ex.errorCode}")
+            logger.severe("${ex.stackTrace}")
+            logger.severe("${ex.message}")
+            exitProcess(1)
+        }
+
         Game.plugin = this
         tp = ListenerTransPortItem()
         ScoreboardTeamManager.enable()
@@ -119,6 +139,7 @@ class Main : JavaPlugin() {
             add( ListenerFlaggedPlayerVoid() )
             add( PlayerDeath() )
             add( BlockFallEvent()         )
+            add( PlayerJoin() )
             // kits
             add( ListenerMiner())
             add( ListenerLumberjack() )
@@ -204,5 +225,6 @@ class Main : JavaPlugin() {
         ScoreboardTeamManager.disable()
         Bukkit.unloadWorld(Game.map, false)
         tp!!.disable()
+        Database.close()
     }
 }

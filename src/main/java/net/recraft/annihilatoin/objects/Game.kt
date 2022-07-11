@@ -50,7 +50,7 @@ object Game {
         getPlayerData(uniqueId).voidCancel = boolean
     }
 
-    fun Player.statics(): PlayerStatics {
+    fun Player.statics(): OneGameStats {
         return getPlayerData(uniqueId).statics
     }
 
@@ -66,11 +66,22 @@ object Game {
     val protocolManager = ProtocolLibrary.getProtocolManager()!!
     val lobby: World = Util.makeWorld("world_lobby").apply {setSpawnLocation(0,2,0)}
     private val playerDatas: MutableMap<UUID, PlayerData> = HashMap()
+
+    fun setPlayerData(uuid: UUID, playerData: PlayerData) {
+        playerDatas[uuid] = playerData
+    }
+
+    fun isAlreadyConnected(uuid: UUID): Boolean {
+        return playerDatas.containsKey(uuid)
+    }
     private fun getPlayerData(uuid: UUID): PlayerData {
-        if (!playerDatas.containsKey(uuid))  {
-            playerDatas[uuid] = PlayerData(uuid)
+        val pd = try {
+            playerDatas[uuid]!!
+        } catch (ex: IllegalArgumentException) {
+            Bukkit.getPlayer(uuid).kickPlayer("Database error? Can't find your annihilation stats")
+            PlayerData(UUID.fromString("00000000-0000-0000-0000-00000000"), TotalStats(0,0,0,0,0,0,0,0, 0,0,0,0,0,0))
         }
-        return playerDatas[uuid]!!
+        return pd
     }
     private fun getTeamTotal(): List<Pair<GameTeam, Int>> {
         var redCount    = 0
