@@ -1,7 +1,10 @@
 package net.recraft.annihilatoin.listener
 
+import net.recraft.annihilatoin.database.AnnihilationStatsColumn
+import net.recraft.annihilatoin.database.Database
 import org.bukkit.Material.*
 import net.recraft.annihilatoin.listener.SuitableTool.Tool.*
+import net.recraft.annihilatoin.objects.Game
 import org.bukkit.GameMode
 import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
@@ -9,6 +12,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.inventory.ItemStack
+import org.bukkit.scheduler.BukkitRunnable
 
 class SuitableTool: Listener {
     enum class Tool {
@@ -40,7 +44,14 @@ class SuitableTool: Listener {
         val block = event.block
         val tool = Tool.getTool(item)
         val suitableTool = suitableTool(block) ?: return
-        if ((suitableTool == NO_TOOL || suitableTool == tool)) return
+        if ((suitableTool == NO_TOOL || suitableTool == tool)) {
+            object: BukkitRunnable() {
+                override fun run() {
+                    Database.incCount(AnnihilationStatsColumn.BLOCKS_BROKEN, player.uniqueId)
+                }
+            }.runTaskAsynchronously(Game.plugin)
+            return
+        }
         event.isCancelled = true
     }
 

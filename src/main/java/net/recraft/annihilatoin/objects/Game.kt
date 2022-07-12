@@ -2,6 +2,8 @@ package net.recraft.annihilatoin.objects
 
 import com.comphenix.protocol.ProtocolLibrary
 import com.sk89q.worldedit.bukkit.WorldEditPlugin
+import net.recraft.annihilatoin.database.AnnihilationStatsColumn
+import net.recraft.annihilatoin.database.Database
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.map.MapObject
 import net.recraft.annihilatoin.scoreboard.ScoreboardAnni
@@ -50,10 +52,6 @@ object Game {
         getPlayerData(uniqueId).voidCancel = boolean
     }
 
-    fun Player.statics(): OneGameStats {
-        return getPlayerData(uniqueId).statics
-    }
-
     fun getWorldEdit(): WorldEditPlugin? {
         val p = plugin.server.pluginManager.getPlugin("WorldEdit")
         if (p is WorldEditPlugin) return p as WorldEditPlugin
@@ -67,14 +65,10 @@ object Game {
     val lobby: World = Util.makeWorld("world_lobby").apply {setSpawnLocation(0,2,0)}
     private val playerDatas: MutableMap<UUID, PlayerData> = HashMap()
 
-    fun setPlayerData(uuid: UUID, playerData: PlayerData) {
-        playerDatas[uuid] = playerData
-    }
-
-    fun isAlreadyConnected(uuid: UUID): Boolean {
-        return playerDatas.containsKey(uuid)
-    }
     private fun getPlayerData(uuid: UUID): PlayerData {
+        if (!playerDatas.containsKey(uuid)) {
+            playerDatas[uuid] = PlayerData(uuid)
+        }
         return playerDatas[uuid]!!
     }
     private fun getTeamTotal(): List<Pair<GameTeam, Int>> {
@@ -109,6 +103,16 @@ object Game {
         return nonTeamPlayers
     }
 
+    fun getTeamPlayers(team: GameTeam): ArrayList<UUID> {
+        val uuids = arrayListOf<UUID>()
+        playerDatas.forEach {
+            if (it.value.team == team) {
+                uuids.add(it.key)
+            }
+        }
+        return uuids
+    }
+
     fun start() {
         phase.pass()
         GameTeam.values().forEach { it.objects.place() }
@@ -139,6 +143,13 @@ object Game {
         return lowestTeam
     }
     fun end() {
+        object: BukkitRunnable() {
+            override fun run() {
+                playerDatas.keys.forEach {
+                    Database.incCount(AnnihilationStatsColumn.TIMES_PLAYED, it)
+                }
+            }
+        }.runTaskAsynchronously(Game.plugin)
     }
     // Gameを初期化する｡これを呼び出すクラスは
     fun init(generator: GameGenerator) {

@@ -29,10 +29,10 @@ create table if not exists playerdata (
     foreign key (annihilatoin_stats) annihilaton_stats(annihilaton_stats_id)
 );
 
-create table if not exists annihilaton_stats (
+create table if not exists annihilation_stats (
      player_uuid  char(32) not null,
-     annihilaton_coin int default 0,
-     times_played    int default 0,
+     coin           int default 0,
+     times_played   int default 0,
      wins           int default 0,
      loses          int default 0,
      boss_kills     int default 0,

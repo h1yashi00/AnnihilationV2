@@ -1,5 +1,7 @@
 package net.recraft.annihilatoin.listener.map
 
+import net.recraft.annihilatoin.database.AnnihilationStatsColumn
+import net.recraft.annihilatoin.database.Database
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.GameTeam
@@ -50,7 +52,22 @@ class PlayerAttackNexus: Listener {
         damagedNexus.damage(player)
         if (damagedNexus.isAlive()) { delayRespawn(brokenBlock); return;}
         damagedNexus.destroyedEvent()
-        if (!GameTeam.isFinishStatus()) return
+        object: BukkitRunnable() {
+            override fun run() {
+                val destroyedTeam = GameTeam.getTeam(damagedNexus)!!
+                Game.getTeamPlayers(destroyedTeam).forEach {
+                    Database.incCount(AnnihilationStatsColumn.LOSES, it)
+                }
+            }
+        }.runTaskAsynchronously(Game.plugin)
+        val winTeam = GameTeam.isFinishStatus() ?: return
+        object: BukkitRunnable() {
+            override fun run() {
+                Game.getTeamPlayers(winTeam).forEach {
+                    Database.incCount(AnnihilationStatsColumn.WINS, it)
+                }
+            }
+        }.runTaskAsynchronously(Game.plugin)
         Game.end()
     }
 }

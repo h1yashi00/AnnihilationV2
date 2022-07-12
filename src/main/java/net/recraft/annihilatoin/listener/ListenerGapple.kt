@@ -1,5 +1,7 @@
 package net.recraft.annihilatoin.listener
 
+import net.recraft.annihilatoin.database.AnnihilationStatsColumn
+import net.recraft.annihilatoin.database.Database
 import net.recraft.annihilatoin.objects.Game
 import org.bukkit.Effect
 import org.bukkit.Material
@@ -20,6 +22,13 @@ class ListenerGapple: Listener {
         val player = event.player
         player.addPotionEffect(PotionEffect(PotionEffectType.SLOW_DIGGING, 20 * 5, 3))
         player.addPotionEffect(PotionEffect(PotionEffectType.WEAKNESS, 20 * 10, 3))
+
+        object: BukkitRunnable() {
+            override fun run() {
+                Database.incCount(AnnihilationStatsColumn.GAPPLES_CONSUMED, player.uniqueId)
+            }
+        }.runTaskAsynchronously(Game.plugin)
+
         val effect = object: BukkitRunnable() {
             override fun run() {
                 player.world.playEffect(player.location.apply{y+=2.5}, Effect.HEART,1)

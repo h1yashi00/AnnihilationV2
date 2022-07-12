@@ -1,5 +1,8 @@
 package net.recraft.annihilatoin.listener.map
 
+import net.recraft.annihilatoin.database.AnnihilationStatsColumn
+import net.recraft.annihilatoin.database.Database
+import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.builder.Priceable
@@ -16,6 +19,7 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
+import org.bukkit.scheduler.BukkitRunnable
 
 class ListenerShop(private val shopBrewingMenu: ShopBrewingMenu, private val shopWeaponMenu: ShopWeaponMenu): Listener {
     @EventHandler
@@ -49,6 +53,11 @@ class ListenerShop(private val shopBrewingMenu: ShopBrewingMenu, private val sho
         if (playerInventory.contains(Material.GOLD_INGOT, price)) { playerInventory.removeItem(ItemStack(Material.GOLD_INGOT, price)) } else { return }
         val addItem = if (shopItem.type == Material.WOOL) {colorWool(shopItem, player)} else {shopItem}
         playerInventory.addItem(addItem)
+        object: BukkitRunnable() {
+            override fun run() {
+                Database.addCount(AnnihilationStatsColumn.GOLDS_USED, player.uniqueId, price)
+            }
+        }.runTaskAsynchronously(Game.plugin)
     }
     private fun colorWool(whiteWool: ItemStack, player: Player): ItemStack {
         val color = player.team()?.color ?: Color.WHITE

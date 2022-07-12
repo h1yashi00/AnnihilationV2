@@ -1,5 +1,7 @@
 package net.recraft.annihilatoin.objects.map
 
+import net.recraft.annihilatoin.database.AnnihilationStatsColumn
+import net.recraft.annihilatoin.database.Database
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.GameTeam
@@ -28,6 +30,11 @@ class Nexus (location: Location) : Placeable(location, Material.ENDER_STONE) {
         attackedSound();
         attackedEffect();
         victimSound();
+        object: BukkitRunnable() {
+            override fun run() {
+                Database.addCount(AnnihilationStatsColumn.NEXUS_DAMAGED, player.uniqueId, damage)
+            }
+        }.runTaskAsynchronously(Game.plugin)
     }
     fun isAlive(): Boolean {
         if (_hp <= 0) return false

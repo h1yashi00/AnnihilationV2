@@ -6,10 +6,8 @@ import org.bukkit.Bukkit
 import org.bukkit.GameMode
 import java.util.*
 
-data class OneGameStats(var kills: Int = 0, var deaths: Int = 0, var mined_ores: Int = 0, var gained_exp: Int = 0) {
-}
 
-data class TotalStats(
+data class PlayerStats(
     val coins: Int,
     val timesPlayed: Int,
     val bossKills: Int,
@@ -31,14 +29,12 @@ data class TotalStats(
 
 class PlayerData(
     private val uuid: UUID,
-    val totalStats: TotalStats,
     _team: GameTeam? = null,
     _kitType: KitType = KitType.CIVILIAN,
     _invisible: Boolean = false,
     _voidCancel: Boolean = false
 )
 {
-    val statics = OneGameStats()
     var team: GameTeam? = _team
         set(value) {
             require(value != null)

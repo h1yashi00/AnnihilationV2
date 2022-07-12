@@ -1,5 +1,7 @@
 package net.recraft.annihilatoin.listener.boss
 
+import net.recraft.annihilatoin.database.AnnihilationStatsColumn
+import net.recraft.annihilatoin.database.Database
 import net.recraft.annihilatoin.event.BossSpawnEvent
 import net.recraft.annihilatoin.isSame
 import net.recraft.annihilatoin.objects.Game
@@ -104,6 +106,12 @@ class BossListener: Listener {
     fun bossDeath(event: EntityDeathEvent) {
         if (boss == null) return
         if (!boss!!.isBoss(event.entity)) return
+        val killer = event.entity.killer
+        object: BukkitRunnable() {
+            override fun run() {
+                Database.incCount(AnnihilationStatsColumn.BOSS_KILLS,killer.uniqueId)
+            }
+        }.runTaskAsynchronously(Game.plugin)
         event.droppedExp = 0
         event.drops.clear()
         bossBuff = ItemStackBuilder(Material.NETHER_STAR).title("${ChatColor.GOLD}${UUID.randomUUID()}").build()

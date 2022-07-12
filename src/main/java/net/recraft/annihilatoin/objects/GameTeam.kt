@@ -46,17 +46,19 @@ enum class GameTeam(
             }
             return false
         }
-        fun isFinishStatus():Boolean {
+        fun isFinishStatus(): GameTeam? {
             var i = 0
+            var aliveTeam: GameTeam? = null
             values().forEach {
                 if (it.objects.nexus.isAlive()) {
                     i+=1
+                    aliveTeam = it
                 }
             }
             if (i == 1) {
-                return true
+                return aliveTeam
             }
-            return false
+            return null
         }
         fun getTeam(color: String): GameTeam? {
             values().forEach {

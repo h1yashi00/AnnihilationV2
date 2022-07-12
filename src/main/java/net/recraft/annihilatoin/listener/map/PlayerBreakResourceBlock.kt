@@ -1,8 +1,9 @@
 package net.recraft.annihilatoin.listener.map
 
+import net.recraft.annihilatoin.database.AnnihilationStatsColumn
+import net.recraft.annihilatoin.database.Database
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.Game.kitType
-import net.recraft.annihilatoin.objects.Game.statics
 import net.recraft.annihilatoin.objects.ResourceBlocks
 import net.recraft.annihilatoin.objects.kit.KitType
 import net.recraft.annihilatoin.objects.kit.Miner
@@ -23,6 +24,8 @@ class PlayerBreakResourceBlock : Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onBreakResource(event: BlockBreakEvent) {
         val player = event.player
+
+
         val brokenBlock = event.block
         // ResourceBlockじゃなければ返す
         val resourceBlock = ResourceBlocks.getStatus(brokenBlock) ?: return
@@ -62,8 +65,12 @@ class PlayerBreakResourceBlock : Listener {
         val exp = if (kit == KitType.ENCHANTER) { resourceBlock.exp * 2 }  else { resourceBlock.exp }
 
         // statics
-        player.statics().mined_ores += 1
-        player.statics().gained_exp += exp
+        object: BukkitRunnable() {
+            override fun run() {
+                Database.incCount(AnnihilationStatsColumn.ORES_MINED, player.uniqueId)
+                Database.addCount(AnnihilationStatsColumn.EXPS_GAINED, player.uniqueId, exp)
+            }
+        }.runTaskAsynchronously(Game.plugin)
 
         player.giveExp(exp)
         val scheduler = Bukkit.getScheduler();

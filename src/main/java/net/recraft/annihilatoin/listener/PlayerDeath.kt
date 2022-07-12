@@ -1,8 +1,9 @@
 package net.recraft.annihilatoin.listener
 
+import net.recraft.annihilatoin.database.AnnihilationStatsColumn
+import net.recraft.annihilatoin.database.Database
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.Game.kitType
-import net.recraft.annihilatoin.objects.Game.statics
 import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.ChatColor
@@ -27,8 +28,12 @@ class PlayerDeath: Listener {
         }.runTaskLater(Game.plugin, 2)
         val victim = if (event.entity is Player) { event.entity as Player } else return
         val killer = if (victim.killer is Player) { victim.killer as Player } else return
-        killer.statics().kills  += 1
-        victim.statics().deaths += 1
+        object : BukkitRunnable() {
+            override fun run() {
+                Database.incCount(AnnihilationStatsColumn.KILLS, killer.uniqueId)
+                Database.incCount(AnnihilationStatsColumn.DEATHS, victim.uniqueId)
+            }
+        }.runTaskAsynchronously(Game.plugin)
         event.deathMessage =
             "${Util.getColoredPlayersName(victim, victim.team() ?: return)}${victim.team()!!.chatColor}(${victim.kitType().shortName})${ChatColor.GRAY}は" +
             "${Util.getColoredPlayersName(killer, killer.team() ?: return)}${killer.team()!!.chatColor}(${killer.kitType().shortName})${ChatColor.GRAY}に倒された｡" +
