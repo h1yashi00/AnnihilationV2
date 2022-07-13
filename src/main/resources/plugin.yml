@@ -7,28 +7,24 @@ commands:
   vote:
     description: マップの投票を行う
     usage: /<command> [gameMap]
-    permission: yourplugin.yourcommandpermission
   teleport:
     description: 指定したチームの色の場所の特殊な地点に飛ぶ
     usage: /<command> [team] [nexus | enderchest | enderfurnace| spawn1,2,3]
-    permission: yourplugin.yourcommandpermission
   team:
     description:
     usage: /<command> team [red | blue | yello| green]
-    permission: yourplugin.yourcommandpermission
   anniconfig:
     description: maps.yamlにチームごとのブロックを設定する
     usage: /<command>
-    permission: yourplugin.yourcommandpermission
   kit:
     description: kitを設定できる
     usage: /<command>
-    permission: yourplugin.yourcommandpermission
   statics:
     description: 統計を見れる
     usage: /<command>
-    permission: yourplugin.yourcommandpermission
   protectBase:
     description: 統計を見れる
     usage: /<command>
-    permission: yourplugin.yourcommandpermission
+  gm:
+    description: 統計を見れる
+    usage: /<command>

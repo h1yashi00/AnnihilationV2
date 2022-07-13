@@ -45,11 +45,6 @@ class SuitableTool: Listener {
         val tool = Tool.getTool(item)
         val suitableTool = suitableTool(block) ?: return
         if ((suitableTool == NO_TOOL || suitableTool == tool)) {
-            object: BukkitRunnable() {
-                override fun run() {
-                    Database.incCount(AnnihilationStatsColumn.BLOCKS_BROKEN, player.uniqueId)
-                }
-            }.runTaskAsynchronously(Game.plugin)
             return
         }
         event.isCancelled = true

@@ -1,6 +1,8 @@
 package net.recraft.annihilatoin
 
 import net.minecraft.server.v1_8_R3.EnumDirection
+import net.recraft.annihilatoin.admin.CommandGamemode
+import net.recraft.annihilatoin.admin.CommandJoinTeam
 import net.recraft.annihilatoin.command.*
 import net.recraft.annihilatoin.config.ConfigManager
 import net.recraft.annihilatoin.config.ConfigMap
@@ -156,6 +158,10 @@ class Main : JavaPlugin() {
             add (tp!!)
             add (ListenerLanchPad())
 
+
+            // monitor
+            add (DatabaseMonitorListener())
+
             forEach {
                 server.pluginManager.registerEvents(it, this@Main)
             }
@@ -180,6 +186,7 @@ class Main : JavaPlugin() {
         getCommand("anniconfig").executor = anniConfigMenu
         getCommand("kit").executor = CommandKit()
         getCommand("statics").executor = CommandStatics()
+        getCommand("gm").executor = CommandGamemode()
         if (debug) {
             val mapName = "world_test"
             Util.copyWorld(mapName) // 遅延入れる

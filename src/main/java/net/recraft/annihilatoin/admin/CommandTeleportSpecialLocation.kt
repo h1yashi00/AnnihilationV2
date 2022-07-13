@@ -1,6 +1,8 @@
 package net.recraft.annihilatoin.command
 
 import net.recraft.annihilatoin.config.ConfigMap
+import net.recraft.annihilatoin.database.Database
+import net.recraft.annihilatoin.database.StaffRank
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.realTeleport
 import org.bukkit.Location
@@ -12,7 +14,8 @@ import org.bukkit.entity.Player
 class CommandTeleportSpecificLocation : CommandExecutor {
     override fun onCommand(sender: CommandSender?, command: Command?, label: String?, args: Array<out String>?): Boolean {
         val player = if (sender is Player) { sender.player ?: return false } else return false
-        if (!player.isOp) return false
+        val rank = Database.getRank(player.uniqueId)
+        if (rank != StaffRank.OWNER) return false
         if (args?.size != 2) return false
         val team: GameTeam = GameTeam.getTeam(args?.get(0)?.toLowerCase()) ?: return false
         val teleportLocation = getTeleportLocation(team, args?.get(1)?.toLowerCase()) ?: return false

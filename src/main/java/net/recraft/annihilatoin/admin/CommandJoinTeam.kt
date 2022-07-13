@@ -1,5 +1,7 @@
-package net.recraft.annihilatoin.command
+package net.recraft.annihilatoin.admin
 
+import net.recraft.annihilatoin.database.Database
+import net.recraft.annihilatoin.database.StaffRank
 import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.Game.kitType
 import net.recraft.annihilatoin.objects.Game.setTeam
@@ -18,7 +20,9 @@ import org.bukkit.entity.Player
 class CommandJoinTeam: CommandExecutor {
     override fun onCommand(sender: CommandSender?, command: Command?, label: String?, args: Array<String?>?): Boolean {
         val player = if (sender is Player) { sender.player ?: return false } else { return false }
-        if (!player.isOp) return false
+        if (Database.getRank(player.uniqueId) != StaffRank.OWNER) {
+            return false
+        }
         // /team [teamColor] じゃなかった場合現在のプレイヤーに現在のチームを知らせる
         val teamColor = if (args?.size == 1) { args[0]!! } else { showPlayerTeamColor(player); return false }
         // playerがTeamに所属していた場合入っていたチームを離脱してからJoinさせる

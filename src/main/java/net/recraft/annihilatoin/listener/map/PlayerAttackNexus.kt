@@ -6,6 +6,7 @@ import net.recraft.annihilatoin.objects.Game
 import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.objects.GameTeam
 import net.recraft.annihilatoin.objects.menu.ShopWeaponMenu
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.block.Block
@@ -55,8 +56,20 @@ class PlayerAttackNexus: Listener {
         object: BukkitRunnable() {
             override fun run() {
                 val destroyedTeam = GameTeam.getTeam(damagedNexus)!!
-                Game.getTeamPlayers(destroyedTeam).forEach {
-                    Database.incCount(AnnihilationStatsColumn.LOSES, it)
+                Bukkit.getOnlinePlayers().forEach {
+                    if (it.team() != destroyedTeam) return@forEach
+                    var count = 0
+                    GameTeam.values().forEach {
+                        count += if (it.objects.nexus.isAlive()) {1} else {0}
+                    }
+                    val coin = when(count) {
+                        3 -> {100}
+                        2 -> {150}
+                        1 -> {200}
+                        else -> {100}
+                    }
+                    Database.addCount(AnnihilationStatsColumn.COIN, it.uniqueId, coin)
+                    Database.incCount(AnnihilationStatsColumn.LOSES, it.uniqueId)
                 }
             }
         }.runTaskAsynchronously(Game.plugin)
@@ -64,6 +77,7 @@ class PlayerAttackNexus: Listener {
         object: BukkitRunnable() {
             override fun run() {
                 Game.getTeamPlayers(winTeam).forEach {
+                    Database.addCount(AnnihilationStatsColumn.COIN, it, 300)
                     Database.incCount(AnnihilationStatsColumn.WINS, it)
                 }
             }

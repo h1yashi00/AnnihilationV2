@@ -7,6 +7,7 @@ import net.recraft.annihilatoin.objects.Game.kitType
 import net.recraft.annihilatoin.objects.Game.team
 import net.recraft.annihilatoin.util.Util
 import org.bukkit.ChatColor
+import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
 
@@ -30,7 +31,15 @@ class PlayerDeath: Listener {
         val killer = if (victim.killer is Player) { victim.killer as Player } else return
         object : BukkitRunnable() {
             override fun run() {
+                if (killer.itemInHand.type.toString().contains("sword", true)) {
+                    Database.incCount(AnnihilationStatsColumn.MELEE_KILLS, killer.uniqueId)
+                }
+                if (killer.itemInHand.type == Material.BOW) {
+                    Database.incCount(AnnihilationStatsColumn.BOW_KILLS, killer.uniqueId)
+                }
                 Database.incCount(AnnihilationStatsColumn.KILLS, killer.uniqueId)
+                killer.sendMessage("${ChatColor.GOLD}+3 Annihilation Coin")
+                Database.addCount(AnnihilationStatsColumn.COIN, killer.uniqueId, 3)
                 Database.incCount(AnnihilationStatsColumn.DEATHS, victim.uniqueId)
             }
         }.runTaskAsynchronously(Game.plugin)

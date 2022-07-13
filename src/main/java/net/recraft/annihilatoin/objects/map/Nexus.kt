@@ -20,19 +20,26 @@ class Nexus (location: Location) : Placeable(location, Material.ENDER_STONE) {
     private var _hp = 75
     val hp get() = _hp
     fun damage(player: Player) {
-        val damage = if (Game.phase.currentPhase == 5) {2} else {1}
+        if (!isAlive()) return
+        val damage = if (Game.phase.currentPhase == 5) { if (hp == 1) {1} else {2} } else {1}
         _hp -= damage
         val team = GameTeam.getTeam(this)!!
         val playerTeam = player.team() ?: return
         ScoreboardAnni.breakNexusUpdate(team)
         val msg = "${Util.getColoredPlayersName(player, playerTeam)} is now attacking ${Util.getColoredTeamName(team)} Nexus!!! $hp"
         Bukkit.broadcastMessage(msg)
-        attackedSound();
-        attackedEffect();
-        victimSound();
+        attackedSound()
+        attackedEffect()
+        victimSound()
         object: BukkitRunnable() {
             override fun run() {
-                Database.addCount(AnnihilationStatsColumn.NEXUS_DAMAGED, player.uniqueId, damage)
+                Bukkit.getOnlinePlayers().forEach {
+                    if (it.team() == player.team()) {
+                        Database.addCount(AnnihilationStatsColumn.NEXUS_DAMAGED, player.uniqueId, damage)
+                        Database.addCount(AnnihilationStatsColumn.COIN, player.uniqueId, 3 * damage)
+                        player.sendMessage("${ChatColor.GOLD}+${3 * damage} Annihilation Coin")
+                    }
+                }
             }
         }.runTaskAsynchronously(Game.plugin)
     }

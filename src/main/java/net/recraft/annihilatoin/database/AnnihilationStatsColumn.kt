@@ -7,11 +7,13 @@ enum class AnnihilationStatsColumn {
     LOSES,
     BOSS_KILLS,
     MELEE_KILLS,
+    BOW_KILLS,
     KILLS,
     DEATHS,
     NEXUS_DAMAGED,
     BLOCKS_BROKEN,
     ORES_MINED,
+    BLOCKS_PLACED,
     GAPPLES_CONSUMED,
     GOLDS_USED,
     EXPS_GAINED;

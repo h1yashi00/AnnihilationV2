@@ -25,7 +25,6 @@ import org.bukkit.util.Vector
 import java.util.*
 
 class BossListener: Listener {
-    var bossBuff: ItemStack? = null
     var boss: Boss? = null
 
     @EventHandler
@@ -114,8 +113,22 @@ class BossListener: Listener {
         }.runTaskAsynchronously(Game.plugin)
         event.droppedExp = 0
         event.drops.clear()
-        bossBuff = ItemStackBuilder(Material.NETHER_STAR).title("${ChatColor.GOLD}${UUID.randomUUID()}").build()
-        event.drops.add(bossBuff)
+        val team = killer.team()
+        object: BukkitRunnable() {
+            override fun run() {
+                Bukkit.getOnlinePlayers().forEach {
+                    if (it.team() == team) {
+                        Database.addCount(AnnihilationStatsColumn.COIN, it.uniqueId, 50)
+                        it.sendMessage("${ChatColor.GOLD} +50 Annihilation Coin")
+                    }
+                }
+            }
+        }.runTaskAsynchronously(Game.plugin)
+        Bukkit.getOnlinePlayers().forEach {
+            if (it.team() == team) {
+                it.inventory.addItem(BossBuffListener.itemBossBuff)
+            }
+        }
 
         val bossGate1 = Game.mapObject.bossGate1
         bossGate1.regionSelector.region.forEach {
@@ -130,20 +143,5 @@ class BossListener: Listener {
                 Bukkit.getPluginManager().callEvent(BossSpawnEvent(WitherBoss()))
             }
         }.runTaskLater(Game.plugin,20*60*5)
-    }
-
-    @EventHandler
-    fun playerGetDroppedBossBuff(event: PlayerPickupItemEvent) {
-        val item = event.item.itemStack
-        if (!item.isSame(bossBuff)) return
-        val player = event.player
-        event.isCancelled = true
-        event.item.remove()
-        val team = player.team()
-        Bukkit.getOnlinePlayers().forEach {
-            if (it.team() == team) {
-                it.inventory.addItem(BossBuffListener.itemBossBuff)
-            }
-        }
     }
 }
