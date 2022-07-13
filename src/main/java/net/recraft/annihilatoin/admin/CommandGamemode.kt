@@ -2,6 +2,7 @@ package net.recraft.annihilatoin.admin
 
 import net.recraft.annihilatoin.database.Database
 import net.recraft.annihilatoin.database.StaffRank
+import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -15,11 +16,13 @@ class CommandGamemode: CommandExecutor {
         val rank = Database.getRank(player.uniqueId)
         if (rank != StaffRank.OWNER) return false
         if (args[0] == "1") {
+            player.sendMessage("${ChatColor.GRAY}Your in Creative")
             player.gameMode = GameMode.CREATIVE
             return true
         }
         else if (args[0] == "0") {
-            player.gameMode = GameMode.CREATIVE
+            player.sendMessage("${ChatColor.GRAY}Your in Survival")
+            player.gameMode = GameMode.SURVIVAL
             return true
         }
         return false
