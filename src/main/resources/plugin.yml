@@ -28,3 +28,6 @@ commands:
   gm:
     description: 統計を見れる
     usage: /<command>
+  connect:
+    description: 統計を見れる
+    usage: /<command>

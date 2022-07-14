@@ -89,6 +89,7 @@ class Main : JavaPlugin() {
     private val password = "narikakeisgod"
 
     override fun onEnable() {
+        server.messenger.registerOutgoingPluginChannel(this, "BungeeCord");
 
         try {
             Database.connect(url, user, password)
@@ -187,6 +188,7 @@ class Main : JavaPlugin() {
         getCommand("kit").executor = CommandKit()
         getCommand("statics").executor = CommandStatics()
         getCommand("gm").executor = CommandGamemode()
+        getCommand("connect").executor = CommandConnect()
         if (debug) {
             val mapName = "world_test"
             Util.copyWorld(mapName) // 遅延入れる
