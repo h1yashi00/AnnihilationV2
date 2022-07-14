@@ -7,8 +7,8 @@ RUN java -jar BuildTools.jar -o /artifact --rev 1.8.8
 
 RUN cp -rf /artifact/ /spigot-files/
 
-COPY docker/spigot/serverfiles/ /spigot-files/
-COPY localDependencies/ /spigot-files/plugins/
+COPY docker/spigot/annihilation_server/serverfiles/ /spigot-files/
+COPY localDependencies/annihilation_server /spigot-files/plugins/
 COPY build/libs/ /spigot-files/plugins/
 
 CMD bash /spigot-files/start-server.sh

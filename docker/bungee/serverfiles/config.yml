@@ -4,12 +4,14 @@ listeners:
   motd: '&1Another Bungee server'
   tab_list: GLOBAL_PING
   query_enabled: false
-  proxy_protocol: true
+  proxy_protocol: false
   forced_hosts:
     pvp.md-5.net: pvp
   ping_passthrough: false
   priorities:
-  - lobby
+  - main_lobby
+  - annihilation_lobby
+  - annihilation_server
   bind_local_address: true
   host: 0.0.0.0:25570
   max_players: 1
@@ -26,7 +28,7 @@ permissions:
   - bungeecord.command.end
   - bungeecord.command.ip
   - bungeecord.command.reload
-log_pings: true
+log_pings: false
 connection_throttle_limit: 3
 server_connect_timeout: 5000
 timeout: 30000
@@ -45,7 +47,15 @@ forge_support: false
 disabled_commands:
 - disabledcommandhere
 servers:
-  lobby:
+  main_lobby:
     motd: '&1Just another BungeeCord - Forced Host'
     address: host.docker.internal:25566
+    restricted: false
+  annihilation_lobby:
+    motd: '&1Just another BungeeCord - Forced Host'
+    address: host.docker.internal:25567
+    restricted: false
+  annihilation_server:
+    motd: '&1Just another BungeeCord - Forced Host'
+    address: host.docker.internal:25568
     restricted: false

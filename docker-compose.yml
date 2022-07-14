@@ -10,11 +10,35 @@ volumes:
 
 
 services:
-  spigot:
+  annihilation_server:
     build:
       context: .
-      dockerfile: docker/spigot/Dockerfile
-    image: spigot
+      dockerfile: docker/spigot/annihilation_server/Dockerfile
+    image: annihilation_server
+    networks:
+      - recraft
+    ports:
+      - "25568:25565"
+    stdin_open: true
+    depends_on:
+      - bungee
+  annihilation_lobby:
+    build:
+      context: .
+      dockerfile: docker/spigot/annihilation_lobby/Dockerfile
+    image: annihilation_lobby
+    networks:
+      - recraft
+    ports:
+      - "25567:25565"
+    stdin_open: true
+    depends_on:
+      - bungee
+  main_lobby:
+    build:
+      context: .
+      dockerfile: docker/spigot/main_lobby/Dockerfile
+    image: main_lobby
     networks:
       - recraft
     ports:
@@ -22,6 +46,7 @@ services:
     stdin_open: true
     depends_on:
       - bungee
+
   bungee:
     build:
       context: .
