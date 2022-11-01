@@ -1,5 +1,4 @@
 # Annihilatio
-author: Narikake
 
 ##Note
 ワールドを起動時にmaps.yamlがないと自動デフォルトの設定生成する
